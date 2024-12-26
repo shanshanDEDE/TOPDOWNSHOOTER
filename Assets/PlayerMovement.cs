@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private Player player;
+
     private PlayerControls controls;
     private CharacterController characterController;
     private Animator animator;
@@ -27,18 +29,17 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveInput;
     private Vector2 aimInput;
 
-    private void Awake()
-    {
-        //定義新版控制器事件
-        AssignInputEvents();
-    }
-
     private void Start()
     {
+        player = GetComponent<Player>();
+
         characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
 
         speed = walkSpeed;
+
+        //定義新版控制器事件
+        AssignInputEvents();
     }
 
     private void Update()
@@ -50,12 +51,6 @@ public class PlayerMovement : MonoBehaviour
         //動畫
         AnimatorControllers();
 
-    }
-
-    private void Shoot()
-    {
-        Debug.Log("射擊");
-        animator.SetTrigger("Fire");
     }
 
     private void AnimatorControllers()
@@ -117,9 +112,7 @@ public class PlayerMovement : MonoBehaviour
     #region 新版輸入系統
     private void AssignInputEvents()
     {
-        controls = new PlayerControls();
-
-        controls.Charcater.Fire.performed += context => Shoot();
+        controls = player.controls;
 
         controls.Charcater.Movement.performed += context => moveInput = context.ReadValue<Vector2>();
         controls.Charcater.Movement.canceled += context => moveInput = Vector2.zero;
@@ -140,15 +133,7 @@ public class PlayerMovement : MonoBehaviour
         };
     }
 
-    private void OnEnable()
-    {
-        controls.Enable();
-    }
 
-    private void OnDisable()
-    {
-        controls.Disable();
-    }
 
     #endregion
 }
