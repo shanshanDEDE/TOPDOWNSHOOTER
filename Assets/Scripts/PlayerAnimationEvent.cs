@@ -5,27 +5,27 @@ using UnityEngine;
 
 public class PlayerAnimationEvent : MonoBehaviour
 {
-    private WeaponVisualController visualController;
+    private PlayerWeaponVisuals visualController;
 
     private void Start()
     {
-        visualController = GetComponentInParent<WeaponVisualController>();
+        visualController = GetComponentInParent<PlayerWeaponVisuals>();
     }
 
 
     public void ReloadIsOver()
     {
-        visualController.ReturnRigWeighthToOne();
+        visualController.MaximizeRigWeight();
 
         //啟動讓手的rig weight恢復1
     }
 
     public void ReturnRig()
     {
-        visualController.ReturnRigWeighthToOne();
+        visualController.MaximizeRigWeight();
         //啟動讓手的rig weight恢復1
 
-        visualController.ReturnWeightToLeftHandIK();
+        visualController.MaximizeLeftHandWeight();
     }
 
 
