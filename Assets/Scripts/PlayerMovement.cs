@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("移動參數")]
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
+    [SerializeField] private float trunSpeed;
     [SerializeField] private float gravityScale = 9.81f;
     private float speed;
     private float verticalVelocity;
@@ -68,7 +69,9 @@ public class PlayerMovement : MonoBehaviour
         lookingDirection.y = 0f;
         lookingDirection.Normalize();
 
-        transform.forward = lookingDirection;
+        Quaternion desiredRotation = Quaternion.LookRotation(lookingDirection);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, trunSpeed * Time.deltaTime);
     }
 
     private void ApplyMovement()
