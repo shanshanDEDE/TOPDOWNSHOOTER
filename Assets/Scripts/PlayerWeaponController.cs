@@ -40,7 +40,11 @@ public class PlayerWeaponController : MonoBehaviour
         gunPoint.LookAt(aim);
 
         Vector3 direction = (aim.position - gunPoint.position).normalized;
-        direction.y = 0;
+
+        if (player.aim.CanAimPrecisly() == false)
+        {
+            direction.y = 0;
+        }
 
         return direction;
     }
@@ -51,6 +55,6 @@ public class PlayerWeaponController : MonoBehaviour
 
         Gizmos.color = Color.yellow;
 
-        Gizmos.DrawLine(gunPoint.position, gunPoint.position + BulletDirection() * 25f);
+        //Gizmos.DrawLine(gunPoint.position, gunPoint.position + BulletDirection() * 25f);
     }
 }

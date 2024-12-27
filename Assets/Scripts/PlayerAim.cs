@@ -10,6 +10,8 @@ public class PlayerAim : MonoBehaviour
     [Header("準心控制")]
     [SerializeField] private Transform aim;
 
+    [SerializeField] private bool isAimingPrecisly;     //是否圍巾準瞄準狀態
+
     [Header("相機控制")]
     [SerializeField] private Transform camaraTarget;
     [Range(0.5f, 1f)]
@@ -35,10 +37,37 @@ public class PlayerAim : MonoBehaviour
 
     private void Update()
     {
-        aim.position = GetMouseHitInfo().point;
-        aim.position = new Vector3(aim.position.x, transform.position.y + 1, aim.position.z);
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            isAimingPrecisly = !isAimingPrecisly;
+        }
 
+        UpdateAimPosition();
+        UpdateCameraPosition();
+    }
+
+    private void UpdateCameraPosition()
+    {
         camaraTarget.position = Vector3.Lerp(camaraTarget.position, DesieredCameraPosition(), Time.deltaTime * camaraSensetivity);
+    }
+
+    private void UpdateAimPosition()
+    {
+        aim.position = GetMouseHitInfo().point;
+        if (!isAimingPrecisly)
+        {
+            aim.position = new Vector3(aim.position.x, transform.position.y + 1, aim.position.z);
+        }
+    }
+
+    public bool CanAimPrecisly()
+    {
+        if (isAimingPrecisly)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     //理想的準心位置

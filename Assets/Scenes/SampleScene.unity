@@ -302,6 +302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aim: {fileID: 1865642106}
+  isAimingPrecisly: 0
   camaraTarget: {fileID: 2006609622}
   minCamaraDistance: 1
   maxCamaraDistance: 3
