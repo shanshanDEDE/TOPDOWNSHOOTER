@@ -15,19 +15,15 @@ public class PlayerMovement : MonoBehaviour
     [Header("移動參數")]
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
-    private float speed;
-    private Vector3 movementDirection;
     [SerializeField] private float gravityScale = 9.81f;
+    private float speed;
     private float verticalVelocity;
+
+    private Vector3 movementDirection;
+    private Vector2 moveInput;
+
     private bool isRunning;
 
-    [Header("Aim info")]
-    [SerializeField] private Transform aim;
-    [SerializeField] private LayerMask aimLayerMask;
-    private Vector3 lookingDirection;
-
-    private Vector2 moveInput;
-    private Vector2 aimInput;
 
     private void Start()
     {
@@ -47,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
         //移動
         ApplyMovement();
         //瞄準面相準星
-        AimTowardMouse();
+        ApplyRotation();
         //動畫
         AnimatorControllers();
 
@@ -66,20 +62,13 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isRunning", playRunAnimation);
     }
 
-    private void AimTowardMouse()
+    private void ApplyRotation()
     {
-        Ray ray = Camera.main.ScreenPointToRay(aimInput);
+        Vector3 lookingDirection = player.aim.GetMosuePosition() - transform.position;
+        lookingDirection.y = 0f;
+        lookingDirection.Normalize();
 
-        if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, aimLayerMask))
-        {
-            lookingDirection = hitInfo.point - transform.position;
-            lookingDirection.y = 0f;
-            lookingDirection.Normalize();
-
-            transform.forward = lookingDirection;
-
-            aim.position = new Vector3(hitInfo.point.x, transform.position.y + 1, hitInfo.point.z);
-        }
+        transform.forward = lookingDirection;
     }
 
     private void ApplyMovement()
@@ -110,14 +99,13 @@ public class PlayerMovement : MonoBehaviour
     }
 
     #region 新版輸入系統
+
     private void AssignInputEvents()
     {
         controls = player.controls;
 
         controls.Charcater.Movement.performed += context => moveInput = context.ReadValue<Vector2>();
         controls.Charcater.Movement.canceled += context => moveInput = Vector2.zero;
-        controls.Charcater.Aim.performed += context => aimInput = context.ReadValue<Vector2>();
-        controls.Charcater.Aim.canceled += context => aimInput = Vector2.zero;
 
         controls.Charcater.Run.performed += context =>
         {
@@ -132,8 +120,6 @@ public class PlayerMovement : MonoBehaviour
 
         };
     }
-
-
 
     #endregion
 }
