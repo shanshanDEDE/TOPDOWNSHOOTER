@@ -283,7 +283,8 @@ MonoBehaviour:
   shotgun: {fileID: 1183086414}
   rifle: {fileID: 670699304}
   rigIncreaseStep: 2.75
-  leftHand: {fileID: 1510594349}
+  leftHandIK: {fileID: 0}
+  leftHandIK_Target: {fileID: 1510594349}
 --- !u!1 &152362407
 GameObject:
   m_ObjectHideFlags: 0

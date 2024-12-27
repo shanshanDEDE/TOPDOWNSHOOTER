@@ -19,4 +19,19 @@ public class PlayerAnimationEvent : MonoBehaviour
 
         //啟動讓手的rig weight恢復1
     }
+
+    public void ReturnRig()
+    {
+        visualController.ReturnRigWeighthToOne();
+        //啟動讓手的rig weight恢復1
+
+        visualController.ReturnWeightToLeftHandIK();
+    }
+
+
+    public void WeaponGrabIsOver()
+    {
+
+        visualController.SetBusyGrabbingWeaponTo(false);
+    }
 }

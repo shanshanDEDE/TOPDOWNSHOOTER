@@ -20,9 +20,14 @@ public class WeaponVisualController : MonoBehaviour
     private bool rigShouldBeIncreased;
 
     [Header("左手IK")]
-    [SerializeField] private Transform leftHand;
+    [SerializeField] private TwoBoneIKConstraint leftHandIK;
+    [SerializeField] private Transform leftHandIK_Target;
+    [SerializeField] private float leftHandIK_IncreaseStep;
+    private bool ShouldIncreasedleftHandIKWeight;
 
     private Rig rig;
+
+    private bool busyGrabbingWeapon;
 
     private void Start()
     {
@@ -31,6 +36,8 @@ public class WeaponVisualController : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
 
         rig = GetComponentInChildren<Rig>();
+
+        Debug.Log((float)GrabType.SideGrab);
     }
 
     private void Update()
@@ -41,9 +48,31 @@ public class WeaponVisualController : MonoBehaviour
         {
             anim.SetTrigger("Reload");
             //由於左手受到IK影響,所以要將左手IK的權重設為0
-            rig.weight = 0.15f;
+            PauseRig();
         }
 
+        //平滑回復rig Wigth
+        UpdateRigWigth();
+
+        //平滑回復左手IK權重
+        UpdateLeftHandIKWeight();
+    }
+
+    private void UpdateLeftHandIKWeight()
+    {
+        if (ShouldIncreasedleftHandIKWeight)
+        {
+            leftHandIK.weight += leftHandIK_IncreaseStep * Time.deltaTime;
+
+            if (leftHandIK.weight >= 1)
+            {
+                ShouldIncreasedleftHandIKWeight = false;
+            }
+        }
+    }
+
+    private void UpdateRigWigth()
+    {
         if (rigShouldBeIncreased)
         {
             rig.weight += rigIncreaseStep * Time.deltaTime;
@@ -55,9 +84,35 @@ public class WeaponVisualController : MonoBehaviour
         }
     }
 
+    private void PauseRig()
+    {
+        rig.weight = 0.15f;
+    }
+
+    private void PlayerWeaponGrabAnimation(GrabType grabType)
+    {
+        leftHandIK.weight = 0;
+        PauseRig();
+        anim.SetFloat("WeaponGrabType", (float)grabType);
+        anim.SetTrigger("WeaponGrab");
+
+        SetBusyGrabbingWeaponTo(true);
+    }
+
+    public void SetBusyGrabbingWeaponTo(bool busy)
+    {
+        busyGrabbingWeapon = busy;
+        anim.SetBool("BushGrabbingWeapon", busyGrabbingWeapon);
+    }
+
     public void ReturnRigWeighthToOne()
     {
         rigShouldBeIncreased = true;
+    }
+
+    public void ReturnWeightToLeftHandIK()
+    {
+        ShouldIncreasedleftHandIKWeight = true;
     }
 
     private void SwitchOn(Transform gunTransform)
@@ -82,8 +137,8 @@ public class WeaponVisualController : MonoBehaviour
         Transform targetTransform = currentGun.GetComponentInChildren<LeftHandTargetTransform>().transform;
 
         //localPosition:物件相對於其 父物件 的位置,position:物件在 世界座標系 中的絕對位置
-        leftHand.localPosition = targetTransform.localPosition;
-        leftHand.localRotation = targetTransform.localRotation;
+        leftHandIK_Target.localPosition = targetTransform.localPosition;
+        leftHandIK_Target.localRotation = targetTransform.localRotation;
     }
 
     private void SwitchAnimationLayer(int layerIndex)
@@ -102,30 +157,38 @@ public class WeaponVisualController : MonoBehaviour
         {
             SwitchOn(pistol);
             SwitchAnimationLayer(1);
+            PlayerWeaponGrabAnimation(GrabType.SideGrab);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             SwitchOn(revolver);
             SwitchAnimationLayer(1);
+            PlayerWeaponGrabAnimation(GrabType.SideGrab);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             SwitchOn(autoRifle);
             SwitchAnimationLayer(1);
+            PlayerWeaponGrabAnimation(GrabType.SideGrab);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             SwitchOn(shotgun);
             SwitchAnimationLayer(2);
+            PlayerWeaponGrabAnimation(GrabType.BackGrab);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             SwitchOn(rifle);
             SwitchAnimationLayer(3);
+            PlayerWeaponGrabAnimation(GrabType.BackGrab);
         }
     }
+
 }
+
+public enum GrabType { SideGrab, BackGrab };
