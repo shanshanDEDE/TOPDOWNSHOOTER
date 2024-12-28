@@ -32,8 +32,6 @@ public class PlayerWeaponController : MonoBehaviour
 
         rbNewBullet.mass = REFERNCE_BULLET_SPEED / bulletSpeed;
 
-        Debug.Log(rbNewBullet.mass);
-
         newBullet.GetComponent<Rigidbody>().velocity = BulletDirection() * bulletSpeed;
 
         Destroy(newBullet, 10f);
