@@ -249,7 +249,6 @@ MonoBehaviour:
   bulletSpeed: 20
   gunPoint: {fileID: 2140164919}
   weaponHolder: {fileID: 1018620665}
-  aim: {fileID: 1865642106}
 --- !u!114 &122518352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2871,7 +2870,7 @@ GameObject:
   - component: {fileID: 1865642104}
   - component: {fileID: 1865642103}
   m_Layer: 10
-  m_Name: Aim
+  m_Name: Aim_Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -30,7 +30,7 @@ public class PlayerAim : MonoBehaviour
 
     [SerializeField] private LayerMask aimLayerMask;
 
-    private Vector2 aimInput;
+    private Vector2 mouseInput;
     private RaycastHit lastKnownMouseHit;
 
     private void Start()
@@ -54,14 +54,14 @@ public class PlayerAim : MonoBehaviour
             isLockingToTarget = !isLockingToTarget;
         }
 
-        updateAimLaser();
+        updateAimVisuals();   //更新彈道預測線
 
         UpdateAimPosition();
         UpdateCameraPosition();
     }
 
     //更新彈道預測線
-    private void updateAimLaser()
+    private void updateAimVisuals()
     {
 
         Transform gunPoint = player.weapon.GunPoint();
@@ -86,6 +86,11 @@ public class PlayerAim : MonoBehaviour
         aimLaser.SetPosition(2, endPoint + laserDirection * laserTipLenght);
     }
 
+    private void UpdateCameraPosition()
+    {
+        camaraTarget.position = Vector3.Lerp(camaraTarget.position, DesieredCameraPosition(), Time.deltaTime * camaraSensetivity);
+    }
+
     //取得射線射到的目標是否為Target
     public Transform Target()
     {
@@ -99,10 +104,26 @@ public class PlayerAim : MonoBehaviour
         return target;
     }
 
-    private void UpdateCameraPosition()
+    public Transform Aim() => aim;
+
+    public bool CanAimPrecisly() => isAimingPrecisly;
+
+    public RaycastHit GetMouseHitInfo()
     {
-        camaraTarget.position = Vector3.Lerp(camaraTarget.position, DesieredCameraPosition(), Time.deltaTime * camaraSensetivity);
+        Ray ray = Camera.main.ScreenPointToRay(mouseInput);
+
+        if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, aimLayerMask))
+        {
+            //紀錄位置
+            lastKnownMouseHit = hitInfo;
+            return hitInfo;
+        }
+
+        //如果未偵測到射線撞到東西,則回傳上一次偵測到的位置
+        return lastKnownMouseHit;
     }
+
+    #region 相機相關區域
 
     private void UpdateAimPosition()
     {
@@ -120,16 +141,6 @@ public class PlayerAim : MonoBehaviour
         {
             aim.position = new Vector3(aim.position.x, transform.position.y + 1, aim.position.z);
         }
-    }
-
-    public bool CanAimPrecisly()
-    {
-        if (isAimingPrecisly)
-        {
-            return true;
-        }
-
-        return false;
     }
 
     //理想的準心位置
@@ -154,26 +165,13 @@ public class PlayerAim : MonoBehaviour
         return desiredCameraPosition;
     }
 
-    public RaycastHit GetMouseHitInfo()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(aimInput);
-
-        if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, aimLayerMask))
-        {
-            //紀錄位置
-            lastKnownMouseHit = hitInfo;
-            return hitInfo;
-        }
-
-        //如果未偵測到射線撞到東西,則回傳上一次偵測到的位置
-        return lastKnownMouseHit;
-    }
+    #endregion
 
     private void AssignInputEvents()
     {
         controls = player.controls;
 
-        controls.Charcater.Aim.performed += context => aimInput = context.ReadValue<Vector2>();
-        controls.Charcater.Aim.canceled += context => aimInput = Vector2.zero;
+        controls.Charcater.Aim.performed += context => mouseInput = context.ReadValue<Vector2>();
+        controls.Charcater.Aim.canceled += context => mouseInput = Vector2.zero;
     }
 }
