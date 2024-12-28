@@ -33,7 +33,7 @@ public class PlayerWeaponController : MonoBehaviour
     }
 
     //固定住y軸
-    private Vector3 BulletDirection()
+    public Vector3 BulletDirection()
     {
         //將槍口及子彈生成時的瞄準方向瞄準到aim上
         weaponHolder.LookAt(aim);
@@ -41,7 +41,7 @@ public class PlayerWeaponController : MonoBehaviour
 
         Vector3 direction = (aim.position - gunPoint.position).normalized;
 
-        if (player.aim.CanAimPrecisly() == false)
+        if (player.aim.CanAimPrecisly() == false && player.aim.Target() == null)
         {
             direction.y = 0;
         }
@@ -49,12 +49,5 @@ public class PlayerWeaponController : MonoBehaviour
         return direction;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(weaponHolder.position, weaponHolder.position + weaponHolder.forward * 25f);
-
-        Gizmos.color = Color.yellow;
-
-        //Gizmos.DrawLine(gunPoint.position, gunPoint.position + BulletDirection() * 25f);
-    }
+    public Transform GunPoint() => gunPoint;
 }
