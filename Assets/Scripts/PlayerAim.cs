@@ -86,9 +86,30 @@ public class PlayerAim : MonoBehaviour
         aimLaser.SetPosition(2, endPoint + laserDirection * laserTipLenght);
     }
 
-    private void UpdateCameraPosition()
+    private void UpdateAimPosition()
     {
-        camaraTarget.position = Vector3.Lerp(camaraTarget.position, DesieredCameraPosition(), Time.deltaTime * camaraSensetivity);
+        Transform target = Target();
+        //鼠標有點到目標則做判斷,達成條件則瞄準目標transform
+        if (target != null && isLockingToTarget)
+        {
+            if (target.GetComponent<Renderer>() != null)
+            {
+                aim.position = target.GetComponent<Renderer>().bounds.center;
+            }
+            else
+            {
+                aim.position = target.position;
+            }
+
+            return;
+        }
+
+        aim.position = GetMouseHitInfo().point;
+
+        if (!isAimingPrecisly)
+        {
+            aim.position = new Vector3(aim.position.x, transform.position.y + 1, aim.position.z);
+        }
     }
 
     //取得射線射到的目標是否為Target
@@ -125,22 +146,9 @@ public class PlayerAim : MonoBehaviour
 
     #region 相機相關區域
 
-    private void UpdateAimPosition()
+    private void UpdateCameraPosition()
     {
-        Transform target = Target();
-        //鼠標有點到目標則做判斷,達成條件則瞄準目標transform
-        if (target != null && isLockingToTarget)
-        {
-            aim.position = target.position;
-            return;
-        }
-
-        aim.position = GetMouseHitInfo().point;
-
-        if (!isAimingPrecisly)
-        {
-            aim.position = new Vector3(aim.position.x, transform.position.y + 1, aim.position.z);
-        }
+        camaraTarget.position = Vector3.Lerp(camaraTarget.position, DesieredCameraPosition(), Time.deltaTime * camaraSensetivity);
     }
 
     //理想的準心位置
