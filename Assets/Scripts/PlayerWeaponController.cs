@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerWeaponController : MonoBehaviour
 {
+    //我們計算速度與質量推導公式的預設值(這邊希望造成的效果是我們的子彈速度為20質量為1的情況)
+    private const float REFERNCE_BULLET_SPEED = 20;
 
     private Player player;
 
@@ -23,6 +25,14 @@ public class PlayerWeaponController : MonoBehaviour
     private void Shoot()
     {
         GameObject newBullet = Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
+
+
+        //計算不同速度時子彈應該要有的質量 來讓造成碰撞時的效果一樣(這邊不知道為什麼套用下面的公式揖讓會造成差異)
+        Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
+
+        rbNewBullet.mass = REFERNCE_BULLET_SPEED / bulletSpeed;
+
+        Debug.Log(rbNewBullet.mass);
 
         newBullet.GetComponent<Rigidbody>().velocity = BulletDirection() * bulletSpeed;
 
