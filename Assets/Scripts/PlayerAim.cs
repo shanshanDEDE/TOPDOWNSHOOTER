@@ -92,6 +92,7 @@ public class PlayerAim : MonoBehaviour
         //鼠標有點到目標則做判斷,達成條件則瞄準目標transform
         if (target != null && isLockingToTarget)
         {
+            //取得目標的中心(因為有些資產或模型pivot不在中心因此這邊去抓中心)
             if (target.GetComponent<Renderer>() != null)
             {
                 aim.position = target.GetComponent<Renderer>().bounds.center;
