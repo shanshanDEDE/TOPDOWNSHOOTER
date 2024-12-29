@@ -27,7 +27,7 @@ public class PlayerWeaponController : MonoBehaviour
         player = GetComponent<Player>();
         AssignInputEvents();
 
-        currentWeapon.ammo = currentWeapon.maxAmmo;                     //初始武器的子彈設定
+        currentWeapon.bulletsInMagazine = currentWeapon.totalReserveAmmo;                     //初始武器的子彈設定
     }
 
 
@@ -105,6 +105,8 @@ public class PlayerWeaponController : MonoBehaviour
         return direction;
     }
 
+    public Weapon CurrentWeapon() => currentWeapon;
+
     public Transform GunPoint() => gunPoint;
     #region 輸入事件
     //定義新版控制器事件
@@ -118,6 +120,14 @@ public class PlayerWeaponController : MonoBehaviour
         controls.Charcater.EquipSlot2.performed += context => EquipWeapon(1);
 
         controls.Charcater.DropCurrentWeapon.performed += context => DropWeapon();
+
+        controls.Charcater.Reload.performed += context =>
+        {
+            if (currentWeapon.CanReload())
+            {
+                player.weaponVisuals.PlayerReloadAnimation();
+            }
+        };
     }
 
     #endregion

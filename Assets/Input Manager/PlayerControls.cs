@@ -89,6 +89,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""6338260f-8306-4e03-897b-6fc60d6a243e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -212,6 +221,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Drop Current Weapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""84504073-4381-423e-9a23-102adbf18d66"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -227,6 +247,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Charcater_EquipSlot1 = m_Charcater.FindAction("Equip Slot - 1", throwIfNotFound: true);
         m_Charcater_EquipSlot2 = m_Charcater.FindAction("Equip Slot - 2", throwIfNotFound: true);
         m_Charcater_DropCurrentWeapon = m_Charcater.FindAction("Drop Current Weapon", throwIfNotFound: true);
+        m_Charcater_Reload = m_Charcater.FindAction("Reload", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -300,6 +321,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Charcater_EquipSlot1;
     private readonly InputAction m_Charcater_EquipSlot2;
     private readonly InputAction m_Charcater_DropCurrentWeapon;
+    private readonly InputAction m_Charcater_Reload;
     public struct CharcaterActions
     {
         private @PlayerControls m_Wrapper;
@@ -311,6 +333,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @EquipSlot1 => m_Wrapper.m_Charcater_EquipSlot1;
         public InputAction @EquipSlot2 => m_Wrapper.m_Charcater_EquipSlot2;
         public InputAction @DropCurrentWeapon => m_Wrapper.m_Charcater_DropCurrentWeapon;
+        public InputAction @Reload => m_Wrapper.m_Charcater_Reload;
         public InputActionMap Get() { return m_Wrapper.m_Charcater; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -341,6 +364,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DropCurrentWeapon.started += instance.OnDropCurrentWeapon;
             @DropCurrentWeapon.performed += instance.OnDropCurrentWeapon;
             @DropCurrentWeapon.canceled += instance.OnDropCurrentWeapon;
+            @Reload.started += instance.OnReload;
+            @Reload.performed += instance.OnReload;
+            @Reload.canceled += instance.OnReload;
         }
 
         private void UnregisterCallbacks(ICharcaterActions instance)
@@ -366,6 +392,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DropCurrentWeapon.started -= instance.OnDropCurrentWeapon;
             @DropCurrentWeapon.performed -= instance.OnDropCurrentWeapon;
             @DropCurrentWeapon.canceled -= instance.OnDropCurrentWeapon;
+            @Reload.started -= instance.OnReload;
+            @Reload.performed -= instance.OnReload;
+            @Reload.canceled -= instance.OnReload;
         }
 
         public void RemoveCallbacks(ICharcaterActions instance)
@@ -392,5 +421,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnEquipSlot1(InputAction.CallbackContext context);
         void OnEquipSlot2(InputAction.CallbackContext context);
         void OnDropCurrentWeapon(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
     }
 }

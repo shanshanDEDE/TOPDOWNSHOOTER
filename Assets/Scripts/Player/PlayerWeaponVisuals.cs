@@ -42,18 +42,20 @@ public class PlayerWeaponVisuals : MonoBehaviour
     {
         CheckWeaponSwitch();
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            anim.SetTrigger("Reload");
-            //由於左手受到IK影響,所以要將左手IK的權重設為0
-            reduceRigWeight();
-        }
-
         //平滑回復rig Wigth
         UpdateRigWigth();
 
         //平滑回復左手IK權重
         UpdateLeftHandIKWeight();
+    }
+
+    public void PlayerReloadAnimation()
+    {
+        if (isGrabbingWeapon) return;
+
+        anim.SetTrigger("Reload");
+        //由於左手受到IK影響,所以要將左手IK的權重設為0
+        reduceRigWeight();
     }
 
     private void UpdateLeftHandIKWeight()

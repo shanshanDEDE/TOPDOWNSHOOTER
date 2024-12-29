@@ -6,16 +6,19 @@ using UnityEngine;
 public class PlayerAnimationEvent : MonoBehaviour
 {
     private PlayerWeaponVisuals visualController;
+    private PlayerWeaponController weaponController;
 
     private void Start()
     {
         visualController = GetComponentInParent<PlayerWeaponVisuals>();
+        weaponController = GetComponentInParent<PlayerWeaponController>();
     }
 
 
     public void ReloadIsOver()
     {
         visualController.MaximizeRigWeight();
+        weaponController.CurrentWeapon().RefillBullets();
 
         //啟動讓手的rig weight恢復1
     }
