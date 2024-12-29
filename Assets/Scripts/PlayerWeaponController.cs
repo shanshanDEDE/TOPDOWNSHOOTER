@@ -17,13 +17,50 @@ public class PlayerWeaponController : MonoBehaviour
 
     [SerializeField] private Transform weaponHolder;
 
+    [Header("Inventory")]
+
+    [SerializeField] private List<Weapon> weaponSlots;
 
     private void Start()
     {
         player = GetComponent<Player>();
-        player.controls.Charcater.Fire.performed += context => Shoot();
+        AssignInputEvents();
 
         currentWeapon.ammo = currentWeapon.maxAmmo;                     //初始武器的子彈設定
+    }
+
+    //定義新版控制器事件
+    private void AssignInputEvents()
+    {
+        PlayerControls controls = player.controls;
+
+        controls.Charcater.Fire.performed += context => Shoot();
+
+        controls.Charcater.EquipSlot1.performed += context => EquipWeapon(0);
+        controls.Charcater.EquipSlot2.performed += context => EquipWeapon(1);
+
+        controls.Charcater.DropCurrentWeapon.performed += context => DropWeapon();
+    }
+
+    private void EquipWeapon(int i)
+    {
+        if (weaponSlots.Count <= 1 && i == 1)
+        {
+            return;
+        }
+        currentWeapon = weaponSlots[i];
+    }
+
+    private void DropWeapon()
+    {
+        if (weaponSlots.Count <= 1)
+        {
+            return;
+        }
+
+        weaponSlots.Remove(currentWeapon);
+
+        currentWeapon = weaponSlots[0];
     }
 
     private void Shoot()

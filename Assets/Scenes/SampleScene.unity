@@ -311,12 +311,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentWeapon:
+    weaponType: 0
     ammo: 0
     maxAmmo: 10
   bulletPrefab: {fileID: 1528971205867280839, guid: 25de79dba553eda4baa2278ea972382d, type: 3}
   bulletSpeed: 15
   gunPoint: {fileID: 2140164919}
   weaponHolder: {fileID: 1018620665}
+  weaponSlots:
+  - weaponType: 0
+    ammo: 21
+    maxAmmo: 21
+  - weaponType: 1
+    ammo: 6
+    maxAmmo: 6
 --- !u!114 &122518352
 MonoBehaviour:
   m_ObjectHideFlags: 0
