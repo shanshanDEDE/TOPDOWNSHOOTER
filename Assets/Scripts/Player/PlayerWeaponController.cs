@@ -33,6 +33,7 @@ public class PlayerWeaponController : MonoBehaviour
 
     #region 武器欄位控制 - 撿起/裝備/丟棄 武器
 
+    //裝備武器
     private void EquipWeapon(int i)
     {
         if (weaponSlots.Count <= 1 && i == 1)
@@ -40,6 +41,11 @@ public class PlayerWeaponController : MonoBehaviour
             return;
         }
         currentWeapon = weaponSlots[i];
+
+        //關閉所有武器
+        player.weaponVisuals.SwitchOffWeaponModels();
+        //顯示武器
+        player.weaponVisuals.PlayerWeaponEquipAnimation();
     }
 
     public void PickupWeapon(Weapon newWeapon)

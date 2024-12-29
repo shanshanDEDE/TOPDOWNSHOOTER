@@ -311,7 +311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentWeapon:
-    weaponType: 0
+    weaponType: 1
     bulletsInMagazine: 0
     magazineCapacity: 0
     totalReserveAmmo: 0
@@ -353,17 +353,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91ad0f18688d2a546b1e9ac40af08089, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gunTransforms:
-  - {fileID: 1508753560}
-  - {fileID: 781803861}
-  - {fileID: 2129694125}
-  - {fileID: 1183086414}
-  - {fileID: 670699304}
-  pistol: {fileID: 1508753560}
-  revolver: {fileID: 781803861}
-  autoRifle: {fileID: 2129694125}
-  shotgun: {fileID: 1183086414}
-  rifle: {fileID: 670699304}
   weaponModels:
   - {fileID: 1508753561}
   - {fileID: 781803862}

@@ -31,13 +31,74 @@ public class PlayerWeaponVisuals : MonoBehaviour
 
     private void Update()
     {
-        CheckWeaponSwitch();
-
         //平滑回復rig Wigth
         UpdateRigWigth();
 
         //平滑回復左手IK權重
         UpdateLeftHandIKWeight();
+    }
+
+
+    public void PlayerReloadAnimation()
+    {
+        if (isGrabbingWeapon) return;
+
+        anim.SetTrigger("Reload");
+        //由於左手受到IK影響,所以要將左手IK的權重設為0
+        ReduceRigWeight();
+    }
+
+    public void PlayerWeaponEquipAnimation()
+    {
+        GrabType grabType = CurrentWeaponModel().grabType;
+
+        leftHandIK.weight = 0;
+        ReduceRigWeight();
+        anim.SetFloat("WeaponGrabType", (float)grabType);
+        anim.SetTrigger("WeaponGrab");
+
+        SetBusyGrabbingWeaponTo(true);
+    }
+
+    public void SetBusyGrabbingWeaponTo(bool busy)
+    {
+        isGrabbingWeapon = busy;
+        anim.SetBool("BushGrabbingWeapon", isGrabbingWeapon);
+    }
+
+    //切換武器
+    public void SwitchOnCurrentWeaponModel()
+    {
+        //取得現在的武器的拿槍方式
+        int animationIndex = ((int)CurrentWeaponModel().holdType);
+
+        //切換為該拿槍方式的動畫
+        SwitchAnimationLayer(animationIndex);
+
+        //透過取的整個model的方式就不用寫每個子物件了的相關資訊(如發射位置等等..)
+        CurrentWeaponModel().gameObject.SetActive(true);
+
+        AttachLeftHand();
+    }
+
+    //關閉所有武器
+    public void SwitchOffWeaponModels()
+    {
+        for (int i = 0; i < weaponModels.Length; i++)
+        {
+            weaponModels[i].gameObject.SetActive(false);
+        }
+    }
+
+
+    private void SwitchAnimationLayer(int layerIndex)
+    {
+        for (int i = 1; i < anim.layerCount; i++)
+        {
+            anim.SetLayerWeight(i, 0);
+        }
+
+        anim.SetLayerWeight(layerIndex, 1);
     }
 
     //取得現在的weaponModel
@@ -58,14 +119,15 @@ public class PlayerWeaponVisuals : MonoBehaviour
         return weaponModel;
     }
 
+    #region  動畫 Riggging 方法
 
-    public void PlayerReloadAnimation()
+    private void AttachLeftHand()
     {
-        if (isGrabbingWeapon) return;
+        Transform targetTransform = CurrentWeaponModel().holdPoint;
 
-        anim.SetTrigger("Reload");
-        //由於左手受到IK影響,所以要將左手IK的權重設為0
-        reduceRigWeight();
+        //localPosition:物件相對於其 父物件 的位置,position:物件在 世界座標系 中的絕對位置
+        leftHandIK_Target.localPosition = targetTransform.localPosition;
+        leftHandIK_Target.localRotation = targetTransform.localRotation;
     }
 
     private void UpdateLeftHandIKWeight()
@@ -94,25 +156,9 @@ public class PlayerWeaponVisuals : MonoBehaviour
         }
     }
 
-    private void reduceRigWeight()
+    private void ReduceRigWeight()
     {
         rig.weight = 0.15f;
-    }
-
-    private void PlayerWeaponGrabAnimation(GrabType grabType)
-    {
-        leftHandIK.weight = 0;
-        reduceRigWeight();
-        anim.SetFloat("WeaponGrabType", (float)grabType);
-        anim.SetTrigger("WeaponGrab");
-
-        SetBusyGrabbingWeaponTo(true);
-    }
-
-    public void SetBusyGrabbingWeaponTo(bool busy)
-    {
-        isGrabbingWeapon = busy;
-        anim.SetBool("BushGrabbingWeapon", isGrabbingWeapon);
     }
 
     public void MaximizeRigWeight()
@@ -125,78 +171,6 @@ public class PlayerWeaponVisuals : MonoBehaviour
         ShouldIncrease_leftHandIKWeight = true;
     }
 
-    private void SwitchOn()
-    {
-        SwitchOffWeaponModels();
+    #endregion
 
-        //透過取的整個model的方式就不用寫每個子物件了的相關資訊(如發射位置等等..)
-        CurrentWeaponModel().gameObject.SetActive(true);
-
-        AttachLeftHand();
-    }
-
-    private void SwitchOffWeaponModels()
-    {
-        for (int i = 0; i < weaponModels.Length; i++)
-        {
-            weaponModels[i].gameObject.SetActive(false);
-        }
-    }
-
-    private void AttachLeftHand()
-    {
-        Transform targetTransform = CurrentWeaponModel().holdPoint;
-
-        //localPosition:物件相對於其 父物件 的位置,position:物件在 世界座標系 中的絕對位置
-        leftHandIK_Target.localPosition = targetTransform.localPosition;
-        leftHandIK_Target.localRotation = targetTransform.localRotation;
-    }
-
-    private void SwitchAnimationLayer(int layerIndex)
-    {
-        for (int i = 1; i < anim.layerCount; i++)
-        {
-            anim.SetLayerWeight(i, 0);
-        }
-
-        anim.SetLayerWeight(layerIndex, 1);
-    }
-
-    private void CheckWeaponSwitch()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            SwitchOn();
-            SwitchAnimationLayer(1);
-            PlayerWeaponGrabAnimation(GrabType.SideGrab);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            SwitchOn();
-            SwitchAnimationLayer(1);
-            PlayerWeaponGrabAnimation(GrabType.SideGrab);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            SwitchOn();
-            SwitchAnimationLayer(1);
-            PlayerWeaponGrabAnimation(GrabType.SideGrab);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            SwitchOn();
-            SwitchAnimationLayer(2);
-            PlayerWeaponGrabAnimation(GrabType.BackGrab);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            SwitchOn();
-            SwitchAnimationLayer(3);
-            PlayerWeaponGrabAnimation(GrabType.BackGrab);
-        }
-    }
 }
