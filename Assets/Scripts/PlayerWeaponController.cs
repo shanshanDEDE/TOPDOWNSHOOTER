@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class PlayerWeaponController : MonoBehaviour
 {
+    private Player player;
     //我們計算速度與質量推導公式的預設值(這邊希望造成的效果是我們的子彈速度為20質量為1的情況)
     private const float REFERNCE_BULLET_SPEED = 20;
 
-    private Player player;
+    [SerializeField] private Weapon currentWeapon;
 
+    [Header("子彈細節")]
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private Transform gunPoint;
@@ -20,10 +22,20 @@ public class PlayerWeaponController : MonoBehaviour
     {
         player = GetComponent<Player>();
         player.controls.Charcater.Fire.performed += context => Shoot();
+
+        currentWeapon.ammo = currentWeapon.maxAmmo;                     //初始武器的子彈設定
     }
 
     private void Shoot()
     {
+        if (currentWeapon.ammo <= 0)
+        {
+            Debug.Log("No Ammo");
+            return;
+        }
+
+        currentWeapon.ammo--;
+
         GameObject newBullet = Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
 
 

@@ -310,6 +310,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f13863170ebed24aa14cbf9869b8c31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentWeapon:
+    ammo: 0
+    maxAmmo: 10
   bulletPrefab: {fileID: 1528971205867280839, guid: 25de79dba553eda4baa2278ea972382d, type: 3}
   bulletSpeed: 15
   gunPoint: {fileID: 2140164919}
@@ -1857,7 +1860,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7586850576561238211, guid: 9bdccf6fd8d7f754aa98057b55c0b967, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0000019073486
+      value: -2.23
       objectReference: {fileID: 0}
     - target: {fileID: 7586850576561238211, guid: 9bdccf6fd8d7f754aa98057b55c0b967, type: 3}
       propertyPath: m_LocalPosition.z
