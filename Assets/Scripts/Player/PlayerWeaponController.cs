@@ -30,18 +30,8 @@ public class PlayerWeaponController : MonoBehaviour
         currentWeapon.ammo = currentWeapon.maxAmmo;                     //初始武器的子彈設定
     }
 
-    //定義新版控制器事件
-    private void AssignInputEvents()
-    {
-        PlayerControls controls = player.controls;
 
-        controls.Charcater.Fire.performed += context => Shoot();
-
-        controls.Charcater.EquipSlot1.performed += context => EquipWeapon(0);
-        controls.Charcater.EquipSlot2.performed += context => EquipWeapon(1);
-
-        controls.Charcater.DropCurrentWeapon.performed += context => DropWeapon();
-    }
+    #region 武器欄位控制 - 撿起/裝備/丟棄 武器
 
     private void EquipWeapon(int i)
     {
@@ -75,15 +65,12 @@ public class PlayerWeaponController : MonoBehaviour
         currentWeapon = weaponSlots[0];
     }
 
+    #endregion
+
+
     private void Shoot()
     {
-        if (currentWeapon.ammo <= 0)
-        {
-            Debug.Log("No Ammo");
-            return;
-        }
-
-        currentWeapon.ammo--;
+        if (currentWeapon.CanShoot() == false) return;
 
         GameObject newBullet = Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
 
@@ -119,4 +106,19 @@ public class PlayerWeaponController : MonoBehaviour
     }
 
     public Transform GunPoint() => gunPoint;
+    #region 輸入事件
+    //定義新版控制器事件
+    private void AssignInputEvents()
+    {
+        PlayerControls controls = player.controls;
+
+        controls.Charcater.Fire.performed += context => Shoot();
+
+        controls.Charcater.EquipSlot1.performed += context => EquipWeapon(0);
+        controls.Charcater.EquipSlot2.performed += context => EquipWeapon(1);
+
+        controls.Charcater.DropCurrentWeapon.performed += context => DropWeapon();
+    }
+
+    #endregion
 }
