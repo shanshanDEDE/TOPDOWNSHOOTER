@@ -22,14 +22,13 @@ public class Weapon
     [Range(1, 3)]
     public float equipmentSpeed = 1;            //裝備武器的速度
 
+    [Space]
+    public float fireRate = 1;                  //子彈發射間隔
+    private float lastShootTime;
+
     public bool CanShoot()
     {
-        return HaveEnoughBullets();
-    }
-
-    private bool HaveEnoughBullets()
-    {
-        if (bulletsInMagazine > 0)
+        if (HaveEnoughBullets() && ReadyToFire())
         {
             bulletsInMagazine--;
             return true;
@@ -37,6 +36,19 @@ public class Weapon
 
         return false;
     }
+
+    private bool ReadyToFire()
+    {
+        if (Time.time > lastShootTime + 1 / fireRate)
+        {
+            lastShootTime = Time.time;
+            return true;
+        }
+
+        return false;
+    }
+
+    #region Reload methods
 
     public bool CanReload()
     {
@@ -75,4 +87,16 @@ public class Weapon
             totalReserveAmmo = 0;
         }
     }
+
+    private bool HaveEnoughBullets()
+    {
+        if (bulletsInMagazine > 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    #endregion
 }
