@@ -9,11 +9,11 @@ public class PlayerWeaponController : MonoBehaviour
     private const float REFERNCE_BULLET_SPEED = 20;
 
     [SerializeField] private Weapon currentWeapon;
+    private bool weaponReady;
 
     [Header("子彈細節")]
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletSpeed;
-    [SerializeField] private Transform gunPoint;
 
     [SerializeField] private Transform weaponHolder;
 
@@ -31,7 +31,7 @@ public class PlayerWeaponController : MonoBehaviour
     }
 
 
-    #region 武器欄位控制 - 撿起/裝備/丟棄 武器
+    #region 武器欄位控制 - 撿起\裝備\丟棄\準備 武器
 
     private void EquipStartingWeapon()
     {
@@ -46,6 +46,9 @@ public class PlayerWeaponController : MonoBehaviour
         {
             return;
         }
+
+        SetWeaponReady(false);
+
         currentWeapon = weaponSlots[i];
         //顯示武器
         player.weaponVisuals.PlayerWeaponEquipAnimation();
@@ -77,19 +80,27 @@ public class PlayerWeaponController : MonoBehaviour
         EquipWeapon(0);
     }
 
+    public void SetWeaponReady(bool ready) => weaponReady = ready;
+
+    public bool WeaponReady() => weaponReady;
+
     #endregion
 
 
     private void Shoot()
     {
-        if (currentWeapon.CanShoot() == false) return;
+        if (WeaponReady() == false)
+            return;
+
+        if (currentWeapon.CanShoot() == false)
+            return;
 
         //取得物件池的子彈
         GameObject newBullet = ObjectPool.instance.GetBullet();
         //Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
 
-        newBullet.transform.position = gunPoint.position;
-        newBullet.transform.rotation = Quaternion.LookRotation(BulletDirection());  //老師BulletDirection沒用而是用gunpoiont.forward
+        newBullet.transform.position = GunPoint().position;
+        newBullet.transform.rotation = Quaternion.LookRotation(BulletDirection());  //老師BulletDirection沒用而是用GunPoint().forward
 
         //計算不同速度時子彈應該要有的質量 來讓造成碰撞時的效果一樣(這邊不知道為什麼套用下面的公式揖讓會造成差異)
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
@@ -101,7 +112,7 @@ public class PlayerWeaponController : MonoBehaviour
         // 開始計時，如果 10 秒內沒碰撞，將子彈返回物件池
         StartCoroutine(ReturnBulletAfterTime(newBullet, 10f));
 
-        GetComponentInChildren<Animator>().SetTrigger("Fire");
+        player.weaponVisuals.PlayFireAnimation();
     }
 
     // 協程：子彈射出後等待指定時間返回物件池
@@ -116,15 +127,17 @@ public class PlayerWeaponController : MonoBehaviour
         }
     }
 
+    private void Reload()
+    {
+        SetWeaponReady(false);
+        player.weaponVisuals.PlayerReloadAnimation();
+    }
+
     public Vector3 BulletDirection()
     {
-        //將槍口及子彈生成時的瞄準方向瞄準到aim上
-        // weaponHolder.LookAt(aim);
-        // gunPoint.LookAt(aim);                    //移動到更好的地方ㄌ
-
         Transform aim = player.aim.Aim();
 
-        Vector3 direction = (aim.position - gunPoint.position).normalized;
+        Vector3 direction = (aim.position - GunPoint().position).normalized;
 
         if (player.aim.CanAimPrecisly() == false && player.aim.Target() == null)
         {
@@ -154,7 +167,7 @@ public class PlayerWeaponController : MonoBehaviour
     }
 
 
-    public Transform GunPoint() => gunPoint;
+    public Transform GunPoint() => player.weaponVisuals.CurrentWeaponModel().gunPoint;
 
     #region 輸入事件
     //定義新版控制器事件
@@ -171,12 +184,14 @@ public class PlayerWeaponController : MonoBehaviour
 
         controls.Charcater.Reload.performed += context =>
         {
-            if (currentWeapon.CanReload())
+            if (currentWeapon.CanReload() && WeaponReady())
             {
-                player.weaponVisuals.PlayerReloadAnimation();
+                Reload();
             }
         };
     }
+
+
 
     #endregion
 }
