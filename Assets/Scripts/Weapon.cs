@@ -9,10 +9,24 @@ public enum WeaponType
     Rifle
 }
 
+public enum ShootType
+{
+    Single,
+    Auto
+}
+
 [System.Serializable] //可序列化(讓腳本可以在編輯器中可視)(其他腳本中宣告的話可以變成可視的)
 public class Weapon
 {
     public WeaponType weaponType;
+
+    [Header("射擊細節")]
+
+    public ShootType shootType;
+    public float fireRate = 1;                  //子彈發射間隔
+    private float lastShootTime;
+
+    [Header("Magazine 細節")]
     public int bulletsInMagazine;       //彈匣內目前的子彈數量
     public int magazineCapacity;        //彈匣容量
     public int totalReserveAmmo;        //總儲備彈藥
@@ -22,9 +36,6 @@ public class Weapon
     [Range(1, 3)]
     public float equipmentSpeed = 1;            //裝備武器的速度
 
-    [Space]
-    public float fireRate = 1;                  //子彈發射間隔
-    private float lastShootTime;
 
     public bool CanShoot()
     {

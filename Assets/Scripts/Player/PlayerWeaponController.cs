@@ -10,6 +10,7 @@ public class PlayerWeaponController : MonoBehaviour
 
     [SerializeField] private Weapon currentWeapon;
     private bool weaponReady;
+    private bool isShooting;
 
     [Header("子彈細節")]
     [SerializeField] private GameObject bulletPrefab;
@@ -28,6 +29,14 @@ public class PlayerWeaponController : MonoBehaviour
         AssignInputEvents();
 
         Invoke("EquipStartingWeapon", 0.1f);
+    }
+
+    private void Update()
+    {
+        if (isShooting)
+        {
+            Shoot();
+        }
     }
 
 
@@ -94,6 +103,12 @@ public class PlayerWeaponController : MonoBehaviour
 
         if (currentWeapon.CanShoot() == false)
             return;
+
+        //如果是single則不會持續射擊
+        if (currentWeapon.shootType == ShootType.Single)
+        {
+            isShooting = false;
+        }
 
         //取得物件池的子彈
         GameObject newBullet = ObjectPool.instance.GetBullet();
@@ -175,7 +190,8 @@ public class PlayerWeaponController : MonoBehaviour
     {
         PlayerControls controls = player.controls;
 
-        controls.Charcater.Fire.performed += context => Shoot();
+        controls.Charcater.Fire.performed += context => isShooting = true;
+        controls.Charcater.Fire.canceled += context => isShooting = false;
 
         controls.Charcater.EquipSlot1.performed += context => EquipWeapon(0);
         controls.Charcater.EquipSlot2.performed += context => EquipWeapon(1);

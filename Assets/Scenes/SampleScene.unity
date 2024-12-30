@@ -312,32 +312,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentWeapon:
     weaponType: 1
+    shootType: 0
+    fireRate: 1
     bulletsInMagazine: 0
     magazineCapacity: 0
     totalReserveAmmo: 0
     reloadSpeed: 1
     equipmentSpeed: 1
-    fireRate: 1
   bulletPrefab: {fileID: 1528971205867280839, guid: 25de79dba553eda4baa2278ea972382d, type: 3}
   bulletSpeed: 15
-  gunPoint: {fileID: 2140164919}
   weaponHolder: {fileID: 1018620665}
   maxSlots: 2
   weaponSlots:
   - weaponType: 0
+    shootType: 0
+    fireRate: 3
     bulletsInMagazine: 50
     magazineCapacity: 50
     totalReserveAmmo: 330
     reloadSpeed: 1
     equipmentSpeed: 1
-    fireRate: 1000
-  - weaponType: 4
+  - weaponType: 2
+    shootType: 1
+    fireRate: 7
     bulletsInMagazine: 50
     magazineCapacity: 50
     totalReserveAmmo: 500
     reloadSpeed: 1
     equipmentSpeed: 1
-    fireRate: 1
 --- !u!114 &122518352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,7 +394,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aimLaser: {fileID: 1018620666}
   aim: {fileID: 1865642106}
-  isAimingPrecisly: 1
+  isAimingPrecisly: 0
   isLockingToTarget: 1
   camaraTarget: {fileID: 2006609622}
   minCamaraDistance: 1
@@ -1732,12 +1734,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon:
     weaponType: 2
+    shootType: 0
+    fireRate: 1
     bulletsInMagazine: 0
     magazineCapacity: 0
     totalReserveAmmo: 0
     reloadSpeed: 1
     equipmentSpeed: 1
-    fireRate: 1
 --- !u!4 &489855012
 Transform:
   m_ObjectHideFlags: 0
