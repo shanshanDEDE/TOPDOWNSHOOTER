@@ -23,8 +23,18 @@ public class Weapon
     [Header("射擊細節")]
 
     public ShootType shootType;
+    public int bulletsPerShot;
+    public float defaultFireRate;             //子彈預設發射間隔
     public float fireRate = 1;                  //子彈發射間隔
     private float lastShootTime;
+
+    [Header("Burst fire(點放射擊)")]
+    public bool burstAvalible;          //是否有點放射擊功能
+    public bool burstActive;            //點放射擊是否啟用
+
+    public int burstBulletsPerShot;             //每次射擊的子彈數量
+    public float burstFireRate;                 //每次射擊的發射間隔
+    public float burstFireDelay = 0.1f;         //每發子彈間的發射時間間隔
 
     [Header("Magazine 細節")]
     public int bulletsInMagazine;       //彈匣內目前的子彈數量
@@ -87,11 +97,53 @@ public class Weapon
 
     #endregion
 
+    #region Burst fire(點放射擊) 方法
+
+    //取得該槍目前的模式(點放射擊的部分)
+    public bool BurstActivated()
+    {
+        //鎖定霰彈槍只有點放射擊(因此設定霰彈槍時,不會通過toogleBurst取改變,所以只要設定預設的部分就好了)
+        if (weaponType == WeaponType.Shotgun)
+        {
+            burstFireDelay = 0;
+            return true;
+        }
+
+        return burstActive;
+    }
+
+    public void ToggleBurst()
+    {
+        if (burstAvalible == false)
+        {
+            return;
+        }
+
+        burstActive = !burstActive;
+
+        //切換點放射擊
+        if (burstActive)
+        {
+            //切換每次發射子彈數量
+            bulletsPerShot = burstBulletsPerShot;
+            //切換每次子彈發射間隔
+            fireRate = burstFireRate;
+        }
+        else
+        {
+            //回覆預設
+            bulletsPerShot = 1;
+            fireRate = defaultFireRate;
+        }
+    }
+
+
+    #endregion
+
     public bool CanShoot()
     {
         if (HaveEnoughBullets() && ReadyToFire())
         {
-            bulletsInMagazine--;
             return true;
         }
 
@@ -160,4 +212,7 @@ public class Weapon
     }
 
     #endregion
+
+
 }
+

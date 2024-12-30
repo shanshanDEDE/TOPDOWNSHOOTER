@@ -37,6 +37,12 @@ public class PlayerWeaponController : MonoBehaviour
         {
             Shoot();
         }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            //切換該武器是否可以點放射擊
+            currentWeapon.ToggleBurst();
+        }
     }
 
 
@@ -95,6 +101,23 @@ public class PlayerWeaponController : MonoBehaviour
 
     #endregion
 
+    IEnumerator BurstFire()
+    {
+        SetWeaponReady(false);
+
+        for (int i = 1; i <= currentWeapon.bulletsPerShot; i++)
+        {
+            //發射單發子彈
+            FireSingleBullet();
+            yield return new WaitForSeconds(currentWeapon.burstFireDelay);
+
+            if (i >= currentWeapon.bulletsPerShot)
+            {
+                SetWeaponReady(true);
+            }
+        }
+    }
+
 
     private void Shoot()
     {
@@ -104,11 +127,29 @@ public class PlayerWeaponController : MonoBehaviour
         if (currentWeapon.CanShoot() == false)
             return;
 
+        player.weaponVisuals.PlayFireAnimation();
+
         //如果是single則不會持續射擊
         if (currentWeapon.shootType == ShootType.Single)
         {
             isShooting = false;
         }
+
+        //如果是burst狀態
+        if (currentWeapon.BurstActivated() == true)
+        {
+            StartCoroutine(BurstFire());
+            return;
+        }
+
+        //發射單發子彈
+        FireSingleBullet();
+
+    }
+
+    private void FireSingleBullet()
+    {
+        currentWeapon.bulletsInMagazine--;
 
         //取得物件池的子彈
         GameObject newBullet = ObjectPool.instance.GetBullet();
@@ -128,8 +169,6 @@ public class PlayerWeaponController : MonoBehaviour
 
         // 開始計時，如果 10 秒內沒碰撞，將子彈返回物件池
         StartCoroutine(ReturnBulletAfterTime(newBullet, 10f));
-
-        player.weaponVisuals.PlayFireAnimation();
     }
 
     // 協程：子彈射出後等待指定時間返回物件池
