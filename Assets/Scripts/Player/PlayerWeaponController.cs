@@ -84,8 +84,12 @@ public class PlayerWeaponController : MonoBehaviour
     {
         if (currentWeapon.CanShoot() == false) return;
 
-        GameObject newBullet = Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
+        //取得物件池的子彈
+        GameObject newBullet = ObjectPool.instance.GetBullet();
+        //Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
 
+        newBullet.transform.position = gunPoint.position;
+        newBullet.transform.rotation = Quaternion.LookRotation(BulletDirection());  //老師BulletDirection沒用而是用gunpoiont.forward
 
         //計算不同速度時子彈應該要有的質量 來讓造成碰撞時的效果一樣(這邊不知道為什麼套用下面的公式揖讓會造成差異)
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
@@ -94,9 +98,22 @@ public class PlayerWeaponController : MonoBehaviour
 
         newBullet.GetComponent<Rigidbody>().velocity = BulletDirection() * bulletSpeed;
 
-        Destroy(newBullet, 10f);
+        // 開始計時，如果 10 秒內沒碰撞，將子彈返回物件池
+        StartCoroutine(ReturnBulletAfterTime(newBullet, 10f));
 
         GetComponentInChildren<Animator>().SetTrigger("Fire");
+    }
+
+    // 協程：子彈射出後等待指定時間返回物件池
+    private IEnumerator ReturnBulletAfterTime(GameObject bullet, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // 如果子彈還存在，並且未被其他事件處理，則返回物件池
+        if (bullet != null && bullet.activeInHierarchy)
+        {
+            ObjectPool.instance.ReturnBullet(bullet);
+        }
     }
 
     public Vector3 BulletDirection()
