@@ -120,9 +120,11 @@ public class PlayerWeaponController : MonoBehaviour
         //計算不同速度時子彈應該要有的質量 來讓造成碰撞時的效果一樣(這邊不知道為什麼套用下面的公式揖讓會造成差異)
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
 
-        rbNewBullet.mass = REFERNCE_BULLET_SPEED / bulletSpeed;
+        //子彈偏移量
+        Vector3 bulletsDirection = currentWeapon.ApplySpread(BulletDirection());
 
-        newBullet.GetComponent<Rigidbody>().velocity = BulletDirection() * bulletSpeed;
+        rbNewBullet.mass = REFERNCE_BULLET_SPEED / bulletSpeed;
+        rbNewBullet.velocity = bulletsDirection * bulletSpeed;
 
         // 開始計時，如果 10 秒內沒碰撞，將子彈返回物件池
         StartCoroutine(ReturnBulletAfterTime(newBullet, 10f));

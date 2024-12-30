@@ -36,6 +36,56 @@ public class Weapon
     [Range(1, 3)]
     public float equipmentSpeed = 1;            //裝備武器的速度
 
+    [Header("Spread(子彈偏移)")]
+    public float baseSpread = 1;
+    private float currentSpread = 2;
+    public float maximumSpread = 3;
+
+    public float spreadIncreaseRate = 0.15f;
+
+    private float lastSpreadUpdateTime;
+    //停止射擊後到重製偏移所需的時間
+    private float spreadCooldown = 1;
+
+
+    #region 子彈偏移方法
+    //套用子彈偏移
+    public Vector3 ApplySpread(Vector3 originalDirection)
+    {
+        UpdateSpread();
+
+        float randomozedValue = Random.Range(-currentSpread, currentSpread);
+
+        Quaternion spreadRotation = Quaternion.Euler(randomozedValue, randomozedValue, randomozedValue);
+
+        return spreadRotation * originalDirection;
+    }
+
+    //如果射擊停止後超過一秒,子彈偏移重置否則增加偏移量到最大值為止
+    private void UpdateSpread()
+    {
+        if (Time.time > lastSpreadUpdateTime + spreadCooldown)
+        {
+            currentSpread = baseSpread;
+        }
+        else
+        {
+            //隨時間增加子彈偏移
+            IncreaseSpread();
+        }
+
+        lastSpreadUpdateTime = Time.time;
+
+    }
+
+
+    //隨時間增加子彈偏移
+    private void IncreaseSpread()
+    {
+        currentSpread = Mathf.Clamp(currentSpread + spreadIncreaseRate, baseSpread, maximumSpread);
+    }
+
+    #endregion
 
     public bool CanShoot()
     {
