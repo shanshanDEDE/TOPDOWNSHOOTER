@@ -359,6 +359,12 @@ MonoBehaviour:
   - {fileID: 2129694126}
   - {fileID: 1183086415}
   - {fileID: 670699305}
+  backupWeaponModels:
+  - {fileID: 168192570}
+  - {fileID: 1492721943}
+  - {fileID: 1109888614}
+  - {fileID: 1397226642}
+  - {fileID: 554015825}
   rightWeightIncreaseRate: 2.75
   leftHandIKWeightIncreaseRate: 2.5
   leftHandIK: {fileID: 820021857}
@@ -531,6 +537,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 168192569}
+  - component: {fileID: 168192570}
   m_Layer: 0
   m_Name: Backup_Pistol
   m_TagString: Untagged
@@ -555,6 +562,19 @@ Transform:
   - {fileID: 8569716421819091184}
   m_Father: {fileID: 5038719565891468112}
   m_LocalEulerAnglesHint: {x: -82.945, y: 204.754, z: -23.973}
+--- !u!114 &168192570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 168192568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58104627f82bc01428de9e2938c62460, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 0
 --- !u!1 &204521248 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5095697762758297730, guid: e0b33daac2b36694da06fce2327245fd, type: 3}
@@ -1732,6 +1752,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 554015824}
+  - component: {fileID: 554015825}
   m_Layer: 0
   m_Name: Backup_Rifle
   m_TagString: Untagged
@@ -1757,6 +1778,19 @@ Transform:
   - {fileID: 5734906657101713457}
   m_Father: {fileID: 3577741224678366079}
   m_LocalEulerAnglesHint: {x: 78.096, y: 29.587, z: 42.963}
+--- !u!114 &554015825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 554015823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58104627f82bc01428de9e2938c62460, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 4
 --- !u!1 &574181671
 GameObject:
   m_ObjectHideFlags: 0
@@ -3387,6 +3421,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1109888613}
+  - component: {fileID: 1109888614}
   m_Layer: 0
   m_Name: Backup_Auto-Rifle
   m_TagString: Untagged
@@ -3411,6 +3446,19 @@ Transform:
   - {fileID: 6249951766731092673}
   m_Father: {fileID: 3577741224678366079}
   m_LocalEulerAnglesHint: {x: 78.096, y: 29.587, z: 42.963}
+--- !u!114 &1109888614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109888612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58104627f82bc01428de9e2938c62460, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 2
 --- !u!1 &1183086413
 GameObject:
   m_ObjectHideFlags: 0
@@ -3962,6 +4010,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1397226641}
+  - component: {fileID: 1397226642}
   m_Layer: 0
   m_Name: Backup_Shotgun
   m_TagString: Untagged
@@ -3986,6 +4035,19 @@ Transform:
   - {fileID: 6113437342115753157}
   m_Father: {fileID: 3577741224678366079}
   m_LocalEulerAnglesHint: {x: 78.096, y: 29.587, z: 42.963}
+--- !u!114 &1397226642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397226640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58104627f82bc01428de9e2938c62460, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 3
 --- !u!1 &1435237594
 GameObject:
   m_ObjectHideFlags: 0
@@ -4207,6 +4269,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1492721942}
+  - component: {fileID: 1492721943}
   m_Layer: 0
   m_Name: Backup_Revoler
   m_TagString: Untagged
@@ -4231,6 +4294,19 @@ Transform:
   - {fileID: 8435338159923649700}
   m_Father: {fileID: 5038719565891468112}
   m_LocalEulerAnglesHint: {x: -82.945, y: 204.754, z: -23.973}
+--- !u!114 &1492721943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1492721941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58104627f82bc01428de9e2938c62460, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponType: 1
 --- !u!1 &1508753559
 GameObject:
   m_ObjectHideFlags: 0

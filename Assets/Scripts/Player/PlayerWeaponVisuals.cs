@@ -8,6 +8,7 @@ public class PlayerWeaponVisuals : MonoBehaviour
     private Player player;
 
     [SerializeField] private WeaponModel[] weaponModels;
+    [SerializeField] private BackupWeaponModel[] backupWeaponModels;
 
     [Header("Rig")]
     [SerializeField] private float rightWeightIncreaseRate;
@@ -26,7 +27,9 @@ public class PlayerWeaponVisuals : MonoBehaviour
         player = GetComponent<Player>();
         anim = GetComponentInChildren<Animator>();
         rig = GetComponentInChildren<Rig>();
+        //注意  GetComponents 要有s
         weaponModels = GetComponentsInChildren<WeaponModel>(true);
+        backupWeaponModels = GetComponentsInChildren<BackupWeaponModel>(true);
     }
 
     private void Update()
@@ -72,12 +75,22 @@ public class PlayerWeaponVisuals : MonoBehaviour
         //取得現在的武器的拿槍方式
         int animationIndex = ((int)CurrentWeaponModel().holdType);
 
+        //關閉所有武器
+        SwitchOffWeaponModels();
+
+        //關閉所有背後武器
+        SwitchOffBackupWeaponModels();
+
+        if (player.weapon.HasOnlyOneWeapon() == false)
+        {
+            //切換顯示的背後武器
+            SwitchOnBackupWeaponModel();
+        }
+
         //切換為該拿槍方式的動畫
         SwitchAnimationLayer(animationIndex);
-
         //透過取的整個model的方式就不用寫每個子物件了的相關資訊(如發射位置等等..)
         CurrentWeaponModel().gameObject.SetActive(true);
-
         AttachLeftHand();
     }
 
@@ -90,6 +103,30 @@ public class PlayerWeaponVisuals : MonoBehaviour
         }
     }
 
+    //關閉所有背後武器
+    public void SwitchOffBackupWeaponModels()
+    {
+        foreach (BackupWeaponModel backupWeaponModel in backupWeaponModels)
+        {
+            backupWeaponModel.gameObject.SetActive(false);
+        }
+    }
+
+    //切換顯示的背後武器
+    public void SwitchOnBackupWeaponModel()
+    {
+        //取的玩家前輩用武器的類型
+        WeaponType weaponType = player.weapon.BackupWeapon().weaponType;
+
+        foreach (BackupWeaponModel backupWeaponModel in backupWeaponModels)
+        {
+            if (backupWeaponModel.weaponType == weaponType)
+            {
+                backupWeaponModel.gameObject.SetActive(true);
+            }
+        }
+
+    }
 
     private void SwitchAnimationLayer(int layerIndex)
     {

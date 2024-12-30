@@ -41,9 +41,6 @@ public class PlayerWeaponController : MonoBehaviour
             return;
         }
         currentWeapon = weaponSlots[i];
-
-        //關閉所有武器
-        player.weaponVisuals.SwitchOffWeaponModels();
         //顯示武器
         player.weaponVisuals.PlayerWeaponEquipAnimation();
     }
@@ -56,11 +53,12 @@ public class PlayerWeaponController : MonoBehaviour
         }
 
         weaponSlots.Add(newWeapon);
+        player.weaponVisuals.SwitchOnBackupWeaponModel();
     }
 
     private void DropWeapon()
     {
-        if (weaponSlots.Count <= 1)
+        if (HasOnlyOneWeapon())
         {
             Debug.Log("沒有武器欄位ㄌ");
             return;
@@ -69,6 +67,8 @@ public class PlayerWeaponController : MonoBehaviour
         weaponSlots.Remove(currentWeapon);
 
         currentWeapon = weaponSlots[0];
+
+        EquipWeapon(0);
     }
 
     #endregion
@@ -111,9 +111,28 @@ public class PlayerWeaponController : MonoBehaviour
         return direction;
     }
 
+    public bool HasOnlyOneWeapon() => weaponSlots.Count <= 1;
+
+
     public Weapon CurrentWeapon() => currentWeapon;
 
+    //取得放在背後的武器
+    public Weapon BackupWeapon()
+    {
+        foreach (Weapon weapon in weaponSlots)
+        {
+            if (weapon != currentWeapon)
+            {
+                return weapon;
+            }
+        }
+
+        return null;
+    }
+
+
     public Transform GunPoint() => gunPoint;
+
     #region 輸入事件
     //定義新版控制器事件
     private void AssignInputEvents()
