@@ -4,7 +4,7 @@ using UnityEngine.Animations.Rigging;
 public class PlayerWeaponVisuals : MonoBehaviour
 {
     private Animator anim;
-    private bool isGrabbingWeapon;
+    private bool isEquipingWeapon;
     private Player player;
 
     [SerializeField] private WeaponModel[] weaponModels;
@@ -44,8 +44,11 @@ public class PlayerWeaponVisuals : MonoBehaviour
 
     public void PlayerReloadAnimation()
     {
-        if (isGrabbingWeapon) return;
+        if (isEquipingWeapon) return;
 
+        float reloadSpeed = player.weapon.CurrentWeapon().reloadSpeed;
+
+        anim.SetFloat("ReloadSpeed", reloadSpeed);
         anim.SetTrigger("Reload");
         //由於左手受到IK影響,所以要將左手IK的權重設為0
         ReduceRigWeight();
@@ -53,20 +56,23 @@ public class PlayerWeaponVisuals : MonoBehaviour
 
     public void PlayerWeaponEquipAnimation()
     {
-        GrabType grabType = CurrentWeaponModel().grabType;
+        EquipType equipType = CurrentWeaponModel().equipAnimationType;
+
+        float equipmentSpeed = player.weapon.CurrentWeapon().equipmentSpeed;
 
         leftHandIK.weight = 0;
         ReduceRigWeight();
-        anim.SetFloat("WeaponGrabType", (float)grabType);
-        anim.SetTrigger("WeaponGrab");
+        anim.SetTrigger("EquipWeapon");
+        anim.SetFloat("EquipType", (float)equipType);
+        anim.SetFloat("EquipSpeed", equipmentSpeed);
 
         SetBusyGrabbingWeaponTo(true);
     }
 
     public void SetBusyGrabbingWeaponTo(bool busy)
     {
-        isGrabbingWeapon = busy;
-        anim.SetBool("BushGrabbingWeapon", isGrabbingWeapon);
+        isEquipingWeapon = busy;
+        anim.SetBool("BushEquipingWeapon", isEquipingWeapon);
     }
 
     //切換武器

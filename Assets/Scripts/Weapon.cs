@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public enum WeaponType
 {
     Pistol,
@@ -13,8 +15,12 @@ public class Weapon
     public WeaponType weaponType;
     public int bulletsInMagazine;       //彈匣內目前的子彈數量
     public int magazineCapacity;        //彈匣容量
-
     public int totalReserveAmmo;        //總儲備彈藥
+
+    [Range(1, 3)]
+    public float reloadSpeed = 1;               //裝子彈的速度
+    [Range(1, 3)]
+    public float equipmentSpeed = 1;            //裝備武器的速度
 
     public bool CanShoot()
     {

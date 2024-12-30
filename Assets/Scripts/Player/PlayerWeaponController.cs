@@ -27,11 +27,17 @@ public class PlayerWeaponController : MonoBehaviour
         player = GetComponent<Player>();
         AssignInputEvents();
 
-        currentWeapon.bulletsInMagazine = currentWeapon.totalReserveAmmo;                     //初始武器的子彈設定
+        Invoke("EquipStartingWeapon", 0.1f);
     }
 
 
     #region 武器欄位控制 - 撿起/裝備/丟棄 武器
+
+    private void EquipStartingWeapon()
+    {
+        EquipWeapon(0);
+    }
+
 
     //裝備武器
     private void EquipWeapon(int i)
