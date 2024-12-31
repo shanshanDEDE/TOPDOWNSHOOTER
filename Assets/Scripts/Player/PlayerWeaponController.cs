@@ -161,6 +161,10 @@ public class PlayerWeaponController : MonoBehaviour
         //計算不同速度時子彈應該要有的質量 來讓造成碰撞時的效果一樣(這邊不知道為什麼套用下面的公式揖讓會造成差異)
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
 
+        //設定子彈距離跟彈道預測線的顯示距離相同
+        Bullet bulletScript = newBullet.GetComponent<Bullet>();
+        bulletScript.BulletSetup(currentWeapon.gunDistance);
+
         //子彈偏移量
         Vector3 bulletsDirection = currentWeapon.ApplySpread(BulletDirection());
 

@@ -45,6 +45,8 @@ public class Weapon
     public float reloadSpeed = 1;               //裝子彈的速度
     [Range(1, 3)]
     public float equipmentSpeed = 1;            //裝備武器的速度
+    [Range(2, 12)]
+    public float gunDistance = 4;
 
     [Header("Spread(子彈偏移)")]
     public float baseSpread = 1;
