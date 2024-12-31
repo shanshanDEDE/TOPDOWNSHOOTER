@@ -46,7 +46,9 @@ public class Weapon
     [Range(1, 3)]
     public float equipmentSpeed = 1;            //裝備武器的速度
     [Range(2, 12)]
-    public float gunDistance = 4;
+    public float gunDistance = 4;               //該武器的子彈射程
+    [Range(3, 8)]
+    public float cameraDistance = 6;            //該武器的攝影機距離
 
     [Header("Spread(子彈偏移)")]
     public float baseSpread = 1;
