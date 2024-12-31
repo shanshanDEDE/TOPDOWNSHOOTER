@@ -37,12 +37,6 @@ public class PlayerWeaponController : MonoBehaviour
         {
             Shoot();
         }
-
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            //切換該武器是否可以點放射擊
-            currentWeapon.ToggleBurst();
-        }
     }
 
 
@@ -217,17 +211,17 @@ public class PlayerWeaponController : MonoBehaviour
     public bool HasOnlyOneWeapon() => weaponSlots.Count <= 1;
 
     //檢查玩家持有武器(武器欄位有的)中是否有這種武器
-    public bool HasWeaponTypeInInventory(WeaponType weaponType)
+    public Weapon WeaponInSlots(WeaponType weaponType)
     {
         foreach (Weapon weapon in weaponSlots)
         {
             if (weapon.weaponType == weaponType)
             {
-                return true;
+                return weapon;
             }
         }
 
-        return false;
+        return null;
     }
 
     public Weapon CurrentWeapon() => currentWeapon;
@@ -274,9 +268,10 @@ public class PlayerWeaponController : MonoBehaviour
                 Reload();
             }
         };
+
+        controls.Charcater.ToogleWeaponMode.performed += context => currentWeapon.ToggleBurst();
+
     }
-
-
 
     #endregion
 }

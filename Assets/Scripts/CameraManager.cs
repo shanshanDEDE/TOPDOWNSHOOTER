@@ -10,8 +10,10 @@ public class CameraManager : MonoBehaviour
     private CinemachineVirtualCamera virtualCamara;
     private CinemachineFramingTransposer transposer;
 
-    private float targetCamaraDistance;
+    [Header("相機距離")]
+    [SerializeField] private bool canChangeCameraDistance;
     [SerializeField] private float distanceChangeRate;
+    private float targetCamaraDistance;
 
     private void Awake()
     {
@@ -37,6 +39,8 @@ public class CameraManager : MonoBehaviour
     //更新相機距離
     private void UpdateCameraDistance()
     {
+        if (canChangeCameraDistance == false) return;
+
         float currentDistance = transposer.m_CameraDistance;
 
         //防止lerp一直去更動

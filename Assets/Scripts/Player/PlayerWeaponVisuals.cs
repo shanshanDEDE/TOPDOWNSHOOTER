@@ -129,7 +129,7 @@ public class PlayerWeaponVisuals : MonoBehaviour
 
             //注意:下面這樣的寫法會導致顯示出來的模組回slot最後該類型的,之前的會被蓋掉,不喜歡也可以趕成顯示前面的不顯示後面的
             //檢查玩家持有武器(武器欄位有的)中是否有這種武器
-            if (player.weapon.HasWeaponTypeInInventory(backupModel.weaponType))
+            if (player.weapon.WeaponInSlots(backupModel.weaponType) != null)
             {
                 //判斷這個模型的type是否為LowBackHang
                 if (backupModel.HangTypeIs(HangType.LowBackHang))
