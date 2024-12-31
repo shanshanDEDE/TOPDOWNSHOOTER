@@ -62,6 +62,11 @@ public class PlayerWeaponController : MonoBehaviour
             return;
         }
 
+        if (i >= weaponSlots.Count)
+        {
+            return;
+        }
+
         SetWeaponReady(false);
 
         currentWeapon = weaponSlots[i];
@@ -211,6 +216,19 @@ public class PlayerWeaponController : MonoBehaviour
 
     public bool HasOnlyOneWeapon() => weaponSlots.Count <= 1;
 
+    //檢查玩家持有武器(武器欄位有的)中是否有這種武器
+    public bool HasWeaponTypeInInventory(WeaponType weaponType)
+    {
+        foreach (Weapon weapon in weaponSlots)
+        {
+            if (weapon.weaponType == weaponType)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public Weapon CurrentWeapon() => currentWeapon;
 
@@ -242,6 +260,10 @@ public class PlayerWeaponController : MonoBehaviour
 
         controls.Charcater.EquipSlot1.performed += context => EquipWeapon(0);
         controls.Charcater.EquipSlot2.performed += context => EquipWeapon(1);
+        controls.Charcater.EquipSlot3.performed += context => EquipWeapon(2);
+        controls.Charcater.EquipSlot4.performed += context => EquipWeapon(3);
+        controls.Charcater.EquipSlot5.performed += context => EquipWeapon(4);
+
 
         controls.Charcater.DropCurrentWeapon.performed += context => DropWeapon();
 

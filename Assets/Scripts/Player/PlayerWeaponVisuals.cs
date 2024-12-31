@@ -102,25 +102,56 @@ public class PlayerWeaponVisuals : MonoBehaviour
     //關閉所有背後武器
     public void SwitchOffBackupWeaponModels()
     {
-        foreach (BackupWeaponModel backupWeaponModel in backupWeaponModels)
+        foreach (BackupWeaponModel backupModel in backupWeaponModels)
         {
-            backupWeaponModel.gameObject.SetActive(false);
+            backupModel.Activate(false);
         }
     }
 
     //切換顯示的背後武器
     public void SwitchOnBackupWeaponModel()
     {
-        //取的玩家前輩用武器的類型
-        WeaponType weaponType = player.weapon.BackupWeapon().weaponType;
+        //關閉所有背後模型顯示
+        SwitchOffBackupWeaponModels();
 
-        foreach (BackupWeaponModel backupWeaponModel in backupWeaponModels)
+        BackupWeaponModel lowHangWeapon = null;
+        BackupWeaponModel backHangWeapon = null;
+        BackupWeaponModel sideHangWeapon = null;
+
+        //遍歷所有背後武器模型
+        foreach (BackupWeaponModel backupModel in backupWeaponModels)
         {
-            if (backupWeaponModel.weaponType == weaponType)
+            //防止玩家正在使用的武器的背後武器模組也被啟用
+            if (backupModel.weaponType == player.weapon.CurrentWeapon().weaponType)
             {
-                backupWeaponModel.gameObject.SetActive(true);
+                continue;
+            }
+
+            //注意:下面這樣的寫法會導致顯示出來的模組回slot最後該類型的,之前的會被蓋掉,不喜歡也可以趕成顯示前面的不顯示後面的
+            //檢查玩家持有武器(武器欄位有的)中是否有這種武器
+            if (player.weapon.HasWeaponTypeInInventory(backupModel.weaponType))
+            {
+                //判斷這個模型的type是否為LowBackHang
+                if (backupModel.HangTypeIs(HangType.LowBackHang))
+                {
+                    lowHangWeapon = backupModel;
+                }
+
+                if (backupModel.HangTypeIs(HangType.BackHang))
+                {
+                    backHangWeapon = backupModel;
+                }
+
+                if (backupModel.HangTypeIs(HangType.SideHang))
+                {
+                    sideHangWeapon = backupModel;
+                }
             }
         }
+
+        lowHangWeapon?.Activate(true);
+        backHangWeapon?.Activate(true);
+        sideHangWeapon?.Activate(true);
 
     }
 

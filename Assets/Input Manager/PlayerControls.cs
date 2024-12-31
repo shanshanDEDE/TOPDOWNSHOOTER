@@ -82,6 +82,33 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Equip Slot - 3"",
+                    ""type"": ""Button"",
+                    ""id"": ""b1f48131-ff66-41fe-a6cc-43413312eda3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Equip Slot - 4"",
+                    ""type"": ""Button"",
+                    ""id"": ""0676696e-a74d-42f2-ab5b-9d3487f8b388"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Equip Slot - 5"",
+                    ""type"": ""Button"",
+                    ""id"": ""b9bdf238-e66b-4d68-a656-333dd82fd47f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Drop Current Weapon"",
                     ""type"": ""Button"",
                     ""id"": ""0dfd7b29-92cd-4681-9894-09ebf5348736"",
@@ -213,6 +240,39 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""e849e4da-176f-4e28-aaf2-9dca8f6b25c3"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Equip Slot - 3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5963997d-6af1-4b0a-9c8e-9164485f91e0"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Equip Slot - 4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e24acf73-4508-4e4e-8898-74334c66dc4e"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Equip Slot - 5"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""dae13a69-2160-466f-9362-66d8e159a212"",
                     ""path"": ""<Keyboard>/g"",
                     ""interactions"": """",
@@ -246,6 +306,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Charcater_Run = m_Charcater.FindAction("Run", throwIfNotFound: true);
         m_Charcater_EquipSlot1 = m_Charcater.FindAction("Equip Slot - 1", throwIfNotFound: true);
         m_Charcater_EquipSlot2 = m_Charcater.FindAction("Equip Slot - 2", throwIfNotFound: true);
+        m_Charcater_EquipSlot3 = m_Charcater.FindAction("Equip Slot - 3", throwIfNotFound: true);
+        m_Charcater_EquipSlot4 = m_Charcater.FindAction("Equip Slot - 4", throwIfNotFound: true);
+        m_Charcater_EquipSlot5 = m_Charcater.FindAction("Equip Slot - 5", throwIfNotFound: true);
         m_Charcater_DropCurrentWeapon = m_Charcater.FindAction("Drop Current Weapon", throwIfNotFound: true);
         m_Charcater_Reload = m_Charcater.FindAction("Reload", throwIfNotFound: true);
     }
@@ -320,6 +383,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Charcater_Run;
     private readonly InputAction m_Charcater_EquipSlot1;
     private readonly InputAction m_Charcater_EquipSlot2;
+    private readonly InputAction m_Charcater_EquipSlot3;
+    private readonly InputAction m_Charcater_EquipSlot4;
+    private readonly InputAction m_Charcater_EquipSlot5;
     private readonly InputAction m_Charcater_DropCurrentWeapon;
     private readonly InputAction m_Charcater_Reload;
     public struct CharcaterActions
@@ -332,6 +398,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Run => m_Wrapper.m_Charcater_Run;
         public InputAction @EquipSlot1 => m_Wrapper.m_Charcater_EquipSlot1;
         public InputAction @EquipSlot2 => m_Wrapper.m_Charcater_EquipSlot2;
+        public InputAction @EquipSlot3 => m_Wrapper.m_Charcater_EquipSlot3;
+        public InputAction @EquipSlot4 => m_Wrapper.m_Charcater_EquipSlot4;
+        public InputAction @EquipSlot5 => m_Wrapper.m_Charcater_EquipSlot5;
         public InputAction @DropCurrentWeapon => m_Wrapper.m_Charcater_DropCurrentWeapon;
         public InputAction @Reload => m_Wrapper.m_Charcater_Reload;
         public InputActionMap Get() { return m_Wrapper.m_Charcater; }
@@ -361,6 +430,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @EquipSlot2.started += instance.OnEquipSlot2;
             @EquipSlot2.performed += instance.OnEquipSlot2;
             @EquipSlot2.canceled += instance.OnEquipSlot2;
+            @EquipSlot3.started += instance.OnEquipSlot3;
+            @EquipSlot3.performed += instance.OnEquipSlot3;
+            @EquipSlot3.canceled += instance.OnEquipSlot3;
+            @EquipSlot4.started += instance.OnEquipSlot4;
+            @EquipSlot4.performed += instance.OnEquipSlot4;
+            @EquipSlot4.canceled += instance.OnEquipSlot4;
+            @EquipSlot5.started += instance.OnEquipSlot5;
+            @EquipSlot5.performed += instance.OnEquipSlot5;
+            @EquipSlot5.canceled += instance.OnEquipSlot5;
             @DropCurrentWeapon.started += instance.OnDropCurrentWeapon;
             @DropCurrentWeapon.performed += instance.OnDropCurrentWeapon;
             @DropCurrentWeapon.canceled += instance.OnDropCurrentWeapon;
@@ -389,6 +467,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @EquipSlot2.started -= instance.OnEquipSlot2;
             @EquipSlot2.performed -= instance.OnEquipSlot2;
             @EquipSlot2.canceled -= instance.OnEquipSlot2;
+            @EquipSlot3.started -= instance.OnEquipSlot3;
+            @EquipSlot3.performed -= instance.OnEquipSlot3;
+            @EquipSlot3.canceled -= instance.OnEquipSlot3;
+            @EquipSlot4.started -= instance.OnEquipSlot4;
+            @EquipSlot4.performed -= instance.OnEquipSlot4;
+            @EquipSlot4.canceled -= instance.OnEquipSlot4;
+            @EquipSlot5.started -= instance.OnEquipSlot5;
+            @EquipSlot5.performed -= instance.OnEquipSlot5;
+            @EquipSlot5.canceled -= instance.OnEquipSlot5;
             @DropCurrentWeapon.started -= instance.OnDropCurrentWeapon;
             @DropCurrentWeapon.performed -= instance.OnDropCurrentWeapon;
             @DropCurrentWeapon.canceled -= instance.OnDropCurrentWeapon;
@@ -420,6 +507,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnRun(InputAction.CallbackContext context);
         void OnEquipSlot1(InputAction.CallbackContext context);
         void OnEquipSlot2(InputAction.CallbackContext context);
+        void OnEquipSlot3(InputAction.CallbackContext context);
+        void OnEquipSlot4(InputAction.CallbackContext context);
+        void OnEquipSlot5(InputAction.CallbackContext context);
         void OnDropCurrentWeapon(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
     }
