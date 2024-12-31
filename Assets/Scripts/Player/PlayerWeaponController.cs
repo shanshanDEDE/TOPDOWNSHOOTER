@@ -153,7 +153,7 @@ public class PlayerWeaponController : MonoBehaviour
         currentWeapon.bulletsInMagazine--;
 
         //取得物件池的子彈
-        GameObject newBullet = ObjectPool.instance.GetBullet();
+        GameObject newBullet = ObjectPool.instance.GetObject(bulletPrefab);
         //Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
 
         newBullet.transform.position = GunPoint().position;
@@ -184,7 +184,7 @@ public class PlayerWeaponController : MonoBehaviour
         // 如果子彈還存在，並且未被其他事件處理，則返回物件池
         if (bullet != null && bullet.activeInHierarchy)
         {
-            ObjectPool.instance.ReturnBullet(bullet);
+            ObjectPool.instance.ReturnObject(bullet);
         }
     }
 
