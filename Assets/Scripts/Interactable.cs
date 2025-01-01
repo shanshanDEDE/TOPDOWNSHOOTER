@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-    private MeshRenderer mesh;
+    protected MeshRenderer mesh;
     [SerializeField] private Material highlightMaterial;
-    private Material defaultMaterial;
+    protected Material defaultMaterial;
 
     private void Start()
     {
@@ -15,7 +15,13 @@ public class Interactable : MonoBehaviour
             mesh = GetComponentInChildren<MeshRenderer>();
         }
 
-        defaultMaterial = mesh.material;
+        defaultMaterial = mesh.sharedMaterial;
+    }
+
+    protected void UpdateMeshAndMaterial(MeshRenderer newMesh)
+    {
+        mesh = newMesh;
+        defaultMaterial = mesh.sharedMaterial;
     }
 
     //互動
@@ -45,7 +51,7 @@ public class Interactable : MonoBehaviour
         {
             return;
         }
-        playerInteraction.interactables.Add(this);
+        playerInteraction.GetInteractables().Add(this);
         playerInteraction.UpdateClosetInteractable();
     }
 
@@ -57,7 +63,7 @@ public class Interactable : MonoBehaviour
             return;
         }
         HighlightActive(false);
-        playerInteraction.interactables.Remove(this);
+        playerInteraction.GetInteractables().Remove(this);
         playerInteraction.UpdateClosetInteractable();
     }
 

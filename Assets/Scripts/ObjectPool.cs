@@ -13,6 +13,9 @@ public class ObjectPool : MonoBehaviour
     //透過字典來存放對應的物件池   //透過字典可以在方法中透過參數取得對應的物件池
     private Dictionary<GameObject, Queue<GameObject>> poolDictionary = new Dictionary<GameObject, Queue<GameObject>>();
 
+    [Header("To Initialize")]
+    [SerializeField] private GameObject weaponPickup;
+
     private void Awake()
     {
         if (instance == null)
@@ -24,6 +27,11 @@ public class ObjectPool : MonoBehaviour
             Destroy(gameObject);
         }
 
+    }
+
+    private void Start()
+    {
+        InitializeNewPool(weaponPickup);
     }
 
     //取得物件(從Queue裡取)         //透過字典可以在方法中透過參數取得對應的物件池

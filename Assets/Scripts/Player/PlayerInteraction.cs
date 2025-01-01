@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerInteraction : MonoBehaviour
 {
     //玩家目前所有範圍內可互動的物件清單
-    public List<Interactable> interactables;
+    private List<Interactable> interactables = new List<Interactable>();
 
     private Interactable closetInteractable;
 
@@ -20,6 +20,10 @@ public class PlayerInteraction : MonoBehaviour
     public virtual void InteractWithCloset()
     {
         closetInteractable?.Interaction();
+        interactables.Remove(closetInteractable);
+
+        //更新最近的互動物件
+        UpdateClosetInteractable();
     }
 
     //尋找最近的互動物件
@@ -44,4 +48,8 @@ public class PlayerInteraction : MonoBehaviour
 
         closetInteractable?.HighlightActive(true);
     }
+
+
+    public List<Interactable> GetInteractables() => interactables;
+
 }

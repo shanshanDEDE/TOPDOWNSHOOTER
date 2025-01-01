@@ -63,6 +63,8 @@ public class Weapon
     private float spreadCooldown = 1;
     #endregion
 
+    public Weapon_Data weaponData { get; private set; } //用來儲存武器資料方便之後在pickweapon上可以使用
+
     public Weapon(Weapon_Data weaponData)
     {
         bulletsInMagazine = weaponData.bulletsInMagazine;
@@ -96,6 +98,7 @@ public class Weapon
 
 
         defaultFireRate = fireRate;
+        this.weaponData = weaponData;
     }
 
     #region 子彈偏移方法
