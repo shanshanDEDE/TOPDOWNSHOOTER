@@ -20,47 +20,83 @@ public class Weapon
 {
     public WeaponType weaponType;
 
-    [Header("射擊細節")]
-
+    #region 射擊細節
     public ShootType shootType;
-    public int bulletsPerShot;
-    public float defaultFireRate;             //子彈預設發射間隔
+    public int bulletsPerShot { get; private set; }
+
+    private float defaultFireRate;             //子彈預設發射間隔
     public float fireRate = 1;                  //子彈發射間隔
     private float lastShootTime;
+    #endregion
 
-    [Header("Burst fire(點放射擊)")]
-    public bool burstAvalible;          //是否有點放射擊功能
+    #region Burst fire(點放射擊)
+    private bool burstAvalible;          //是否有點放射擊功能
     public bool burstActive;            //點放射擊是否啟用
 
-    public int burstBulletsPerShot;             //每次射擊的子彈數量
-    public float burstFireRate;                 //每次射擊的發射間隔
-    public float burstFireDelay = 0.1f;         //每發子彈間的發射時間間隔
+    private int burstBulletsPerShot;             //每次射擊的子彈數量
+    private float burstFireRate;                 //每次射擊的發射間隔
+    public float burstFireDelay { get; private set; }        //每發子彈間的發射時間間隔
+    #endregion
 
     [Header("Magazine 細節")]
     public int bulletsInMagazine;       //彈匣內目前的子彈數量
     public int magazineCapacity;        //彈匣容量
     public int totalReserveAmmo;        //總儲備彈藥
 
-    [Range(1, 3)]
-    public float reloadSpeed = 1;               //裝子彈的速度
-    [Range(1, 3)]
-    public float equipmentSpeed = 1;            //裝備武器的速度
-    [Range(2, 12)]
-    public float gunDistance = 4;               //該武器的子彈射程
-    [Range(3, 8)]
-    public float cameraDistance = 6;            //該武器的攝影機距離
+    #region Weapon generic info variables
 
-    [Header("Spread(子彈偏移)")]
-    public float baseSpread = 1;
+    public float reloadSpeed { get; private set; }               //裝子彈的速度
+    public float equipmentSpeed { get; private set; }           //裝備武器的速度
+    public float gunDistance { get; private set; }               //該武器的子彈射程
+    public float cameraDistance { get; private set; }            //該武器的攝影機距離
+    #endregion
+
+    #region Spread(子彈偏移) variables
+    private float baseSpread = 1;
     private float currentSpread = 2;
-    public float maximumSpread = 3;
+    private float maximumSpread = 3;
 
-    public float spreadIncreaseRate = 0.15f;
+    private float spreadIncreaseRate = 0.15f;
 
     private float lastSpreadUpdateTime;
     //停止射擊後到重製偏移所需的時間
     private float spreadCooldown = 1;
+    #endregion
 
+    public Weapon(Weapon_Data weaponData)
+    {
+        bulletsInMagazine = weaponData.bulletsInMagazine;
+        magazineCapacity = weaponData.magazineCapacity;
+        totalReserveAmmo = weaponData.totalReserveAmmo;
+
+        fireRate = weaponData.fireRate;
+        weaponType = weaponData.weaponType;
+
+        bulletsPerShot = weaponData.bulletsPerShot;
+        shootType = weaponData.shootType;
+
+
+        burstAvalible = weaponData.burstAvalible;
+        burstActive = weaponData.burstActive;
+        burstBulletsPerShot = weaponData.burstBulletsPerShot;
+        burstFireRate = weaponData.burstFireRate;
+        burstFireDelay = weaponData.burstFireDelay;
+
+
+        baseSpread = weaponData.baseSpread;
+        maximumSpread = weaponData.maxSpread;
+        spreadIncreaseRate = weaponData.spreadIncreaseRate;
+
+
+        reloadSpeed = weaponData.reloadSpeed;
+        equipmentSpeed = weaponData.equipmentSpeed;
+        gunDistance = weaponData.gunDistance;
+        cameraDistance = weaponData.cameraDistance;
+
+
+
+        defaultFireRate = fireRate;
+    }
 
     #region 子彈偏移方法
     //套用子彈偏移

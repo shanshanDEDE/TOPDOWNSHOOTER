@@ -8,6 +8,7 @@ public class PlayerWeaponController : MonoBehaviour
     //我們計算速度與質量推導公式的預設值(這邊希望造成的效果是我們的子彈速度為20質量為1的情況)
     private const float REFERNCE_BULLET_SPEED = 20;
 
+    [SerializeField] private Weapon_Data defaultWeaponData;
     [SerializeField] private Weapon currentWeapon;
     private bool weaponReady;
     private bool isShooting;
@@ -42,8 +43,10 @@ public class PlayerWeaponController : MonoBehaviour
 
     #region 武器欄位控制 - 撿起\裝備\丟棄\準備 武器
 
-    private void EquipStartingWeapon()
+    private void EquipStartingWeapon() //=> EquipWeapon(0);
     {
+        weaponSlots[0] = new Weapon(defaultWeaponData);
+
         EquipWeapon(0);
     }
 
@@ -70,12 +73,14 @@ public class PlayerWeaponController : MonoBehaviour
         CameraManager.instance.ChangeCameraDistance(currentWeapon.cameraDistance);
     }
 
-    public void PickupWeapon(Weapon newWeapon)
+    public void PickupWeapon(Weapon_Data newWeaponData)
     {
         if (weaponSlots.Count >= maxSlots)
         {
             return;
         }
+
+        Weapon newWeapon = new Weapon(newWeaponData);
 
         weaponSlots.Add(newWeapon);
         player.weaponVisuals.SwitchOnBackupWeaponModel();

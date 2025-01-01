@@ -310,132 +310,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f13863170ebed24aa14cbf9869b8c31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultWeaponData: {fileID: 11400000, guid: 3aa8c7623c34dbe4c8a3793d839757fb, type: 2}
   currentWeapon:
     weaponType: 1
     shootType: 0
-    bulletsPerShot: 0
-    defaultFireRate: 0
     fireRate: 1
-    burstAvalible: 0
     burstActive: 0
-    burstBulletsPerShot: 0
-    burstFireRate: 0
-    burstFireDelay: 0.1
     bulletsInMagazine: 0
     magazineCapacity: 0
     totalReserveAmmo: 0
-    reloadSpeed: 1
-    equipmentSpeed: 1
-    gunDistance: 4
-    cameraDistance: 6
-    baseSpread: 0
-    maximumSpread: 3
-    spreadIncreaseRate: 0.15
   bulletPrefab: {fileID: 1528971205867280839, guid: 25de79dba553eda4baa2278ea972382d, type: 3}
   bulletSpeed: 15
   weaponHolder: {fileID: 1018620665}
   maxSlots: 2
   weaponSlots:
-  - weaponType: 3
-    shootType: 0
-    bulletsPerShot: 5
-    defaultFireRate: 1
-    fireRate: 1
-    burstAvalible: 0
-    burstActive: 0
-    burstBulletsPerShot: 0
-    burstFireRate: 0
-    burstFireDelay: 0.1
-    bulletsInMagazine: 50
-    magazineCapacity: 50
-    totalReserveAmmo: 330
-    reloadSpeed: 1
-    equipmentSpeed: 1
-    gunDistance: 2.5
-    cameraDistance: 6
-    baseSpread: 15
-    maximumSpread: 15
-    spreadIncreaseRate: 0.15
-  - weaponType: 2
-    shootType: 1
-    bulletsPerShot: 1
-    defaultFireRate: 10
-    fireRate: 10
-    burstAvalible: 1
-    burstActive: 0
-    burstBulletsPerShot: 3
-    burstFireRate: 1.5
-    burstFireDelay: 0.1
-    bulletsInMagazine: 50
-    magazineCapacity: 50
-    totalReserveAmmo: 500
-    reloadSpeed: 1
-    equipmentSpeed: 1
-    gunDistance: 6
-    cameraDistance: 6
-    baseSpread: 1
-    maximumSpread: 3
-    spreadIncreaseRate: 0.15
   - weaponType: 0
     shootType: 0
-    bulletsPerShot: 1
-    defaultFireRate: 3
-    fireRate: 3
-    burstAvalible: 1
+    fireRate: 0
     burstActive: 0
-    burstBulletsPerShot: 3
-    burstFireRate: 1.5
-    burstFireDelay: 0.1
-    bulletsInMagazine: 50
-    magazineCapacity: 50
-    totalReserveAmmo: 500
-    reloadSpeed: 1
-    equipmentSpeed: 1
-    gunDistance: 8
-    cameraDistance: 6
-    baseSpread: 1
-    maximumSpread: 1
-    spreadIncreaseRate: 0.15
-  - weaponType: 4
-    shootType: 0
-    bulletsPerShot: 5
-    defaultFireRate: 1
-    fireRate: 1
-    burstAvalible: 1
-    burstActive: 0
-    burstBulletsPerShot: 3
-    burstFireRate: 1.5
-    burstFireDelay: 0.1
-    bulletsInMagazine: 50
-    magazineCapacity: 50
-    totalReserveAmmo: 500
-    reloadSpeed: 1
-    equipmentSpeed: 1
-    gunDistance: 8
-    cameraDistance: 6
-    baseSpread: 1
-    maximumSpread: 1
-    spreadIncreaseRate: 0.15
-  - weaponType: 1
-    shootType: 0
-    bulletsPerShot: 5
-    defaultFireRate: 1
-    fireRate: 1
-    burstAvalible: 1
-    burstActive: 0
-    burstBulletsPerShot: 3
-    burstFireRate: 1.5
-    burstFireDelay: 0.1
-    bulletsInMagazine: 50
-    magazineCapacity: 50
-    totalReserveAmmo: 500
-    reloadSpeed: 1
-    equipmentSpeed: 1
-    gunDistance: 8
-    cameraDistance: 6
-    baseSpread: 1
-    maximumSpread: 1
-    spreadIncreaseRate: 0.15
+    bulletsInMagazine: 0
+    magazineCapacity: 0
+    totalReserveAmmo: 0
 --- !u!114 &122518352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1816,27 +1711,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e908283893fb5742878f9a1da2bb6bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapon:
-    weaponType: 2
-    shootType: 0
-    bulletsPerShot: 0
-    defaultFireRate: 0
-    fireRate: 1
-    burstAvalible: 0
-    burstActive: 0
-    burstBulletsPerShot: 0
-    burstFireRate: 0
-    burstFireDelay: 0.1
-    bulletsInMagazine: 0
-    magazineCapacity: 0
-    totalReserveAmmo: 0
-    reloadSpeed: 1
-    equipmentSpeed: 1
-    gunDistance: 4
-    cameraDistance: 6
-    baseSpread: 0
-    maximumSpread: 3
-    spreadIncreaseRate: 0.15
+  weaponData: {fileID: 11400000, guid: 60d14b4e646cd264b90bc84c065abc27, type: 2}
 --- !u!4 &489855012
 Transform:
   m_ObjectHideFlags: 0
