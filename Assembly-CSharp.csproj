@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Input Manager\PlayerControls.cs" />
+    <Compile Include="Assets\Scripts\Pickup_Weapon.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerInteraction.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerAnimationEvent.cs" />
     <Compile Include="Assets\Scripts\ObjectPool.cs" />

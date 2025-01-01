@@ -622,7 +622,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e4c36ff8d70ce438fbb91e071eda09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mesh: {fileID: 0}
   highlightMaterial: {fileID: 2100000, guid: 65e5a69cb9c6a4a41990e3094eac5c82, type: 2}
 --- !u!65 &175601521
 BoxCollider:
@@ -762,7 +761,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e4c36ff8d70ce438fbb91e071eda09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mesh: {fileID: 0}
   highlightMaterial: {fileID: 2100000, guid: 65e5a69cb9c6a4a41990e3094eac5c82, type: 2}
 --- !u!65 &241966382
 BoxCollider:
@@ -1904,15 +1902,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 489855012}
-  - component: {fileID: 489855011}
   - component: {fileID: 489855010}
+  - component: {fileID: 489855013}
   m_Layer: 0
   m_Name: Pickup_Auto-Rife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &489855010
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1934,19 +1932,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &489855011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 489855009}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e908283893fb5742878f9a1da2bb6bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponData: {fileID: 11400000, guid: 60d14b4e646cd264b90bc84c065abc27, type: 2}
 --- !u!4 &489855012
 Transform:
   m_ObjectHideFlags: 0
@@ -1964,6 +1949,20 @@ Transform:
   - {fileID: 7903248915209350328}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &489855013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 489855009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b2a3423e01ef354ea0df17678509842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightMaterial: {fileID: 2100000, guid: 65e5a69cb9c6a4a41990e3094eac5c82, type: 2}
+  weaponData: {fileID: 11400000, guid: 60d14b4e646cd264b90bc84c065abc27, type: 2}
 --- !u!1 &554015823
 GameObject:
   m_ObjectHideFlags: 0
@@ -3919,7 +3918,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e4c36ff8d70ce438fbb91e071eda09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mesh: {fileID: 0}
   highlightMaterial: {fileID: 2100000, guid: 65e5a69cb9c6a4a41990e3094eac5c82, type: 2}
 --- !u!65 &1246829559
 BoxCollider:
@@ -4142,7 +4140,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e4c36ff8d70ce438fbb91e071eda09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mesh: {fileID: 0}
   highlightMaterial: {fileID: 2100000, guid: 65e5a69cb9c6a4a41990e3094eac5c82, type: 2}
 --- !u!65 &1274572380
 BoxCollider:
@@ -4545,7 +4542,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e4c36ff8d70ce438fbb91e071eda09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mesh: {fileID: 0}
   highlightMaterial: {fileID: 2100000, guid: 65e5a69cb9c6a4a41990e3094eac5c82, type: 2}
 --- !u!65 &1385688956
 BoxCollider:

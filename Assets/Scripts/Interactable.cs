@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-    [SerializeField] private MeshRenderer mesh;
+    private MeshRenderer mesh;
     [SerializeField] private Material highlightMaterial;
     private Material defaultMaterial;
 
@@ -16,6 +16,12 @@ public class Interactable : MonoBehaviour
         }
 
         defaultMaterial = mesh.material;
+    }
+
+    //互動
+    public virtual void Interaction()
+    {
+        Debug.Log("Interact with" + gameObject.name);
     }
 
     //是否在互動狀態,如果是則切換材質,反責復原
@@ -32,7 +38,7 @@ public class Interactable : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         PlayerInteraction playerInteraction = other.GetComponent<PlayerInteraction>();
         if (playerInteraction == null)
@@ -43,7 +49,7 @@ public class Interactable : MonoBehaviour
         playerInteraction.UpdateClosetInteractable();
     }
 
-    private void OnTriggerExit(Collider other)
+    protected virtual void OnTriggerExit(Collider other)
     {
         PlayerInteraction playerInteraction = other.GetComponent<PlayerInteraction>();
         if (playerInteraction == null)

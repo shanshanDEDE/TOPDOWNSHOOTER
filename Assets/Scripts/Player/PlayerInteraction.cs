@@ -9,6 +9,19 @@ public class PlayerInteraction : MonoBehaviour
 
     private Interactable closetInteractable;
 
+    private void Start()
+    {
+        Player player = GetComponent<Player>();
+
+        player.controls.Charcater.Interaction.performed += context => InteractWithCloset();
+    }
+
+    //跟最近的物件互動
+    public virtual void InteractWithCloset()
+    {
+        closetInteractable?.Interaction();
+    }
+
     //尋找最近的互動物件
     public void UpdateClosetInteractable()
     {
