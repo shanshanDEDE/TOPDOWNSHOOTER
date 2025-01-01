@@ -2,22 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public struct AmmoData
+{
+    public WeaponType weaponType;
+    [Range(1, 100)] public int minAmount;
+    [Range(1, 100)] public int maxAmount;
+}
+
 public enum AmmoBoxType { smallBox, bigBox };
 
 public class Pickup_Ammo : Interactable
 {
-    private PlayerWeaponController weaponController;
-
     //武器類型
     [SerializeField] private AmmoBoxType boxType;
 
-    [System.Serializable]
-    public struct AmmoData
-    {
-        public WeaponType weaponType;
-        [Range(1, 100)] public int minAmount;
-        [Range(1, 100)] public int maxAmount;
-    }
 
     //設定大小箱分別有什麼武器會使用
     [SerializeField] private List<AmmoData> smallBoxAmmo;
@@ -50,16 +49,6 @@ public class Pickup_Ammo : Interactable
         }
 
         ObjectPool.instance.ReturnObject(gameObject);
-    }
-
-    protected override void OnTriggerEnter(Collider other)
-    {
-        base.OnTriggerEnter(other);
-
-        if (weaponController == null)
-        {
-            weaponController = other.GetComponent<PlayerWeaponController>();
-        }
     }
 
     //取得隨機後得到的子彈數量
