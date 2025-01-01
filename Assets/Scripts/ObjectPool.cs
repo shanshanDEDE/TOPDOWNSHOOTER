@@ -13,8 +13,12 @@ public class ObjectPool : MonoBehaviour
     //透過字典來存放對應的物件池   //透過字典可以在方法中透過參數取得對應的物件池
     private Dictionary<GameObject, Queue<GameObject>> poolDictionary = new Dictionary<GameObject, Queue<GameObject>>();
 
+    //由於某些物件會一開始就在關卡上,而我們的物件持機制是,生成物件後才生成物件池
+    //因此撿起物品腳本那邊會導致時間序先進行xx才進行start的問題(可以參考85課)
+    //因此這邊手動在start時先生出一個物件池
     [Header("To Initialize")]
     [SerializeField] private GameObject weaponPickup;
+    [SerializeField] private GameObject ammoPickup;
 
     private void Awake()
     {
@@ -32,6 +36,7 @@ public class ObjectPool : MonoBehaviour
     private void Start()
     {
         InitializeNewPool(weaponPickup);
+        InitializeNewPool(ammoPickup);
     }
 
     //取得物件(從Queue裡取)         //透過字典可以在方法中透過參數取得對應的物件池
