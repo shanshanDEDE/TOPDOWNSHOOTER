@@ -5,38 +5,36 @@ using UnityEngine;
 //一切的起源,初始化狀態機跟狀態都在這邊
 public class Enemy : MonoBehaviour
 {
+    [Header("Idle 資訊")]
+    public float idleTime;      //idle狀態持續時間
+
     public EnemyStateMachine stateMachine { get; private set; }
 
     //宣告所有狀態
-    public EnemyState idelState { get; private set; }
-    public EnemyState moveState { get; private set; }
+    //-----------(這邊可以針對不同敵人在他們那邊宣告(目前這個類的子類那邊))-----------
 
-    void Start()
+
+    protected virtual void Awake()
     {
         //初始化實例狀態機
         stateMachine = new EnemyStateMachine();
 
-        //初始化所有實例狀態
-        idelState = new EnemyState(this, stateMachine, "Idel");
-        moveState = new EnemyState(this, stateMachine, "Move");
+        //初始化實例所有狀態
+        //-----------(這邊可以針對不同敵人在他們那邊宣告(目前這個類的子類那邊))-----------
 
-        //透過狀態機切換初始化狀態為idel
-        stateMachine.Initialize(idelState);
+        //透過狀態機切換初始化狀態
+        //-----------(這邊可以針對不同敵人在他們那邊宣告(目前這個類的子類那邊))-----------
+
     }
 
-    void Update()
+    protected virtual void Start()
+    {
+
+    }
+
+    protected virtual void Update()
     {
         //透過update所有狀態機的父類的update來持續進行不同狀態的行為
-        stateMachine.CurrentState.Update();
-
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            stateMachine.ChangeState(idelState);
-        }
-
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            stateMachine.ChangeState(moveState);
-        }
+        //-----------(這邊可以針對不同敵人在他們那邊宣告(目前這個類的子類那邊))-----------
     }
 }

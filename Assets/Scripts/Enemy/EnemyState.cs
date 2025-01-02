@@ -10,6 +10,9 @@ public class EnemyState
 
     protected string animBoolName;
 
+    //狀態計時器
+    protected float stateTimer;
+
     //在enemy那邊被初始化建構後要取得enemy本身和stateMachine和animBoolName,方便之後做使用
     public EnemyState(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName)
     {
@@ -21,16 +24,16 @@ public class EnemyState
 
     public virtual void Enter()
     {
-        Debug.Log("Enter " + animBoolName);
+
     }
 
     public virtual void Update()
     {
-        Debug.Log("Update " + animBoolName);
+        stateTimer -= Time.deltaTime;
     }
 
     public virtual void Exit()
     {
-        Debug.Log("Exit " + animBoolName);
+
     }
 }
