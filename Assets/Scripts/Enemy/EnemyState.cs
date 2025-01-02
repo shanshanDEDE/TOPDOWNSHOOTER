@@ -24,7 +24,8 @@ public class EnemyState
 
     public virtual void Enter()
     {
-
+        //設定所有狀態進去時會設置動畫參數
+        enemyBase.anim.SetBool(animBoolName, true);
     }
 
     public virtual void Update()
@@ -34,6 +35,7 @@ public class EnemyState
 
     public virtual void Exit()
     {
-
+        //設定所有狀態離開時會設置動畫參數
+        enemyBase.anim.SetBool(animBoolName, false);
     }
 }

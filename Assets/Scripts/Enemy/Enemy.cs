@@ -16,6 +16,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Transform[] patrolPoints;  //要巡邏目的地陣列
     private int currentPatrolIndex;                     //目前巡邏目的地索引
 
+    public Animator anim { get; private set; }
+
     public NavMeshAgent agent { get; private set; }     //NavMeshAgent
 
     public EnemyStateMachine stateMachine { get; private set; }
@@ -31,6 +33,9 @@ public class Enemy : MonoBehaviour
 
         //取的agent組件
         agent = GetComponent<NavMeshAgent>();
+
+        //取的animator組件
+        anim = GetComponentInChildren<Animator>();
 
         //初始化實例所有狀態
         //-----------(這邊可以針對不同敵人在他們那邊宣告(目前這個類的子類那邊))-----------

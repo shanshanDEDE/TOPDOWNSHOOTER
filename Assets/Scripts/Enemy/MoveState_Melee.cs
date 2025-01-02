@@ -18,6 +18,9 @@ public class MoveState_Melee : EnemyState
         base.Enter();
 
         destination = enemy.GetPatrolDestination();
+
+        //設置目的地(使用NavMeshAgent)
+        enemy.agent.SetDestination(destination);
     }
 
     public override void Exit()
@@ -30,8 +33,7 @@ public class MoveState_Melee : EnemyState
     {
         base.Update();
 
-        //設置目的地(使用NavMeshAgent)
-        enemy.agent.SetDestination(destination);
+
 
         if (enemy.agent.remainingDistance <= 1)
         {
