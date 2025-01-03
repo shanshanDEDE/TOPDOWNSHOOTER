@@ -6,6 +6,8 @@ using UnityEngine.AI;
 //一切的起源,初始化狀態機跟狀態都在這邊
 public class Enemy : MonoBehaviour
 {
+    public float turnSpeed;
+
     //這邊是狀態機的基本資訊(因為敵人幾乎都有這些狀態值所以統一寫在這裡)
     [Header("Idle 資訊")]
     public float idleTime;      //idle狀態持續時間
@@ -82,4 +84,17 @@ public class Enemy : MonoBehaviour
             t.parent = null;
         }
     }
+
+    //面向目標
+    public Quaternion FaceTarget(Vector3 target)
+    {
+        Quaternion targetRotation = Quaternion.LookRotation(target - transform.position);
+
+        Vector3 currentEulerAngles = transform.rotation.eulerAngles;
+
+        float yRotation = Mathf.LerpAngle(currentEulerAngles.y, targetRotation.eulerAngles.y, Time.deltaTime * turnSpeed);
+
+        return Quaternion.Euler(currentEulerAngles.x, yRotation, currentEulerAngles.z);
+    }
+
 }
