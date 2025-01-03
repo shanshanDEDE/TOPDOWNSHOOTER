@@ -9,6 +9,10 @@ public class Enemy_Melee : Enemy
     public MoveState_Melee moveState { get; private set; }
     public RecoveryState_Melee recoveryState { get; private set; }
     public ChaseState_Melee chaseState { get; private set; }
+    public AttackState_Melee attackState { get; private set; }
+
+    [SerializeField] private Transform hiddenWeapon;
+    [SerializeField] private Transform pulledWeapon;
 
     protected override void Awake()
     {
@@ -19,6 +23,7 @@ public class Enemy_Melee : Enemy
         moveState = new MoveState_Melee(this, stateMachine, "Move");
         recoveryState = new RecoveryState_Melee(this, stateMachine, "Recovery");
         chaseState = new ChaseState_Melee(this, stateMachine, "Chase");
+        attackState = new AttackState_Melee(this, stateMachine, "Attack");
     }
 
 
@@ -36,5 +41,12 @@ public class Enemy_Melee : Enemy
 
         //透過update所有狀態機的父類的update來持續進行不同狀態的行為
         stateMachine.CurrentState.Update();
+    }
+
+    //拿出武器
+    public void PullWeapon()
+    {
+        hiddenWeapon.gameObject.SetActive(false);
+        pulledWeapon.gameObject.SetActive(true);
     }
 }
