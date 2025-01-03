@@ -18,18 +18,18 @@ public class AttackState_Melee : EnemyState
     public override void Enter()
     {
         base.Enter();
+        enemy.PullWeapon(); //拿出武器
 
         attackMoveSpeed = enemy.attackData.moveSpeed;
         enemy.anim.SetFloat("AttackAnimationSpeed", enemy.attackData.animationSpeed);
         enemy.anim.SetFloat("AttackIndex", enemy.attackData.attackIndex);
 
-        enemy.PullWeapon(); //拿出武器
 
         //先讓敵人停止移動
         enemy.agent.isStopped = true;
         enemy.agent.velocity = Vector3.zero;
 
-
+        attackDirection = enemy.transform.position + (enemy.transform.forward * MAX_ATTACK_DISTACE);
 
     }
 
@@ -37,14 +37,18 @@ public class AttackState_Melee : EnemyState
     {
         base.Exit();
 
-        //預設為0的那個動畫(動畫是使用blentree)
-        enemy.anim.SetFloat("RecoveryIndex", 0);
+        SetupNextAttack();
+    }
 
-        //如果在攻擊範圍內則使用1的那個
-        if (enemy.PlayerInAttackRange())
-        {
-            enemy.anim.SetFloat("RecoveryIndex", 1);
-        }
+    private void SetupNextAttack()
+    {
+        //判斷玩家如果夠近則啟用1動畫否則啟用2動畫
+        int recoveryIndex = PlayerClose() ? 1 : 0;
+        enemy.anim.SetFloat("RecoveryIndex", recoveryIndex);
+
+
+        //更新用哪個攻擊資訊
+        enemy.attackData = UpdatedAttackData();
     }
 
     public override void Update()
@@ -79,5 +83,25 @@ public class AttackState_Melee : EnemyState
                 stateMachine.ChangeState(enemy.chaseState);
             }
         }
+    }
+
+    //判斷玩家是否夠近
+    private bool PlayerClose() => Vector3.Distance(enemy.transform.position, enemy.player.position) <= 1;
+
+    //更新用哪個攻擊資訊
+    private AttackData UpdatedAttackData()
+    {
+        List<AttackData> validAttacks = new List<AttackData>(enemy.attackList);
+
+        //如果玩家夠近
+        if (PlayerClose())
+        {
+            //移除Charge的那個AttackDat
+            validAttacks.RemoveAll(parameter => parameter.attackType == AttackType_Melee.Charge);
+        }
+
+        int random = Random.Range(0, validAttacks.Count);
+
+        return validAttacks[random];
     }
 }
