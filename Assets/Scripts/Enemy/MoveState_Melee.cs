@@ -18,6 +18,8 @@ public class MoveState_Melee : EnemyState
     {
         base.Enter();
 
+        enemy.agent.speed = enemy.moveSpeed;
+
         destination = enemy.GetPatrolDestination();
 
         //設置目的地(使用NavMeshAgent)
@@ -49,27 +51,5 @@ public class MoveState_Melee : EnemyState
         }
     }
 
-    //返回下一個目標(NavMeshAgent的pathcorners)
-    private Vector3 GetNextPathPoint()
-    {
-        NavMeshAgent agent = enemy.agent;
-        NavMeshPath path = agent.path;
 
-        // 如果只剩下一個轉角則直接面向目標
-        if (path.corners.Length < 2)
-        {
-            return agent.destination;
-        }
-
-        for (int i = 0; i < path.corners.Length; i++)
-        {
-            // 如果到達目標則返回下一個目標
-            if (Vector3.Distance(agent.transform.position, path.corners[i]) < 1)
-            {
-                return path.corners[i + 1];
-            }
-        }
-
-        return agent.destination;
-    }
 }

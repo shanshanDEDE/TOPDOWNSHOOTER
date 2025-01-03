@@ -31,7 +31,7 @@ public class RecoveryState_Melee : EnemyState
 
         if (triggerCalled)
         {
-            Debug.Log("Recovery State Trigger Called");
+            stateMachine.ChangeState(enemy.chaseState);
         }
     }
 }

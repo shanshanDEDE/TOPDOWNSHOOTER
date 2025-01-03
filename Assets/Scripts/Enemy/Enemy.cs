@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour
 
     [Header("Move 資訊")]
     public float moveSpeed;     //移動速度
+    public float chaseSpeed;    //追擊速度
 
     [SerializeField] private Transform[] patrolPoints;  //要巡邏目的地陣列
     private int currentPatrolIndex;                     //目前巡邏目的地索引

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 //狀態,這邊是所有狀態的最上層的父類
 public class EnemyState
@@ -44,4 +45,28 @@ public class EnemyState
     }
 
     public void AnimationTrigger() => triggerCalled = true;
+
+    //返回下一個目標(NavMeshAgent的pathcorners)
+    protected Vector3 GetNextPathPoint()
+    {
+        NavMeshAgent agent = enemyBase.agent;
+        NavMeshPath path = agent.path;
+
+        // 如果只剩下一個轉角則直接面向目標
+        if (path.corners.Length < 2)
+        {
+            return agent.destination;
+        }
+
+        for (int i = 0; i < path.corners.Length; i++)
+        {
+            // 如果到達目標則返回下一個目標
+            if (Vector3.Distance(agent.transform.position, path.corners[i]) < 1)
+            {
+                return path.corners[i + 1];
+            }
+        }
+
+        return agent.destination;
+    }
 }
