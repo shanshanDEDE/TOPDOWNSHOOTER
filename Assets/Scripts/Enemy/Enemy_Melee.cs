@@ -2,14 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//透過struck來創建一個AttackData來存放不同的攻擊的資訊
+[System.Serializable]
+public struct AttackData
+{
+    public float attackRange;   //攻擊範圍
+    public float moveSpeed;     //攻擊移動速度
+    public float attackIndex;
+    [Range(1, 2)]
+    public float animationSpeed;
+}
+
 public class Enemy_Melee : Enemy
 {
+
     //宣告所有狀態
     public IdleState_Melee idleState { get; private set; }
     public MoveState_Melee moveState { get; private set; }
     public RecoveryState_Melee recoveryState { get; private set; }
     public ChaseState_Melee chaseState { get; private set; }
     public AttackState_Melee attackState { get; private set; }
+
+    [Header("Attack Data")]
+    public AttackData attackData;
+
 
     [SerializeField] private Transform hiddenWeapon;
     [SerializeField] private Transform pulledWeapon;
@@ -48,5 +64,17 @@ public class Enemy_Melee : Enemy
     {
         hiddenWeapon.gameObject.SetActive(false);
         pulledWeapon.gameObject.SetActive(true);
+    }
+
+    //判斷玩家是否在攻擊範圍
+    public bool PlayerInAttackRange() => Vector3.Distance(transform.position, player.position) < attackData.attackRange;
+
+    protected override void OnDrawGizmos()
+    {
+        base.OnDrawGizmos();
+
+        Gizmos.color = Color.yellow;
+
+        Gizmos.DrawWireSphere(transform.position, attackData.attackRange);
     }
 }

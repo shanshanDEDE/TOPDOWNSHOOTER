@@ -8,20 +8,16 @@ public class Enemy : MonoBehaviour
 {
     //這邊是狀態機的基本資訊(因為敵人幾乎都有這些狀態值所以統一寫在這裡)
 
-    public float turnSpeed;
+    [Header("Idle 資訊")]
+    public float idleTime;          //idle狀態持續時間
     public float aggresionRange;    //攻擊範圍
 
-    [Header("Attack 資訊")]
-    public float attackRange;       //攻擊範圍
-    public float attackMoveSpeed;   //攻擊移動速度
-
-    [Header("Idle 資訊")]
-    public float idleTime;      //idle狀態持續時間
-
     [Header("Move 資訊")]
-    public float moveSpeed;     //移動速度
-    public float chaseSpeed;    //追擊速度
+    public float moveSpeed;      //移動速度
+    public float chaseSpeed;     //追擊速度
+    public float turnSpeed;      //轉向速度
     private bool manualMovement; //手動移動(我們在攻擊後是否自製移動中)
+    private bool manualRotation;
 
     [SerializeField] private Transform[] patrolPoints;  //要巡邏目的地陣列
     private int currentPatrolIndex;                     //目前巡邏目的地索引
@@ -76,13 +72,9 @@ public class Enemy : MonoBehaviour
         //-----------(這邊可以針對不同敵人在他們那邊宣告(目前這個類的子類那邊))-----------
     }
 
-    private void OnDrawGizmos()
+    protected virtual void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, aggresionRange);
-
-        Gizmos.color = Color.yellow;
-
-        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 
     //開啟\關閉手動移動
@@ -91,13 +83,17 @@ public class Enemy : MonoBehaviour
     //取得是否為手動移動狀態
     public bool ManualMovementActive() => manualMovement;
 
+    public void ActivateManualRotation(bool manualRotation) => this.manualRotation = manualRotation;
+
+    public bool ManualRotationActive() => manualRotation;
+
+
     public void AnimationTrigger() => stateMachine.CurrentState.AnimationTrigger();
+
+
 
     //判斷玩家是否在發現範圍內
     public bool PlayerInAggresionRange() => Vector3.Distance(transform.position, player.position) < aggresionRange;
-
-    //判斷玩家是否在攻擊範圍
-    public bool PlayerInAttackRange() => Vector3.Distance(transform.position, player.position) < attackRange;
 
     //取得巡邏目的地的位置
     public Vector3 GetPatrolDestination()

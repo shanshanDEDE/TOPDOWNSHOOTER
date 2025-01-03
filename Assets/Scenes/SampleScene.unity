@@ -3034,17 +3034,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 315399ee2dd5bae46a8f0b8ddcfdff22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnSpeed: 5
-  aggresionRange: 6
-  attackRange: 1.5
-  attackMoveSpeed: 3.5
   idleTime: 2
+  aggresionRange: 6
   moveSpeed: 1.5
   chaseSpeed: 4
+  turnSpeed: 5
   patrolPoints:
   - {fileID: 1299373275}
   - {fileID: 465429013}
   - {fileID: 1864509532}
+  attackData:
+    attackRange: 1
+    moveSpeed: 0
+    attackIndex: 1
+    animationSpeed: 1.4
   hiddenWeapon: {fileID: 231307618}
   pulledWeapon: {fileID: 9198844650988498847}
 --- !u!195 &612606374
