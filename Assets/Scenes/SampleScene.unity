@@ -400,7 +400,7 @@ Transform:
   m_GameObject: {fileID: 122518344}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 4.03, y: 0, z: 3.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2484,7 +2484,7 @@ Transform:
   m_GameObject: {fileID: 465429012}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.34, y: 0.18, z: -0.11}
+  m_LocalPosition: {x: 7.89, y: 0.18, z: -7.6}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2931,7 +2931,7 @@ Transform:
   m_GameObject: {fileID: 612606367}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.11, y: 0, z: -1.842}
+  m_LocalPosition: {x: 6.48, y: 0, z: -3.08}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2952,6 +2952,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnSpeed: 5
+  aggresionRange: 6
   idleTime: 2
   moveSpeed: 0
   patrolPoints:
@@ -5834,7 +5835,7 @@ Transform:
   m_GameObject: {fileID: 1299373271}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.41, y: 0.21, z: 8.6}
+  m_LocalPosition: {x: 0.52, y: 0.21, z: 10.8}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7692,7 +7693,7 @@ Transform:
   m_GameObject: {fileID: 1864509531}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.85, y: 0, z: 8.48}
+  m_LocalPosition: {x: -0.56, y: 0, z: 10.09}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17285,6 +17286,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5565786525429520040}
   - component: {fileID: 2007912258878573778}
+  - component: {fileID: 5565786525429520041}
   m_Layer: 0
   m_Name: enemy_charcater_1
   m_TagString: Untagged
@@ -18250,6 +18252,18 @@ Transform:
   - {fileID: 5923178495270708926}
   m_Father: {fileID: 612606372}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5565786525429520041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5077375336800422930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9115e6c41656ce44a929e924a9893aec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &5572571021777720847
 Rigidbody:
   m_ObjectHideFlags: 0

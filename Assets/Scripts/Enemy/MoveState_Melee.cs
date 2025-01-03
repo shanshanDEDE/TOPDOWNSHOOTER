@@ -34,6 +34,12 @@ public class MoveState_Melee : EnemyState
     {
         base.Update();
 
+        if (enemy.PlayerInAggresionRange())
+        {
+            stateMachine.ChangeState(enemy.recoveryState);
+            return;
+        }
+
         //面向目標
         enemy.transform.rotation = enemy.FaceTarget(GetNextPathPoint());
 

@@ -7,6 +7,7 @@ public class Enemy_Melee : Enemy
     //宣告所有狀態
     public IdleState_Melee idleState { get; private set; }
     public MoveState_Melee moveState { get; private set; }
+    public RecoveryState_Melee recoveryState { get; private set; }
 
     protected override void Awake()
     {
@@ -15,6 +16,7 @@ public class Enemy_Melee : Enemy
         //初始化實例所有狀態
         idleState = new IdleState_Melee(this, stateMachine, "Idle");
         moveState = new MoveState_Melee(this, stateMachine, "Move");
+        recoveryState = new RecoveryState_Melee(this, stateMachine, "Recovery");
     }
 
 

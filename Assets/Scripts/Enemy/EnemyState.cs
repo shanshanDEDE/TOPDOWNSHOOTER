@@ -10,6 +10,8 @@ public class EnemyState
 
     protected string animBoolName;
 
+    protected bool triggerCalled;
+
     //狀態計時器
     protected float stateTimer;
 
@@ -26,6 +28,8 @@ public class EnemyState
     {
         //設定所有狀態進去時會設置動畫參數
         enemyBase.anim.SetBool(animBoolName, true);
+
+        triggerCalled = false;
     }
 
     public virtual void Update()
@@ -38,4 +42,6 @@ public class EnemyState
         //設定所有狀態離開時會設置動畫參數
         enemyBase.anim.SetBool(animBoolName, false);
     }
+
+    public void AnimationTrigger() => triggerCalled = true;
 }
