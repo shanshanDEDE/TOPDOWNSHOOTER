@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public float impactForce; //受到攻擊時的衝擊力
+
     private BoxCollider cd;
     private Rigidbody rb;
     private MeshRenderer meshRenderer;
@@ -26,8 +28,10 @@ public class Bullet : MonoBehaviour
     }
 
     //設定子彈距離
-    public void BulletSetup(float flyDistance)
+    public void BulletSetup(float flyDistance, float impactForce)
     {
+        this.impactForce = impactForce;
+
         bulletDisable = false;
         cd.enabled = true;
         meshRenderer.enabled = true;
@@ -83,6 +87,20 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
+
+        if (enemy != null)
+        {
+            //計算衝擊力
+            Vector3 force = rb.velocity.normalized * impactForce;
+            //取得衝擊的物件的rigidbody
+            Rigidbody hitRigidbody = collision.collider.attachedRigidbody;
+
+            enemy.GetHit();
+            //敵人受到攻擊的衝擊
+            enemy.HitImpact(force, collision.contacts[0].point, hitRigidbody);
+        }
+
         CreateImpactFX(collision);
         ReturnBulletToPool();
     }

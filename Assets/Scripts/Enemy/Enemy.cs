@@ -72,6 +72,25 @@ public class Enemy : MonoBehaviour
         //-----------(這邊可以針對不同敵人在他們那邊宣告(目前這個類的子類那邊))-----------
     }
 
+    public virtual void GetHit()
+    {
+
+    }
+
+    //受到攻擊時的衝擊
+    public virtual void HitImpact(Vector3 force, Vector3 hitPoint, Rigidbody rb)
+    {
+        StartCoroutine(HitImpactCoroutine(force, hitPoint, rb));
+    }
+
+    //必須讓受到攻擊的物件回傳一個協程(為了讓他延遲一下,不然老師說跟運動學同時會出錯)
+    private IEnumerator HitImpactCoroutine(Vector3 force, Vector3 hitPoint, Rigidbody rb)
+    {
+        yield return new WaitForSeconds(.1f);
+
+        rb.AddForceAtPosition(force, hitPoint, ForceMode.Impulse);
+    }
+
     protected virtual void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, aggresionRange);

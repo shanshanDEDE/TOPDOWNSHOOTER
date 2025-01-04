@@ -14,6 +14,7 @@ public class PlayerWeaponController : MonoBehaviour
     private bool isShooting;
 
     [Header("子彈細節")]
+    [SerializeField] private float bulletImpactForce;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletSpeed;
 
@@ -193,7 +194,7 @@ public class PlayerWeaponController : MonoBehaviour
 
         //設定子彈距離跟彈道預測線的顯示距離相同
         Bullet bulletScript = newBullet.GetComponent<Bullet>();
-        bulletScript.BulletSetup(currentWeapon.gunDistance);
+        bulletScript.BulletSetup(currentWeapon.gunDistance, bulletImpactForce);
 
         //子彈偏移量
         Vector3 bulletsDirection = currentWeapon.ApplySpread(BulletDirection());
