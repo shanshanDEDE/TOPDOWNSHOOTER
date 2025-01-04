@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour
 {
     //這邊是狀態機的基本資訊(因為敵人幾乎都有這些狀態值所以統一寫在這裡)
 
+    [SerializeField] protected int healthPoints = 20;
+
     [Header("Idle 資訊")]
     public float idleTime;          //idle狀態持續時間
     public float aggresionRange;    //攻擊範圍
@@ -74,7 +76,7 @@ public class Enemy : MonoBehaviour
 
     public virtual void GetHit()
     {
-
+        healthPoints--;
     }
 
     //受到攻擊時的衝擊
