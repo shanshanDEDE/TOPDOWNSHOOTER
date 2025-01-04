@@ -31,7 +31,6 @@ public class AttackState_Melee : EnemyState
         enemy.agent.velocity = Vector3.zero;
 
         attackDirection = enemy.transform.position + (enemy.transform.forward * MAX_ATTACK_DISTACE);
-
     }
 
     public override void Exit()

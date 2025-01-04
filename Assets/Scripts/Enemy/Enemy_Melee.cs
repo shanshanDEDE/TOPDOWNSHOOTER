@@ -28,6 +28,7 @@ public class Enemy_Melee : Enemy
     public ChaseState_Melee chaseState { get; private set; }
     public AttackState_Melee attackState { get; private set; }
     public DeadState_Melee deadState { get; private set; }
+    public AbilityState_Melee abilityState { get; private set; }
 
     [Header("Enemy 設定")]
     public EnemyMelee_Type meleeType;
@@ -53,6 +54,8 @@ public class Enemy_Melee : Enemy
         chaseState = new ChaseState_Melee(this, stateMachine, "Chase");
         attackState = new AttackState_Melee(this, stateMachine, "Attack");
         deadState = new DeadState_Melee(this, stateMachine, "Idle");    //idle只是個站位符號,死亡我們用ragdoll
+        abilityState = new AbilityState_Melee(this, stateMachine, "AxeThrow");
+
     }
 
 
@@ -72,6 +75,14 @@ public class Enemy_Melee : Enemy
 
         //透過update所有狀態機的父類的update來持續進行不同狀態的行為
         stateMachine.CurrentState.Update();
+    }
+
+    public void TriggerAbility()
+    {
+        moveSpeed = moveSpeed * .6f;
+        Debug.Log("create axe");
+
+        pulledWeapon.gameObject.SetActive(false);
     }
 
     private void InitializeSpeciality()

@@ -31,14 +31,15 @@ public class RecoveryState_Melee : EnemyState
 
         if (triggerCalled)
         {
-            if (enemy.PlayerInAttackRange())
-            {
-                stateMachine.ChangeState(enemy.attackState);
-            }
-            else
-            {
-                stateMachine.ChangeState(enemy.chaseState);
-            }
+            stateMachine.ChangeState(enemy.abilityState);
+            /*  if (enemy.PlayerInAttackRange())
+             {
+                 stateMachine.ChangeState(enemy.attackState);
+             }
+             else
+             {
+                 stateMachine.ChangeState(enemy.chaseState);
+             } */
         }
     }
 }
