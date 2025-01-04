@@ -31,7 +31,7 @@ public class Enemy_Melee : Enemy
 
     [Header("Enemy 設定")]
     public EnemyMelee_Type meleeType;
-    [SerializeField] private Transform shieldTransform;
+    public Transform shieldTransform;
 
     [Header("Attack Data")]
     public AttackData attackData;
