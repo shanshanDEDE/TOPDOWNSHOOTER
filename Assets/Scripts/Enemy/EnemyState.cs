@@ -46,6 +46,11 @@ public class EnemyState
 
     public void AnimationTrigger() => triggerCalled = true;
 
+    public virtual void AbilityTrigger()
+    {
+
+    }
+
     //返回下一個目標(NavMeshAgent的pathcorners)
     protected Vector3 GetNextPathPoint()
     {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +17,7 @@ public struct AttackData
 }
 
 public enum AttackType_Melee { Close, Charge }
-public enum EnemyMelee_Type { Regular, Shield, Dodge }
+public enum EnemyMelee_Type { Regular, Shield, Dodge, AxeThrow }
 
 public class Enemy_Melee : Enemy
 {
@@ -35,6 +36,14 @@ public class Enemy_Melee : Enemy
     public Transform shieldTransform;
     public float dodgeCooldown;
     private float lastTimeDodge;
+
+    [Header("Axe 丟擲技能")]
+    public GameObject axePrefab;
+    public float axeFlySpeed;
+    public float axeAimTimer;
+    public float axeThrowCooldown;
+    private float lastTimeAxeThrown;
+    public Transform axeStartPoint;
 
     [Header("Attack Data")]
     public AttackData attackData;
@@ -77,11 +86,11 @@ public class Enemy_Melee : Enemy
         stateMachine.CurrentState.Update();
     }
 
-    public void TriggerAbility()
+    public override void AbilityTrigger()
     {
-        moveSpeed = moveSpeed * .6f;
-        Debug.Log("create axe");
+        base.AbilityTrigger();
 
+        moveSpeed = moveSpeed * .6f;
         pulledWeapon.gameObject.SetActive(false);
     }
 
@@ -135,6 +144,21 @@ public class Enemy_Melee : Enemy
             lastTimeDodge = Time.time;
             anim.SetTrigger("Dodge");
         }
+    }
+
+    public bool CanThrowAxe()
+    {
+        if (meleeType != EnemyMelee_Type.AxeThrow)
+        {
+            return false;
+        }
+
+        if (Time.time > lastTimeAxeThrown + axeThrowCooldown)
+        {
+            lastTimeAxeThrown = Time.time;
+            return true;
+        }
+        return false;
     }
 
     protected override void OnDrawGizmos()

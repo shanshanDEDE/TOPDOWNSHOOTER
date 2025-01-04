@@ -111,7 +111,10 @@ public class Enemy : MonoBehaviour
 
     public void AnimationTrigger() => stateMachine.CurrentState.AnimationTrigger();
 
-
+    public virtual void AbilityTrigger()
+    {
+        stateMachine.CurrentState.AbilityTrigger();
+    }
 
     //判斷玩家是否在發現範圍內
     public bool PlayerInAggresionRange() => Vector3.Distance(transform.position, player.position) < aggresionRange;
