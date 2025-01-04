@@ -16,6 +16,7 @@ public struct AttackData
 }
 
 public enum AttackType_Melee { Close, Charge }
+public enum EnemyMelee_Type { Regular, Shield }
 
 public class Enemy_Melee : Enemy
 {
@@ -27,6 +28,10 @@ public class Enemy_Melee : Enemy
     public ChaseState_Melee chaseState { get; private set; }
     public AttackState_Melee attackState { get; private set; }
     public DeadState_Melee deadState { get; private set; }
+
+    [Header("Enemy 設定")]
+    public EnemyMelee_Type meleeType;
+    [SerializeField] private Transform shieldTransform;
 
     [Header("Attack Data")]
     public AttackData attackData;
@@ -55,6 +60,8 @@ public class Enemy_Melee : Enemy
 
         //透過狀態機切換初始化狀態
         stateMachine.Initialize(idleState);
+
+        InitializeSpeciality();
     }
 
     protected override void Update()
@@ -63,6 +70,15 @@ public class Enemy_Melee : Enemy
 
         //透過update所有狀態機的父類的update來持續進行不同狀態的行為
         stateMachine.CurrentState.Update();
+    }
+
+    private void InitializeSpeciality()
+    {
+        if (meleeType == EnemyMelee_Type.Shield)
+        {
+            anim.SetFloat("ChaseIndex", 1);
+            shieldTransform.gameObject.SetActive(true);
+        }
     }
 
     public override void GetHit()

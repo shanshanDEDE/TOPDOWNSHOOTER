@@ -87,7 +87,21 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+
+
+        CreateImpactFX(collision);
+        ReturnBulletToPool();
+
         Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
+        EnemyShield shield = collision.gameObject.GetComponentInParent<EnemyShield>();
+
+        //如果碰撞的是盾牌
+        if (shield != null)
+        {
+            //減少耐久值
+            shield.ReduceDurability();
+            return;
+        }
 
         if (enemy != null)
         {
@@ -101,8 +115,7 @@ public class Bullet : MonoBehaviour
             enemy.HitImpact(force, collision.contacts[0].point, hitRigidbody);
         }
 
-        CreateImpactFX(collision);
-        ReturnBulletToPool();
+
     }
 
     private void ReturnBulletToPool()
