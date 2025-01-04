@@ -16,7 +16,7 @@ public struct AttackData
 }
 
 public enum AttackType_Melee { Close, Charge }
-public enum EnemyMelee_Type { Regular, Shield }
+public enum EnemyMelee_Type { Regular, Shield, Dodge }
 
 public class Enemy_Melee : Enemy
 {
@@ -32,6 +32,8 @@ public class Enemy_Melee : Enemy
     [Header("Enemy 設定")]
     public EnemyMelee_Type meleeType;
     public Transform shieldTransform;
+    public float dodgeCooldown;
+    private float lastTimeDodge;
 
     [Header("Attack Data")]
     public AttackData attackData;
@@ -98,6 +100,31 @@ public class Enemy_Melee : Enemy
 
     //判斷玩家是否在攻擊範圍
     public bool PlayerInAttackRange() => Vector3.Distance(transform.position, player.position) < attackData.attackRange;
+
+    //啟用閃躲
+    public void ActivatedDodgeRoll()
+    {
+        if (meleeType != EnemyMelee_Type.Dodge)
+        {
+            return;
+        }
+
+        if (stateMachine.CurrentState != chaseState)
+        {
+            return;
+        }
+
+        if (Vector3.Distance(transform.position, player.position) < 2f)
+        {
+            return;
+        }
+
+        if (Time.time > lastTimeDodge + dodgeCooldown)
+        {
+            lastTimeDodge = Time.time;
+            anim.SetTrigger("Dodge");
+        }
+    }
 
     protected override void OnDrawGizmos()
     {

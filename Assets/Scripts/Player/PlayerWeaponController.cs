@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -175,6 +176,7 @@ public class PlayerWeaponController : MonoBehaviour
 
         //發射單發子彈
         FireSingleBullet();
+        TriggerEnemyDodge();  //觸發敵人閃避
 
     }
 
@@ -272,6 +274,25 @@ public class PlayerWeaponController : MonoBehaviour
 
 
     public Transform GunPoint() => player.weaponVisuals.CurrentWeaponModel().gunPoint;
+
+    //觸發敵人閃避
+    private void TriggerEnemyDodge()
+    {
+        Vector3 rayOrigin = GunPoint().position;
+        Vector3 rayDirection = BulletDirection();
+
+        //透過設限去偵測碰撞到的敵人
+        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, Mathf.Infinity))
+        {
+            Enemy_Melee enemy_Melee = hit.collider.GetComponentInParent<Enemy_Melee>();
+
+            if (enemy_Melee != null)
+            {
+                //該敵人觸發閃避
+                enemy_Melee.ActivatedDodgeRoll();
+            }
+        }
+    }
 
     #region 輸入事件
     //定義新版控制器事件
