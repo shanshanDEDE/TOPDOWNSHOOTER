@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAxe : MonoBehaviour
+public class Enemy_Axe : MonoBehaviour
 {
     [SerializeField] private GameObject impactFx;
     [SerializeField] private Rigidbody rb;

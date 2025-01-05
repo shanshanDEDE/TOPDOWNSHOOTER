@@ -21,7 +21,7 @@ public enum EnemyMelee_Type { Regular, Shield, Dodge, AxeThrow }
 
 public class Enemy_Melee : Enemy
 {
-
+    #region 狀態
     //宣告所有狀態
     public IdleState_Melee idleState { get; private set; }
     public MoveState_Melee moveState { get; private set; }
@@ -30,12 +30,13 @@ public class Enemy_Melee : Enemy
     public AttackState_Melee attackState { get; private set; }
     public DeadState_Melee deadState { get; private set; }
     public AbilityState_Melee abilityState { get; private set; }
+    #endregion
 
     [Header("Enemy 設定")]
     public EnemyMelee_Type meleeType;
     public Transform shieldTransform;
     public float dodgeCooldown;
-    private float lastTimeDodge;
+    private float lastTimeDodge = -10;
 
     [Header("Axe 丟擲技能")]
     public GameObject axePrefab;
@@ -84,6 +85,22 @@ public class Enemy_Melee : Enemy
 
         //透過update所有狀態機的父類的update來持續進行不同狀態的行為
         stateMachine.CurrentState.Update();
+
+        //判斷是否進入戰鬥模式
+        if (ShouldEnterBattleMode())
+        {
+            EnterBattleMode();
+        }
+    }
+
+    //判斷是否進入戰鬥模式
+    public override void EnterBattleMode()
+    {
+        //判斷只有第一次進來時會通過
+        if (inBattleMode) return;
+
+        base.EnterBattleMode();
+        stateMachine.ChangeState(recoveryState);
     }
 
     public override void AbilityTrigger()
@@ -139,7 +156,10 @@ public class Enemy_Melee : Enemy
             return;
         }
 
-        if (Time.time > lastTimeDodge + dodgeCooldown)
+        //計算閃躲動畫長度
+        float dodgeAnimationDuration = GetAnimationClipDuration("Dodge roll");
+
+        if (Time.time > lastTimeDodge + dodgeCooldown + dodgeAnimationDuration)
         {
             lastTimeDodge = Time.time;
             anim.SetTrigger("Dodge");
@@ -159,6 +179,22 @@ public class Enemy_Melee : Enemy
             return true;
         }
         return false;
+    }
+
+    //取得動畫長度
+    private float GetAnimationClipDuration(string clipName)
+    {
+        AnimationClip[] clips = anim.runtimeAnimatorController.animationClips;
+
+        foreach (AnimationClip clip in clips)
+        {
+            if (clip.name == clipName)
+            {
+                return clip.length;
+            }
+        }
+
+        return 0f;
     }
 
     protected override void OnDrawGizmos()

@@ -22,8 +22,10 @@ public class Enemy : MonoBehaviour
     private bool manualRotation;
 
     [SerializeField] private Transform[] patrolPoints;  //要巡邏目的地陣列
+    private Vector3[] patrolPointsPosition;             //巡邏目的地位置
     private int currentPatrolIndex;                     //目前巡邏目的地索引
 
+    public bool inBattleMode { get; private set; }
 
     public Transform player { get; private set; }
 
@@ -74,29 +76,61 @@ public class Enemy : MonoBehaviour
         //-----------(這邊可以針對不同敵人在他們那邊宣告(目前這個類的子類那邊))-----------
     }
 
+    //判斷是否進入戰鬥模式
+    protected bool ShouldEnterBattleMode()
+    {
+        //判斷玩家是否在發現範圍內
+        bool inAggresionRange = Vector3.Distance(transform.position, player.position) < aggresionRange;
+
+        if (inAggresionRange && !inBattleMode)
+        {
+            EnterBattleMode();
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public virtual void EnterBattleMode()
+    {
+        inBattleMode = true;
+    }
+
     public virtual void GetHit()
     {
+        EnterBattleMode();
         healthPoints--;
     }
 
     //受到攻擊時的衝擊
-    public virtual void HitImpact(Vector3 force, Vector3 hitPoint, Rigidbody rb)
+    public virtual void DeathImpact(Vector3 force, Vector3 hitPoint, Rigidbody rb)
     {
-        StartCoroutine(HitImpactCoroutine(force, hitPoint, rb));
+        StartCoroutine(DeathImpactCourutine(force, hitPoint, rb));
     }
 
     //必須讓受到攻擊的物件回傳一個協程(為了讓他延遲一下,不然老師說跟運動學同時會出錯)
-    private IEnumerator HitImpactCoroutine(Vector3 force, Vector3 hitPoint, Rigidbody rb)
+    private IEnumerator DeathImpactCourutine(Vector3 force, Vector3 hitPoint, Rigidbody rb)
     {
         yield return new WaitForSeconds(.1f);
 
         rb.AddForceAtPosition(force, hitPoint, ForceMode.Impulse);
     }
 
-    protected virtual void OnDrawGizmos()
+    //面向目標
+    public void FaceTarget(Vector3 target)
     {
-        Gizmos.DrawWireSphere(transform.position, aggresionRange);
+        Quaternion targetRotation = Quaternion.LookRotation(target - transform.position);
+
+        Vector3 currentEulerAngles = transform.rotation.eulerAngles;
+
+        float yRotation = Mathf.LerpAngle(currentEulerAngles.y, targetRotation.eulerAngles.y, Time.deltaTime * turnSpeed);
+
+        transform.rotation = Quaternion.Euler(currentEulerAngles.x, yRotation, currentEulerAngles.z);
     }
+
+
+    #region 動畫事件
 
     //開啟\關閉手動移動
     public void ActivateManualMovement(bool manualMovement) => this.manualMovement = manualMovement;
@@ -116,13 +150,13 @@ public class Enemy : MonoBehaviour
         stateMachine.CurrentState.AbilityTrigger();
     }
 
-    //判斷玩家是否在發現範圍內
-    public bool PlayerInAggresionRange() => Vector3.Distance(transform.position, player.position) < aggresionRange;
+    #endregion
 
+    #region 巡邏點邏輯
     //取得巡邏目的地的位置
     public Vector3 GetPatrolDestination()
     {
-        Vector3 destination = patrolPoints[currentPatrolIndex].transform.position;
+        Vector3 destination = patrolPointsPosition[currentPatrolIndex];
 
         currentPatrolIndex++;
 
@@ -134,25 +168,23 @@ public class Enemy : MonoBehaviour
         return destination;
     }
 
-    //一開始先將所有的巡邏點離開父物件
+    //初始化巡邏點
     private void InitializePatrolPoint()
     {
-        foreach (Transform t in patrolPoints)
+        patrolPointsPosition = new Vector3[patrolPoints.Length];
+
+        for (int i = 0; i < patrolPoints.Length; i++)
         {
-            t.parent = null;
+            patrolPointsPosition[i] = patrolPoints[i].position;
+            patrolPoints[i].gameObject.SetActive(false);
         }
     }
 
-    //面向目標
-    public Quaternion FaceTarget(Vector3 target)
+    #endregion
+
+
+    protected virtual void OnDrawGizmos()
     {
-        Quaternion targetRotation = Quaternion.LookRotation(target - transform.position);
-
-        Vector3 currentEulerAngles = transform.rotation.eulerAngles;
-
-        float yRotation = Mathf.LerpAngle(currentEulerAngles.y, targetRotation.eulerAngles.y, Time.deltaTime * turnSpeed);
-
-        return Quaternion.Euler(currentEulerAngles.x, yRotation, currentEulerAngles.z);
+        Gizmos.DrawWireSphere(transform.position, aggresionRange);
     }
-
 }

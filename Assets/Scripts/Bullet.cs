@@ -93,7 +93,7 @@ public class Bullet : MonoBehaviour
         ReturnBulletToPool();
 
         Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
-        EnemyShield shield = collision.gameObject.GetComponentInParent<EnemyShield>();
+        Enemy_Shield shield = collision.gameObject.GetComponentInParent<Enemy_Shield>();
 
         //如果碰撞的是盾牌
         if (shield != null)
@@ -112,7 +112,7 @@ public class Bullet : MonoBehaviour
 
             enemy.GetHit();
             //敵人受到攻擊的衝擊
-            enemy.HitImpact(force, collision.contacts[0].point, hitRigidbody);
+            enemy.DeathImpact(force, collision.contacts[0].point, hitRigidbody);
         }
 
 

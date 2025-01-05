@@ -58,7 +58,7 @@ public class AttackState_Melee : EnemyState
         //取得是否為手動旋轉狀態
         if (enemy.ManualRotationActive())
         {
-            enemy.transform.rotation = enemy.FaceTarget(enemy.player.position);
+            enemy.FaceTarget(enemy.player.position);
             attackDirection = enemy.transform.position + (enemy.transform.forward * MAX_ATTACK_DISTACE);
         }
 
