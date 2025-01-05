@@ -5,7 +5,7 @@ using UnityEngine;
 
 //透過struck來創建一個AttackData來存放不同的攻擊的資訊
 [System.Serializable]
-public struct Enemy_MeleeAttackData
+public struct AttackData_EnemyMelee
 {
     public string attackName;
     public float attackRange;   //攻擊範圍
@@ -49,8 +49,8 @@ public class Enemy_Melee : Enemy
     public Transform axeStartPoint;
 
     [Header("Attack Data")]
-    public Enemy_MeleeAttackData attackData;
-    public List<Enemy_MeleeAttackData> attackList;
+    public AttackData_EnemyMelee attackData;
+    public List<AttackData_EnemyMelee> attackList;
 
     protected override void Awake()
     {
@@ -76,7 +76,7 @@ public class Enemy_Melee : Enemy
         //透過狀態機切換初始化狀態
         stateMachine.Initialize(idleState);
 
-        InitializeSpeciality();
+        InitializePerk();
 
         //設定隨機顏色
         visuals.SetupLook();
@@ -122,12 +122,12 @@ public class Enemy_Melee : Enemy
 
         if (currentWeapon.weaponData != null)
         {
-            attackList = new List<Enemy_MeleeAttackData>(currentWeapon.weaponData.attackData);
+            attackList = new List<AttackData_EnemyMelee>(currentWeapon.weaponData.attackData);
             turnSpeed = currentWeapon.weaponData.turnSpeed;
         }
     }
 
-    private void InitializeSpeciality()
+    private void InitializePerk()
     {
         //如果是斧子丟擲類型則,顯示模組那邊設為thorw的類型
         if (meleeType == EnemyMelee_Type.AxeThrow)
@@ -163,9 +163,6 @@ public class Enemy_Melee : Enemy
     {
         visuals.currentWeaponModel.gameObject.SetActive(active);
     }
-
-    //判斷玩家是否在攻擊範圍
-    public bool PlayerInAttackRange() => Vector3.Distance(transform.position, player.position) < attackData.attackRange;
 
     //啟用閃躲
     public void ActivatedDodgeRoll()
@@ -225,6 +222,9 @@ public class Enemy_Melee : Enemy
 
         return 0f;
     }
+
+    //判斷玩家是否在攻擊範圍
+    public bool PlayerInAttackRange() => Vector3.Distance(transform.position, player.position) < attackData.attackRange;
 
     protected override void OnDrawGizmos()
     {
