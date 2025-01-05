@@ -18,6 +18,7 @@ public class AttackState_Melee : EnemyState
     public override void Enter()
     {
         base.Enter();
+        enemy.UpdateAttackData();
         enemy.EnableWeaponModel(true); //拿出武器
         enemy.visuals.EnableWeaponTrail(true);      //啟用武器Trail
 
@@ -92,9 +93,9 @@ public class AttackState_Melee : EnemyState
     private bool PlayerClose() => Vector3.Distance(enemy.transform.position, enemy.player.position) <= 1;
 
     //更新用哪個攻擊資訊
-    private AttackData UpdatedAttackData()
+    private Enemy_MeleeAttackData UpdatedAttackData()
     {
-        List<AttackData> validAttacks = new List<AttackData>(enemy.attackList);
+        List<Enemy_MeleeAttackData> validAttacks = new List<Enemy_MeleeAttackData>(enemy.attackList);
 
         //如果玩家夠近
         if (PlayerClose())

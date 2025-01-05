@@ -5,7 +5,7 @@ using UnityEngine;
 
 //透過struck來創建一個AttackData來存放不同的攻擊的資訊
 [System.Serializable]
-public struct AttackData
+public struct Enemy_MeleeAttackData
 {
     public string attackName;
     public float attackRange;   //攻擊範圍
@@ -49,8 +49,8 @@ public class Enemy_Melee : Enemy
     public Transform axeStartPoint;
 
     [Header("Attack Data")]
-    public AttackData attackData;
-    public List<AttackData> attackList;
+    public Enemy_MeleeAttackData attackData;
+    public List<Enemy_MeleeAttackData> attackList;
 
     protected override void Awake()
     {
@@ -80,6 +80,8 @@ public class Enemy_Melee : Enemy
 
         //設定隨機顏色
         visuals.SetupLook();
+
+        UpdateAttackData();
     }
 
     protected override void Update()
@@ -112,6 +114,17 @@ public class Enemy_Melee : Enemy
 
         moveSpeed = moveSpeed * .6f;
         EnableWeaponModel(false);
+    }
+
+    public void UpdateAttackData()
+    {
+        Enemy_WeaponModel currentWeapon = visuals.currentWeaponModel.GetComponent<Enemy_WeaponModel>();
+
+        if (currentWeapon.weaponData != null)
+        {
+            attackList = new List<Enemy_MeleeAttackData>(currentWeapon.weaponData.attackData);
+            turnSpeed = currentWeapon.weaponData.turnSpeed;
+        }
     }
 
     private void InitializeSpeciality()
