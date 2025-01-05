@@ -134,6 +134,11 @@ public class PlayerAim : MonoBehaviour
             target = GetMouseHitInfo().transform;
         }
 
+        if (target == null)
+        {
+            return null;
+        }
+
         return target;
     }
 

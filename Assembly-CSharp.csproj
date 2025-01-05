@@ -97,6 +97,7 @@
     <Compile Include="Assets\Scripts\Player\PlayerAim.cs" />
     <Compile Include="Assets\Scripts\Enemy\StateMachine\EnemyStateMachine.cs" />
     <Compile Include="Assets\Scripts\Enemy\Enemy_Melee\IdleState_Melee.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Ennemy_CorruptionCrystal.cs" />
     <Compile Include="Assets\Scripts\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Weapon\BackupWeaponModel.cs" />
     <Compile Include="Assets\Scripts\Weapon\Weapon.cs" />
