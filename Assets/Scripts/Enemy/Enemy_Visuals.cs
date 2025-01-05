@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Enemy_MeleeWeaponType { OnHand, Throw }
+public enum Enemy_MeleeWeaponType { OnHand, Throw, Unarmed }
 
 public class Enemy_Visuals : MonoBehaviour
 {
@@ -92,6 +92,21 @@ public class Enemy_Visuals : MonoBehaviour
         currentWeaponModel = filteredWeaponModels[randomIndex].gameObject;
         //顯示該武器
         currentWeaponModel.SetActive(true);
+
+        OverrideAnimatorControllerIfCan();
+
+    }
+
+    private void OverrideAnimatorControllerIfCan()
+    {
+        //如果有設定AnimatorOverrideController(不為null)
+        AnimatorOverrideController overrideController = currentWeaponModel.GetComponent<Enemy_WeaponModel>().overrideController;
+
+        //則切換原先的動畫到新的動畫
+        if (overrideController != null)
+        {
+            GetComponentInChildren<Animator>().runtimeAnimatorController = overrideController;
+        }
     }
 
     //設定隨機顏色

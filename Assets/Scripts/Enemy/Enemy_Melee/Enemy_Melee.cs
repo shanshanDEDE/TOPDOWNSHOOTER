@@ -122,11 +122,18 @@ public class Enemy_Melee : Enemy
             visuals.SetupWeaponType(Enemy_MeleeWeaponType.Throw);
         }
 
+        //如果是盾
         if (meleeType == EnemyMelee_Type.Shield)
         {
             anim.SetFloat("ChaseIndex", 1);
             shieldTransform.gameObject.SetActive(true);
             visuals.SetupWeaponType(Enemy_MeleeWeaponType.OnHand);
+        }
+
+        //如果是閃躲
+        if (meleeType == EnemyMelee_Type.Dodge)
+        {
+            visuals.SetupWeaponType(Enemy_MeleeWeaponType.Unarmed);
         }
     }
 
