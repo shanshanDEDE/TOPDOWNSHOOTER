@@ -28,6 +28,15 @@ public class Enemy_Visuals : MonoBehaviour
         CollectCorruptionCrystals();
     }
 
+    //啟用或關閉武器Trail
+    public void EnableWeaponTrail(bool enable)
+    {
+        //取得現在武器的模組
+        Enemy_WeaponModel currentWeaponScript = currentWeaponModel.GetComponent<Enemy_WeaponModel>();
+        //去啟用或關閉Trail
+        currentWeaponScript.EnableTrailEffect(enable);
+    }
+
 
     //設定武器類型
     public void SetupWeaponType(Enemy_MeleeWeaponType type)
