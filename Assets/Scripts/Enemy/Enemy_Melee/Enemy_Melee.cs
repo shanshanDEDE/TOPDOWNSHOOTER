@@ -52,9 +52,6 @@ public class Enemy_Melee : Enemy
     public AttackData attackData;
     public List<AttackData> attackList;
 
-    [SerializeField] private Transform hiddenWeapon;
-    [SerializeField] private Transform pulledWeapon;
-
     protected override void Awake()
     {
         base.Awake();
@@ -114,15 +111,22 @@ public class Enemy_Melee : Enemy
         base.AbilityTrigger();
 
         moveSpeed = moveSpeed * .6f;
-        pulledWeapon.gameObject.SetActive(false);
+        EnableWeaponModel(false);
     }
 
     private void InitializeSpeciality()
     {
+        //如果是斧子丟擲類型則,顯示模組那邊設為thorw的類型
+        if (meleeType == EnemyMelee_Type.AxeThrow)
+        {
+            visuals.SetupWeaponType(Enemy_MeleeWeaponType.Throw);
+        }
+
         if (meleeType == EnemyMelee_Type.Shield)
         {
             anim.SetFloat("ChaseIndex", 1);
             shieldTransform.gameObject.SetActive(true);
+            visuals.SetupWeaponType(Enemy_MeleeWeaponType.OnHand);
         }
     }
 
@@ -135,10 +139,9 @@ public class Enemy_Melee : Enemy
     }
 
     //拿出武器
-    public void PullWeapon()
+    public void EnableWeaponModel(bool active)
     {
-        hiddenWeapon.gameObject.SetActive(false);
-        pulledWeapon.gameObject.SetActive(true);
+        visuals.currentWeaponModel.gameObject.SetActive(active);
     }
 
     //判斷玩家是否在攻擊範圍
