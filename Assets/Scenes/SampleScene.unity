@@ -3009,6 +3009,7 @@ GameObject:
   - component: {fileID: 612606373}
   - component: {fileID: 612606374}
   - component: {fileID: 612606375}
+  - component: {fileID: 612606376}
   m_Layer: 0
   m_Name: Enemy_Melee
   m_TagString: Untagged
@@ -3121,6 +3122,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ragdollParent: {fileID: 5778099029322574156}
+--- !u!114 &612606376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612606367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c3b31d316de4a9478eb895511e8b940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorTextures:
+  - {fileID: 2800000, guid: ab3397057230dd84ea555fb54b6f0632, type: 3}
+  - {fileID: 2800000, guid: b247efe8c973f684e82e60ebdfeffb99, type: 3}
+  - {fileID: 2800000, guid: 1bb4c174662eb5f44ae8c8acbcc17492, type: 3}
+  - {fileID: 2800000, guid: 9bff4c7dd848cab418d88e792765d52b, type: 3}
+  skinnedMeshRenderer: {fileID: 7841473117181630984}
 --- !u!1 &670699303
 GameObject:
   m_ObjectHideFlags: 0

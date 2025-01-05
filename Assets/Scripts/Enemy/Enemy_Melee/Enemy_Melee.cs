@@ -21,6 +21,8 @@ public enum EnemyMelee_Type { Regular, Shield, Dodge, AxeThrow }
 
 public class Enemy_Melee : Enemy
 {
+    private Enemy_Visuals visuals;
+
     #region 狀態
     //宣告所有狀態
     public IdleState_Melee idleState { get; private set; }
@@ -57,6 +59,8 @@ public class Enemy_Melee : Enemy
     {
         base.Awake();
 
+        visuals = GetComponent<Enemy_Visuals>();
+
         //初始化實例所有狀態
         idleState = new IdleState_Melee(this, stateMachine, "Idle");
         moveState = new MoveState_Melee(this, stateMachine, "Move");
@@ -68,7 +72,6 @@ public class Enemy_Melee : Enemy
 
     }
 
-
     protected override void Start()
     {
         base.Start();
@@ -77,6 +80,9 @@ public class Enemy_Melee : Enemy
         stateMachine.Initialize(idleState);
 
         InitializeSpeciality();
+
+        //設定隨機顏色
+        visuals.SetupLook();
     }
 
     protected override void Update()

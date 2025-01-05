@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Input Manager\PlayerControls.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Enemy_Visuals.cs" />
     <Compile Include="Assets\Scripts\Enemy\StateMachine\EnemyState.cs" />
     <Compile Include="Assets\Scripts\Weapon\Weapon_Data.cs" />
     <Compile Include="Assets\Scripts\Enemy\Enemy_Axe.cs" />
