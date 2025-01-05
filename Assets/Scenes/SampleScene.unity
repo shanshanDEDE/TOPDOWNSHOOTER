@@ -3056,7 +3056,7 @@ MonoBehaviour:
   - {fileID: 1299373275}
   - {fileID: 465429013}
   - {fileID: 1864509532}
-  meleeType: 2
+  meleeType: 3
   shieldTransform: {fileID: 3540446016760864590}
   dodgeCooldown: 5
   axePrefab: {fileID: 3562839695672206339, guid: 0b3f82246aef5ca47a73735a2d0e2429, type: 3}
@@ -10194,7 +10194,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 74f9a669cdc18834cbd0d8d6e23e08c7, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 

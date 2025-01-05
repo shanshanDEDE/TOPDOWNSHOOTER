@@ -40,7 +40,8 @@ public class ObjectPool : MonoBehaviour
     }
 
     //取得物件(從Queue裡取)         //透過字典可以在方法中透過參數取得對應的物件池
-    public GameObject GetObject(GameObject prefab)
+    //自己加了 Vector3? position = null來傳入位置,因為敵人生成斧頭有時候會被這邊的方法影響生成位置所以這邊用餐述的方式設定位置
+    public GameObject GetObject(GameObject prefab, Vector3? position = null)
     {
         //如果沒有該類型prefab的物件池,則生成一個
         if (poolDictionary.ContainsKey(prefab) == false)
@@ -55,6 +56,12 @@ public class ObjectPool : MonoBehaviour
         }
 
         GameObject ObjectToGet = poolDictionary[prefab].Dequeue();
+
+        if (position.HasValue)
+        {
+            ObjectToGet.transform.position = position.Value;
+        }
+
         ObjectToGet.SetActive(true);
         ObjectToGet.transform.parent = null;
         return ObjectToGet;
