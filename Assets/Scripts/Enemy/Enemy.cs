@@ -15,8 +15,8 @@ public class Enemy : MonoBehaviour
     public float aggresionRange;    //攻擊範圍
 
     [Header("Move 資訊")]
-    public float moveSpeed;      //移動速度
-    public float chaseSpeed;     //追擊速度
+    public float walkSpeed;      //移動速度
+    public float runSpeed = 3;     //追擊速度
     public float turnSpeed;      //轉向速度
     private bool manualMovement; //手動移動(我們在攻擊後是否自製移動中)
     private bool manualRotation;

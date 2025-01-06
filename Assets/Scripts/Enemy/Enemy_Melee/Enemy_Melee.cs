@@ -9,7 +9,7 @@ public struct AttackData_EnemyMelee
 {
     public string attackName;
     public float attackRange;   //攻擊範圍
-    public float moveSpeed;     //攻擊移動速度
+    public float walkSpeed;     //攻擊移動速度
     public float attackIndex;
     [Range(1, 2)]
     public float animationSpeed;
@@ -106,7 +106,7 @@ public class Enemy_Melee : Enemy
     {
         base.AbilityTrigger();
 
-        moveSpeed = moveSpeed * .6f;
+        walkSpeed = walkSpeed * .6f;
         EnableWeaponModel(false);
     }
 

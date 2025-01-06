@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Enemy_Range : Enemy
 {
+    [Header("掩護系統")]
+    public bool canUseCovers = true;
+    public Transform lastCover;
+
     [Header("武器細節")]
     public Enemy_RangeWeaponType weaponType;
     public Enemy_RangeWeaponData weaponData;
@@ -18,6 +22,7 @@ public class Enemy_Range : Enemy
     public IdleState_Range idleState { get; private set; }
     public MoveState_Range moveState { get; private set; }
     public BattleState_Range battleState { get; private set; }
+    public RunToCoverState_Range runToCoverState { get; private set; }
 
     protected override void Awake()
     {
@@ -26,6 +31,8 @@ public class Enemy_Range : Enemy
         idleState = new IdleState_Range(this, stateMachine, "Idle");
         moveState = new MoveState_Range(this, stateMachine, "Move");
         battleState = new BattleState_Range(this, stateMachine, "Battle");
+        runToCoverState = new RunToCoverState_Range(this, stateMachine, "Run");
+
     }
 
     protected override void Start()
@@ -72,7 +79,11 @@ public class Enemy_Range : Enemy
         if (inBattleMode) return;
 
         base.EnterBattleMode();
-        stateMachine.ChangeState(battleState);
+
+        if (canUseCovers)
+            stateMachine.ChangeState(runToCoverState);
+        else
+            stateMachine.ChangeState(battleState);
 
     }
 

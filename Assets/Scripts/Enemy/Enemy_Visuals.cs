@@ -22,7 +22,8 @@ public class Enemy_Visuals : MonoBehaviour
     [Header("Rig 相關")]
     [SerializeField] private Transform leftHandIK;
     [SerializeField] private Transform leftElbowIK;
-    [SerializeField] private Rig rig;
+    [SerializeField] private TwoBoneIKConstraint leftHandIKConstraint;
+    [SerializeField] private MultiAimConstraint weaponAimConstraint;
 
     //啟用或關閉武器Trail
     public void EnableWeaponTrail(bool enable)
@@ -185,9 +186,12 @@ public class Enemy_Visuals : MonoBehaviour
     }
 
     //啟用或關閉IK
-    public void EnableIK(bool enable)
+    public void EnableIK(bool enableLeftHand, bool enableAim)
     {
-        rig.weight = enable ? 1 : 0;
+        //rig.weight = enable ? 1 : 0;
+
+        leftHandIKConstraint.weight = enableLeftHand ? 1 : 0;
+        weaponAimConstraint.weight = enableAim ? 1 : 0;
     }
 
     private void SetupLeftHandIK(Transform leftHandTarget, Transform leftElbowTarget)

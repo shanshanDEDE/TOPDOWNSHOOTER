@@ -22,7 +22,7 @@ public class AttackState_Melee : EnemyState
         enemy.EnableWeaponModel(true); //拿出武器
         enemy.visuals.EnableWeaponTrail(true);      //啟用武器Trail
 
-        attackMoveSpeed = enemy.attackData.moveSpeed;
+        attackMoveSpeed = enemy.attackData.walkSpeed;
         enemy.anim.SetFloat("AttackAnimationSpeed", enemy.attackData.animationSpeed);
         enemy.anim.SetFloat("AttackIndex", enemy.attackData.attackIndex);
         enemy.anim.SetFloat("SlashAttackIndex", Random.Range(0, 6));
