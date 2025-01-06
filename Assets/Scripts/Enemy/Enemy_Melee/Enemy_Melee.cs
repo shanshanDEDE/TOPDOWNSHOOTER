@@ -90,12 +90,6 @@ public class Enemy_Melee : Enemy
 
         //透過update所有狀態機的父類的update來持續進行不同狀態的行為
         stateMachine.CurrentState.Update();
-
-        //判斷是否進入戰鬥模式
-        if (ShouldEnterBattleMode())
-        {
-            EnterBattleMode();
-        }
     }
 
     //判斷是否進入戰鬥模式

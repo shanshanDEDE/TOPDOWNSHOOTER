@@ -122,7 +122,7 @@ public class PlayerWeaponController : MonoBehaviour
     private void CreateWeaponOnTheGround()
     {
         //生成丟棄的武器
-        GameObject droppedWeapon = ObjectPool.instance.GetObject(weaponPickupPrefab);
+        GameObject droppedWeapon = ObjectPool.instance.GetObject(weaponPickupPrefab, transform.position);
         //為了可以記錄子彈數量傳入Weapon
         droppedWeapon.GetComponent<Pickup_Weapon>()?.SetupPickupWeapon(currentWeapon, transform);
     }
@@ -185,7 +185,7 @@ public class PlayerWeaponController : MonoBehaviour
         currentWeapon.bulletsInMagazine--;
 
         //取得物件池的子彈
-        GameObject newBullet = ObjectPool.instance.GetObject(bulletPrefab);
+        GameObject newBullet = ObjectPool.instance.GetObject(bulletPrefab, GunPoint().position);
         //Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
 
         newBullet.transform.position = GunPoint().position;

@@ -72,6 +72,12 @@ public class Enemy : MonoBehaviour
 
     protected virtual void Update()
     {
+        //判斷是否進入戰鬥模式
+        if (ShouldEnterBattleMode())
+        {
+            EnterBattleMode();
+        }
+
         //透過update所有狀態機的父類的update來持續進行不同狀態的行為
         //-----------(這邊可以針對不同敵人在他們那邊宣告(目前這個類的子類那邊))-----------
     }

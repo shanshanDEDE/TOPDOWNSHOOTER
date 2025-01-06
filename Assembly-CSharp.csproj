@@ -64,8 +64,8 @@
     <Analyzer Include="D:\unitydownload\2022.3.55f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Input Manager\PlayerControls.cs" />
     <Compile Include="Assets\Scripts\Enemy\Enemy_Visuals.cs" />
+    <Compile Include="Assets\Input Manager\PlayerControls.cs" />
     <Compile Include="Assets\Scripts\Enemy\StateMachine\EnemyState.cs" />
     <Compile Include="Assets\Scripts\Weapon\Weapon_Data.cs" />
     <Compile Include="Assets\Scripts\Enemy\Enemy_Axe.cs" />
@@ -75,6 +75,8 @@
     <Compile Include="Assets\Scripts\Pickups\Pickup_Ammo.cs" />
     <Compile Include="Assets\Scripts\Bullet.cs" />
     <Compile Include="Assets\Scripts\Enemy\Enemy.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Enemy_Range\BattleState_Range.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Enemy_Range\Enemy_Range.cs" />
     <Compile Include="Assets\Scripts\Target.cs" />
     <Compile Include="Assets\Scripts\Interactable.cs" />
     <Compile Include="Assets\Scripts\Enemy\Enemy_Melee\RecoveryState_Melee.cs" />
@@ -91,8 +93,10 @@
     <Compile Include="Assets\Scripts\Pickups\Pickup_Weapon.cs" />
     <Compile Include="Assets\Scripts\Enemy\Enemy_Shield.cs" />
     <Compile Include="Assets\Scripts\Player\Player.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Enemy_Bullet.cs" />
     <Compile Include="Assets\Scripts\Enemy\Enemy_Melee\MoveState_Melee.cs" />
     <Compile Include="Assets\Scripts\Enemy\Enemy_Melee\ChaseState_Melee.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Enemy_Range\MoveState_Range.cs" />
     <Compile Include="Assets\Scripts\Weapon\WeaponModel.cs" />
     <Compile Include="Assets\Scripts\Object Pool\PooledObject.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerAim.cs" />
@@ -103,6 +107,7 @@
     <Compile Include="Assets\Scripts\Weapon\BackupWeaponModel.cs" />
     <Compile Include="Assets\Scripts\Weapon\Weapon.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Enemy_Range\IdleState_Range.cs" />
     <Compile Include="Assets\Scripts\Enemy\Enemy_Ragdoll.cs" />
   </ItemGroup>
   <ItemGroup>
