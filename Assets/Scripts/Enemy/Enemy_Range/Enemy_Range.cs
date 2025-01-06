@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class Enemy_Range : Enemy
 {
-    public Transform weaponholder;
+    [Header("武器細節")]
     public Enemy_RangeWeaponType weaponType;
+    public Enemy_RangeWeaponData weaponData;
 
-    public float fireRate = 1;  //子彈發射間隔
-    public GameObject bulletPrefab;
+    [Space]
     public Transform gunPoint;
-    public float bulletSpeed = 20;
-    public int bulletsToShot = 5;           //進冷卻前發射子彈的數量
-    public float weaponCooldown = 1.5f;     //子彈射完後武器進冷卻時間
+    public Transform weaponholder;
+    public GameObject bulletPrefab;
+
+    [SerializeField] List<Enemy_RangeWeaponData> avalibleWeaponData;
 
     public IdleState_Range idleState { get; private set; }
     public MoveState_Range moveState { get; private set; }
@@ -33,6 +34,9 @@ public class Enemy_Range : Enemy
 
         stateMachine.Initialize(idleState);
         visuals.SetupLook();
+
+        //取得要用哪個weaponData
+        SetupWeapon();
     }
 
 
@@ -56,8 +60,11 @@ public class Enemy_Range : Enemy
         newBullet.GetComponent<Enemy_Bullet>().BulletSetup();
 
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
-        rbNewBullet.mass = 20 / bulletSpeed;
-        rbNewBullet.velocity = bulletsDirection * bulletSpeed;
+
+        Vector3 bulletDirectionWithSpread = weaponData.ApplyWeaponSpread(bulletsDirection);
+
+        rbNewBullet.mass = 20 / weaponData.bulletSpeed;
+        rbNewBullet.velocity = bulletDirectionWithSpread * weaponData.bulletSpeed;
     }
 
     public override void EnterBattleMode()
@@ -66,6 +73,35 @@ public class Enemy_Range : Enemy
 
         base.EnterBattleMode();
         stateMachine.ChangeState(battleState);
+
+    }
+
+    //取得要用哪個weaponData
+    private void SetupWeapon()
+    {
+        List<Enemy_RangeWeaponData> filteredDate = new List<Enemy_RangeWeaponData>();
+
+        //從avalibleWeaponData中去找到指定武器的Data來用
+        foreach (var weaponData in avalibleWeaponData)
+        {
+            if (weaponData.weaponType == weaponType)
+            {
+                filteredDate.Add(weaponData);
+            }
+        }
+
+        if (filteredDate.Count > 0)
+        {
+            //隨機取一個
+            int radom = Random.Range(0, filteredDate.Count);
+            weaponData = filteredDate[radom];
+        }
+        else
+        {
+            Debug.LogWarning("找不到武器資料");
+        }
+
+        gunPoint = visuals.currentWeaponModel.GetComponent<Enemy_RangeWeaponModel>().gunPoint;
 
     }
 }

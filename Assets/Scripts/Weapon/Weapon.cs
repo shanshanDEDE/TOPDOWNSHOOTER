@@ -103,7 +103,7 @@ public class Weapon
 
     #region 子彈偏移方法
     //套用子彈偏移
-    public Vector3 ApplySpread(Vector3 originalDirection)
+    public Vector3 ApplyWeaponSpread(Vector3 originalDirection)
     {
         UpdateSpread();
 

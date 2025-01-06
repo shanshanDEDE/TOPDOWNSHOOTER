@@ -199,7 +199,7 @@ public class PlayerWeaponController : MonoBehaviour
         bulletScript.BulletSetup(currentWeapon.gunDistance, bulletImpactForce);
 
         //子彈偏移量
-        Vector3 bulletsDirection = currentWeapon.ApplySpread(BulletDirection());
+        Vector3 bulletsDirection = currentWeapon.ApplyWeaponSpread(BulletDirection());
 
         rbNewBullet.mass = REFERNCE_BULLET_SPEED / bulletSpeed;
         rbNewBullet.velocity = bulletsDirection * bulletSpeed;

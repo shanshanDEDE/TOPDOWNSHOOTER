@@ -9,6 +9,9 @@ public class BattleState_Range : EnemyState
     private float lastTimeShot = -10;
     private int bulletsShot = 0;
 
+    private int bulletsPerAttack;
+    private float weaponCooldown;
+
     public BattleState_Range(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
     {
         enemy = enemyBase as Enemy_Range;
@@ -17,6 +20,10 @@ public class BattleState_Range : EnemyState
     public override void Enter()
     {
         base.Enter();
+
+        //取得資料(使用的取得方法內未在ˋ一個範圍內隨機抽數)
+        bulletsPerAttack = enemy.weaponData.GetBulletsPerAttack();
+        weaponCooldown = enemy.weaponData.GetWeaponCooldown();
 
         enemy.visuals.EnableIK(true);
     }
@@ -57,22 +64,28 @@ public class BattleState_Range : EnemyState
     private void AttempToResetWeapon()
     {
         bulletsShot = 0;
-    }
 
-    private bool WeaponOutOfBullets()
-    {
-        return bulletsShot >= enemy.bulletsToShot;
+        //取得資料(使用的取得方法內未在ˋ一個範圍內隨機抽數)
+        bulletsPerAttack = enemy.weaponData.GetBulletsPerAttack();
+        weaponCooldown = enemy.weaponData.GetWeaponCooldown();
 
     }
 
     private bool WeaponOnCoolDown()
     {
-        return Time.time > lastTimeShot + enemy.weaponCooldown;
+        return Time.time > lastTimeShot + weaponCooldown;
     }
+
+    private bool WeaponOutOfBullets()
+    {
+        return bulletsShot >= bulletsPerAttack;
+
+    }
+
 
     private bool CanShoot()
     {
-        return Time.time > lastTimeShot + 1 / enemy.fireRate;
+        return Time.time > lastTimeShot + 1 / enemy.weaponData.fireRate;
     }
 
     private void Shoot()
