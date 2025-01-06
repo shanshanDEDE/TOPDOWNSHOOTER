@@ -10,6 +10,8 @@ public class Enemy_Range : Enemy
     public GameObject bulletPrefab;
     public Transform gunPoint;
     public float bulletSpeed = 20;
+    public int bulletsToShot = 5;           //進冷卻前發射子彈的數量
+    public float weaponCooldown = 1.5f;     //子彈射完後武器進冷卻時間
 
     public IdleState_Range idleState { get; private set; }
     public MoveState_Range moveState { get; private set; }
