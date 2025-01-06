@@ -17,6 +17,8 @@ public class BattleState_Range : EnemyState
     public override void Enter()
     {
         base.Enter();
+
+        enemy.visuals.EnableIK(true);
     }
 
 
@@ -24,7 +26,7 @@ public class BattleState_Range : EnemyState
     {
         base.Exit();
 
-
+        enemy.visuals.EnableIK(false);
     }
 
     public override void Update()

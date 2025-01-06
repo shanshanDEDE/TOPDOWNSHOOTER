@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public enum Enemy_MeleeWeaponType { OnHand, Throw, Unarmed }
 
@@ -17,6 +18,11 @@ public class Enemy_Visuals : MonoBehaviour
     [Header("Color")]
     [SerializeField] private Texture[] colorTextures;
     [SerializeField] private SkinnedMeshRenderer skinnedMeshRenderer;
+
+    [Header("Rig 相關")]
+    [SerializeField] private Transform leftHandIK;
+    [SerializeField] private Transform leftElbowIK;
+    [SerializeField] private Rig rig;
 
     //啟用或關閉武器Trail
     public void EnableWeaponTrail(bool enable)
@@ -106,6 +112,7 @@ public class Enemy_Visuals : MonoBehaviour
             {
                 //依照武器模組上的type決定要切換的動畫layer
                 SwitchAnimationLayer((int)weaponModel.weaponHoldType);
+                SetupLeftHandIK(weaponModel.leftHandTarget, weaponModel.leftElbowTarget);
                 return weaponModel.gameObject;
             }
         }
@@ -175,6 +182,21 @@ public class Enemy_Visuals : MonoBehaviour
         }
 
         anim.SetLayerWeight(layerIndex, 1);
+    }
+
+    //啟用或關閉IK
+    public void EnableIK(bool enable)
+    {
+        rig.weight = enable ? 1 : 0;
+    }
+
+    private void SetupLeftHandIK(Transform leftHandTarget, Transform leftElbowTarget)
+    {
+        leftHandIK.localPosition = leftHandTarget.localPosition;
+        leftHandIK.localRotation = leftHandTarget.localRotation;
+
+        leftElbowIK.localPosition = leftElbowTarget.localPosition;
+        leftElbowIK.localRotation = leftElbowTarget.localRotation;
     }
 
 }
