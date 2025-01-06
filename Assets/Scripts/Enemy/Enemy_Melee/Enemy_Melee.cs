@@ -21,7 +21,6 @@ public enum EnemyMelee_Type { Regular, Shield, Dodge, AxeThrow }
 
 public class Enemy_Melee : Enemy
 {
-    public Enemy_Visuals visuals { get; private set; }
 
     #region 狀態
     //宣告所有狀態
@@ -36,6 +35,9 @@ public class Enemy_Melee : Enemy
 
     [Header("Enemy 設定")]
     public EnemyMelee_Type meleeType;
+    public Enemy_MeleeWeaponType weaponType;
+
+
     public Transform shieldTransform;
     public float dodgeCooldown;
     private float lastTimeDodge = -10;
@@ -55,8 +57,6 @@ public class Enemy_Melee : Enemy
     protected override void Awake()
     {
         base.Awake();
-
-        visuals = GetComponent<Enemy_Visuals>();
 
         //初始化實例所有狀態
         idleState = new IdleState_Melee(this, stateMachine, "Idle");
@@ -126,7 +126,7 @@ public class Enemy_Melee : Enemy
         //如果是斧子丟擲類型則,顯示模組那邊設為thorw的類型
         if (meleeType == EnemyMelee_Type.AxeThrow)
         {
-            visuals.SetupWeaponType(Enemy_MeleeWeaponType.Throw);
+            weaponType = Enemy_MeleeWeaponType.Throw;
         }
 
         //如果是盾
@@ -134,13 +134,13 @@ public class Enemy_Melee : Enemy
         {
             anim.SetFloat("ChaseIndex", 1);
             shieldTransform.gameObject.SetActive(true);
-            visuals.SetupWeaponType(Enemy_MeleeWeaponType.OnHand);
+            weaponType = Enemy_MeleeWeaponType.OnHand;
         }
 
         //如果是閃躲
         if (meleeType == EnemyMelee_Type.Dodge)
         {
-            visuals.SetupWeaponType(Enemy_MeleeWeaponType.Unarmed);
+            weaponType = Enemy_MeleeWeaponType.Unarmed;
         }
     }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy_Range : Enemy
 {
     public Transform weaponholder;
+    public Enemy_RangeWeaponType weaponType;
 
     public float fireRate = 1;  //子彈發射間隔
     public GameObject bulletPrefab;
@@ -31,6 +32,7 @@ public class Enemy_Range : Enemy
         base.Start();
 
         stateMachine.Initialize(idleState);
+        visuals.SetupLook();
     }
 
 

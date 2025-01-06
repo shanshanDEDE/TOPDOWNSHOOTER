@@ -4,11 +4,10 @@ using UnityEngine;
 
 public enum Enemy_MeleeWeaponType { OnHand, Throw, Unarmed }
 
+public enum Enemy_RangeWeaponType { Pistol, Revolver, Shotgun, AutoRifle, Rifle }
+
 public class Enemy_Visuals : MonoBehaviour
 {
-    [Header("Weapon model")]
-    [SerializeField] private Enemy_WeaponModel[] weaponModels;  //武器模型
-    [SerializeField] private Enemy_MeleeWeaponType weaponType;
     public GameObject currentWeaponModel { get; private set; }
 
     [Header("Corruption visuls(腐敗水晶相關視覺)")]
@@ -19,15 +18,6 @@ public class Enemy_Visuals : MonoBehaviour
     [SerializeField] private Texture[] colorTextures;
     [SerializeField] private SkinnedMeshRenderer skinnedMeshRenderer;
 
-    private void Awake()
-    {
-
-        weaponModels = GetComponentsInChildren<Enemy_WeaponModel>(true);    //取得所有武器模型 true是代表要包含子物件
-
-        //取得所有腐敗水晶
-        CollectCorruptionCrystals();
-    }
-
     //啟用或關閉武器Trail
     public void EnableWeaponTrail(bool enable)
     {
@@ -35,13 +25,6 @@ public class Enemy_Visuals : MonoBehaviour
         Enemy_WeaponModel currentWeaponScript = currentWeaponModel.GetComponent<Enemy_WeaponModel>();
         //去啟用或關閉Trail
         currentWeaponScript.EnableTrailEffect(enable);
-    }
-
-
-    //設定武器類型
-    public void SetupWeaponType(Enemy_MeleeWeaponType type)
-    {
-        weaponType = type;
     }
 
     public void SetupLook()
@@ -55,6 +38,7 @@ public class Enemy_Visuals : MonoBehaviour
     private void SetupRandomCorruption()
     {
         List<int> avalibleIndesx = new List<int>();
+        corruptionCrystals = CollectCorruptionCrystals();   //取得所有腐敗水晶
 
         //將所有腐敗水晶加入avalibleIndesx列表並且全部關閉
         for (int i = 0; i < corruptionCrystals.Length; i++)
@@ -77,13 +61,79 @@ public class Enemy_Visuals : MonoBehaviour
         }
     }
 
+    //設定隨機顏色
+    private void SetupRandomColor()
+    {
+        int randomIndex = Random.Range(0, colorTextures.Length);
+
+        Material newMat = new Material(skinnedMeshRenderer.material);
+        newMat.mainTexture = colorTextures[randomIndex];
+        skinnedMeshRenderer.material = newMat;
+    }
+
     //設定隨機武器
     private void SetupRandomWeapon()
     {
+        bool thisEnemyIsMelee = GetComponent<Enemy_Melee>() != null;
+        bool thisEnemyIsRange = GetComponent<Enemy_Range>() != null;
+
+        if (thisEnemyIsRange)
+        {
+            currentWeaponModel = FindRangeWeaponModel();
+        }
+
+        if (thisEnemyIsMelee)
+        {
+            currentWeaponModel = FindMeleeWeaponModel();
+        }
+
+        //顯示該武器
+        currentWeaponModel.SetActive(true);
+
+        OverrideAnimatorControllerIfCan();
+
+    }
+
+    //找出符合條件的武器(遠程)
+    private GameObject FindRangeWeaponModel()
+    {
+        Enemy_RangeWeaponModel[] weaponModels = GetComponentsInChildren<Enemy_RangeWeaponModel>(true);    //取得所有武器模型 true是代表要包含子物件
+        Enemy_RangeWeaponType weaponType = GetComponent<Enemy_Range>().weaponType;    //取得武器類型
+
         foreach (var weaponModel in weaponModels)
         {
-            weaponModel.gameObject.SetActive(false);
+            if (weaponModel.weaponType == weaponType)
+            {
+                return weaponModel.gameObject;
+            }
         }
+
+        Debug.LogWarning("沒有找到range武器模組");
+
+        return null;
+    }
+
+    //取得所有腐敗水晶
+    private GameObject[] CollectCorruptionCrystals()
+    {
+        //取得所有腐敗水晶
+        Ennemy_CorruptionCrystal[] crystalComponents = GetComponentsInChildren<Ennemy_CorruptionCrystal>(true);
+        GameObject[] corruptionCrystals = new GameObject[crystalComponents.Length];      //依照crystalComponents.Length長度設置陣列大小
+
+        //將所有腐敗水晶加入陣列
+        for (int i = 0; i < crystalComponents.Length; i++)
+        {
+            corruptionCrystals[i] = crystalComponents[i].gameObject;
+        }
+
+        return corruptionCrystals;
+    }
+
+    //找出符合條件的武器(近戰)(有random邏輯去隨機取一個)
+    private GameObject FindMeleeWeaponModel()
+    {
+        Enemy_WeaponModel[] weaponModels = GetComponentsInChildren<Enemy_WeaponModel>(true);    //取得所有武器模型 true是代表要包含子物件
+        Enemy_MeleeWeaponType weaponType = GetComponent<Enemy_Melee>().weaponType;    //取得武器類型
 
         List<Enemy_WeaponModel> filteredWeaponModels = new List<Enemy_WeaponModel>();
 
@@ -98,47 +148,18 @@ public class Enemy_Visuals : MonoBehaviour
 
         //符合條件的內隨機取一個
         int randomIndex = Random.Range(0, filteredWeaponModels.Count);
-        currentWeaponModel = filteredWeaponModels[randomIndex].gameObject;
-        //顯示該武器
-        currentWeaponModel.SetActive(true);
-
-        OverrideAnimatorControllerIfCan();
-
+        return filteredWeaponModels[randomIndex].gameObject;
     }
 
     private void OverrideAnimatorControllerIfCan()
     {
         //如果有設定AnimatorOverrideController(不為null)
-        AnimatorOverrideController overrideController = currentWeaponModel.GetComponent<Enemy_WeaponModel>().overrideController;
+        AnimatorOverrideController overrideController = currentWeaponModel.GetComponent<Enemy_WeaponModel>()?.overrideController;
 
         //則切換原先的動畫到新的動畫
         if (overrideController != null)
         {
             GetComponentInChildren<Animator>().runtimeAnimatorController = overrideController;
-        }
-    }
-
-    //設定隨機顏色
-    private void SetupRandomColor()
-    {
-        int randomIndex = Random.Range(0, colorTextures.Length);
-
-        Material newMat = new Material(skinnedMeshRenderer.material);
-        newMat.mainTexture = colorTextures[randomIndex];
-        skinnedMeshRenderer.material = newMat;
-    }
-
-    //取得所有腐敗水晶
-    private void CollectCorruptionCrystals()
-    {
-        //取得所有腐敗水晶
-        Ennemy_CorruptionCrystal[] crystalComponents = GetComponentsInChildren<Ennemy_CorruptionCrystal>(true);
-        corruptionCrystals = new GameObject[crystalComponents.Length];      //依照crystalComponents.Length長度設置陣列大小
-
-        //將所有腐敗水晶加入陣列
-        for (int i = 0; i < crystalComponents.Length; i++)
-        {
-            corruptionCrystals[i] = crystalComponents[i].gameObject;
         }
     }
 }

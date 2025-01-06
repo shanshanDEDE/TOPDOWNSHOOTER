@@ -35,6 +35,9 @@ public class Enemy : MonoBehaviour
 
     public EnemyStateMachine stateMachine { get; private set; }
 
+    public Enemy_Visuals visuals { get; private set; }
+
+
     //宣告所有狀態
     //-----------(這邊可以針對不同敵人在他們那邊宣告(目前這個類的子類那邊))-----------
 
@@ -43,6 +46,8 @@ public class Enemy : MonoBehaviour
     {
         //初始化實例狀態機
         stateMachine = new EnemyStateMachine();
+
+        visuals = GetComponent<Enemy_Visuals>();
 
         //取的agent組件
         agent = GetComponent<NavMeshAgent>();
