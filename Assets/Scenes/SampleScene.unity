@@ -9506,11 +9506,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 9021782404879550327}
-  - {fileID: 1074828834331504568}
-  - {fileID: 3754090396803355122}
-  - {fileID: 5343886310067511124}
   - {fileID: 2801959610191176758}
+  - {fileID: 5343886310067511124}
+  - {fileID: 3754090396803355122}
+  - {fileID: 1074828834331504568}
+  - {fileID: 9021782404879550327}
   m_Father: {fileID: 8415708998242171765}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &243178350737225380
@@ -21857,6 +21857,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 1
+  weaponHoldType: 0
 --- !u!1 &5773656160762645098
 GameObject:
   m_ObjectHideFlags: 0
@@ -23806,6 +23807,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 0
+  weaponHoldType: 0
 --- !u!1 &6430505291943444511
 GameObject:
   m_ObjectHideFlags: 0
@@ -26668,6 +26670,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 2
+  weaponHoldType: 1
 --- !u!4 &7871949000428551102
 Transform:
   m_ObjectHideFlags: 0
@@ -28026,6 +28029,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 3
+  weaponHoldType: 0
 --- !u!54 &8461021779309859241
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -28388,7 +28392,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthPoints: 20
   idleTime: 1.5
-  aggresionRange: 15
+  aggresionRange: 1
   moveSpeed: 1.5
   chaseSpeed: 4
   turnSpeed: 5
@@ -29313,6 +29317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 4
+  weaponHoldType: 2
 --- !u!4 &9052703895578714971
 Transform:
   m_ObjectHideFlags: 0

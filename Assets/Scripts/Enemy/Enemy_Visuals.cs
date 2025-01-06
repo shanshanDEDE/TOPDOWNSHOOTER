@@ -104,6 +104,8 @@ public class Enemy_Visuals : MonoBehaviour
         {
             if (weaponModel.weaponType == weaponType)
             {
+                //依照武器模組上的type決定要切換的動畫layer
+                SwitchAnimationLayer((int)weaponModel.weaponHoldType);
                 return weaponModel.gameObject;
             }
         }
@@ -162,4 +164,17 @@ public class Enemy_Visuals : MonoBehaviour
             GetComponentInChildren<Animator>().runtimeAnimatorController = overrideController;
         }
     }
+
+    private void SwitchAnimationLayer(int layerIndex)
+    {
+        Animator anim = GetComponentInChildren<Animator>();
+
+        for (int i = 1; i < anim.layerCount; i++)
+        {
+            anim.SetLayerWeight(i, 0);
+        }
+
+        anim.SetLayerWeight(layerIndex, 1);
+    }
+
 }
