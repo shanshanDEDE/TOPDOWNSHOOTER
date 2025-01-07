@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -28,6 +29,14 @@ public class Enemy_Range : Enemy
     public Transform weaponholder;
     public GameObject bulletPrefab;
 
+    [Header("Aim details")]
+    public float slowAim = 4;
+    public float fastAim = 20;
+    public Transform aim;
+    public Transform playersBody;
+    public LayerMask whatToIgnore;
+
+
     [SerializeField] List<Enemy_RangeWeaponData> avalibleWeaponData;
 
     #region 狀態
@@ -53,6 +62,9 @@ public class Enemy_Range : Enemy
     protected override void Start()
     {
         base.Start();
+
+        playersBody = player.GetComponent<Player>().playerBody;
+        aim.parent = null;
 
         stateMachine.Initialize(idleState);
         visuals.SetupLook();
@@ -157,7 +169,7 @@ public class Enemy_Range : Enemy
     {
         anim.SetTrigger("Shoot");
 
-        Vector3 bulletsDirection = ((player.position + Vector3.up) - gunPoint.position).normalized;
+        Vector3 bulletsDirection = (aim.position - gunPoint.position).normalized;
 
         GameObject newBullet = ObjectPool.instance.GetObject(bulletPrefab, gunPoint.position);
         newBullet.transform.position = gunPoint.position;
@@ -212,7 +224,44 @@ public class Enemy_Range : Enemy
         }
 
         gunPoint = visuals.currentWeaponModel.GetComponent<Enemy_RangeWeaponModel>().gunPoint;
-
     }
 
+    #region 敵人 Aim region
+
+    //依據是否准心在依定範圍內決定更新瞄準速度
+    public void UpdateAimPosition()
+    {
+        float aimSpeed = IsAimOnPlayer() ? fastAim : slowAim;
+        aim.position = Vector3.MoveTowards(aim.position, playersBody.position, aimSpeed * Time.deltaTime);
+    }
+
+    //準心是否在敵人身上
+    public bool IsAimOnPlayer()
+    {
+        float distanceAimToPlayer = Vector3.Distance(aim.position, player.position);
+
+        return distanceAimToPlayer < 2;
+    }
+
+    //是否看到玩家
+    public bool IsSeeingPlayer()
+    {
+        //自己本身的位置
+        Vector3 myPosition = transform.position + Vector3.up;
+
+        Vector3 directionToPlayer = playersBody.position - myPosition;
+
+        //~whatToIgnore加上~表示有那些層是不要的意思
+        if (Physics.Raycast(myPosition, directionToPlayer, out RaycastHit hit, Mathf.Infinity, ~whatToIgnore))
+        {
+            if (hit.transform == player)
+            {
+                UpdateAimPosition();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    #endregion
 }

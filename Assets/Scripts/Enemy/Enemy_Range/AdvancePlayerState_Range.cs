@@ -29,15 +29,24 @@ public class AdvancePlayerState_Range : EnemyState
         base.Update();
 
         playerPos = enemy.player.transform.position;
+        enemy.UpdateAimPosition();//更新準新位置
 
         //往玩家移動
         enemy.agent.SetDestination(playerPos);
         //面相目標
         enemy.FaceTarget(GetNextPathPoint());
 
-        if (Vector3.Distance(enemy.transform.position, playerPos) < enemy.advanceStoppingDistance) //如果距離小於追擊停止距離
+        if (CanEnterBattleMode())     //判斷是否可以進入戰鬥模式
         {
             stateMachine.ChangeState(enemy.battleState);
         }
+    }
+
+    //判斷是否可以進入戰鬥模式
+    private bool CanEnterBattleMode()
+    {
+        //如果距離小於追擊停止距離並且有看到玩家
+        return Vector3.Distance(enemy.transform.position, playerPos) < enemy.advanceStoppingDistance
+            && enemy.IsSeeingPlayer();
     }
 }

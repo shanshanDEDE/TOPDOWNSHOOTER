@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BattleState_Range : EnemyState
@@ -46,6 +47,12 @@ public class BattleState_Range : EnemyState
     {
         base.Update();
 
+        //如果看見玩家(這邊因為是在玩家進入攻擊範圍時進入battlestate才會執行這邊,因此可以確保這邊做使用沒關西)
+        if (enemy.IsSeeingPlayer())
+        {
+            enemy.FaceTarget(enemy.aim.position);
+        }
+
         //檢查玩家是否還在攻擊範圍內,如果不再就切會成追擊模式
         if (enemy.IsPlayerInAgrresionRange() == false)
         {
@@ -54,7 +61,6 @@ public class BattleState_Range : EnemyState
 
         ChangeCoverIfShot();
 
-        enemy.FaceTarget(enemy.player.position);
 
         //如果進冷卻前該發射的子彈射完了,就結束
         if (WeaponOutOfBullets())
@@ -68,8 +74,8 @@ public class BattleState_Range : EnemyState
             return;
         }
 
-        //如果可以射擊
-        if (CanShoot())
+        //如果可以射擊 && 準心是否在敵人身上
+        if (CanShoot() && enemy.IsAimOnPlayer())
         {
             Shoot();    //射擊
         }
