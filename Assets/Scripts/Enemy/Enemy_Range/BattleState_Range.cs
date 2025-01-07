@@ -12,6 +12,8 @@ public class BattleState_Range : EnemyState
     private int bulletsPerAttack;
     private float weaponCooldown;
 
+    private float coverCheckTimer;
+
     public BattleState_Range(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
     {
         enemy = enemyBase as Enemy_Range;
@@ -39,6 +41,7 @@ public class BattleState_Range : EnemyState
     public override void Update()
     {
         base.Update();
+        ChangeCoverIfShot();
 
         enemy.FaceTarget(enemy.player.position);
 
@@ -60,6 +63,54 @@ public class BattleState_Range : EnemyState
             Shoot();    //射擊
         }
     }
+
+    private void ChangeCoverIfShot()
+    {
+        if (enemy.coverPerk != CoverPerk.CanTakeAndChangeCover) return;
+
+        coverCheckTimer -= Time.deltaTime;
+
+        if (coverCheckTimer < 0)
+        {
+            coverCheckTimer = 0.5f;     //每0.5秒檢查一次
+
+            //如果玩家在敵人視線內沒有遮掩物或者玩家離太近
+            //則尋找下一個目標
+            if (IsPlayerInClearSight() || IsPlayerClose())
+            {
+                if (enemy.CanGetCover())
+                {
+                    stateMachine.ChangeState(enemy.runToCoverState);
+                }
+            }
+
+        }
+    }
+
+    #region 掩護系統region
+
+    //是否玩家離太近
+    private bool IsPlayerClose()
+    {
+        return Vector3.Distance(enemy.transform.position, enemy.player.transform.position) < enemy.safeDistance;
+    }
+
+    //如果玩家在敵人視線內沒有遮掩物
+    private bool IsPlayerInClearSight()
+    {
+        Vector3 directionToPlayer = enemy.player.transform.position - enemy.transform.position;
+
+        if (Physics.Raycast(enemy.transform.position, directionToPlayer, out RaycastHit hit))
+        {
+            return hit.collider.gameObject.GetComponentInParent<Player>();
+        }
+
+        return false;
+    }
+
+    #endregion
+
+    #region 武器region
 
     private void AttempToResetWeapon()
     {
@@ -95,4 +146,6 @@ public class BattleState_Range : EnemyState
 
         bulletsShot++;
     }
+
+    #endregion
 }
