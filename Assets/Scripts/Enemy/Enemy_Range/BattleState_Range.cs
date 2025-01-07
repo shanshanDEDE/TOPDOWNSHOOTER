@@ -54,7 +54,7 @@ public class BattleState_Range : EnemyState
         }
 
         //檢查玩家是否還在攻擊範圍內,如果不再就切會成追擊模式
-        if (enemy.IsPlayerInAgrresionRange() == false)
+        if (enemy.IsPlayerInAgrresionRange() == false && ReadyToLeaveCover())
         {
             stateMachine.ChangeState(enemy.advancePlayerState);
         }
@@ -81,6 +81,14 @@ public class BattleState_Range : EnemyState
         }
     }
 
+    #region 掩護系統region
+
+    //是否準備好離開掩體
+    private bool ReadyToLeaveCover()
+    {
+        return Time.time > enemy.minSCoverTime + enemy.runToCoverState.lastTimeTookCover;
+    }
+
     private void ChangeCoverIfShot()
     {
         if (enemy.coverPerk != CoverPerk.CanTakeAndChangeCover) return;
@@ -93,7 +101,7 @@ public class BattleState_Range : EnemyState
 
             //如果玩家在敵人視線內沒有遮掩物或者玩家離太近
             //則尋找下一個目標
-            if (IsPlayerInClearSight() || IsPlayerClose())
+            if (ReadyToChangeCover())
             {
                 if (enemy.CanGetCover())
                 {
@@ -104,8 +112,16 @@ public class BattleState_Range : EnemyState
         }
     }
 
-    #region 掩護系統region
+    //是否準備好可以切換到下一個掩護點
+    private bool ReadyToChangeCover()
+    {
+        //如果玩家在敵人視線內沒有遮掩物或者玩家離太近
+        bool inDanger = IsPlayerInClearSight() || IsPlayerClose();
+        //如果時間大於上次在advancePlayerState+敵人的advanceTime的話
+        bool advanceTimeIsOver = Time.time > enemy.advancePlayerState.lastTimeAdvanced + enemy.advanceTime;
 
+        return inDanger && advanceTimeIsOver;
+    }
     //是否玩家離太近
     private bool IsPlayerClose()
     {

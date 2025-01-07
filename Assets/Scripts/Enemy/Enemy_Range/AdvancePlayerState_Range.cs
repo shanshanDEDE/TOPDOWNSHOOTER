@@ -7,6 +7,8 @@ public class AdvancePlayerState_Range : EnemyState
     private Enemy_Range enemy;
     private Vector3 playerPos;
 
+    public float lastTimeAdvanced { get; private set; }
+
     public AdvancePlayerState_Range(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
     {
         enemy = enemyBase as Enemy_Range;
@@ -21,6 +23,12 @@ public class AdvancePlayerState_Range : EnemyState
 
         enemy.agent.isStopped = false;          //啟用移動
         enemy.agent.speed = enemy.advanceSpeed; //設定速度
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        lastTimeAdvanced = Time.time;
     }
 
 

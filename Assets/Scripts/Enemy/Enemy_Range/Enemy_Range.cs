@@ -14,8 +14,10 @@ public class Enemy_Range : Enemy
     [Header("前進 perk")]
     public float advanceSpeed;
     public float advanceStoppingDistance;
+    public float advanceTime = 2.5f;
 
     [Header("掩護系統")]
+    public float minSCoverTime;
     public float safeDistance;
     public CoverPoint currentCover { get; private set; }
     public CoverPoint lastCover { get; private set; }
