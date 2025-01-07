@@ -7,11 +7,19 @@ using UnityEngine;
 public enum CoverPerk { Unavalible, CanTakeCover, CanTakeAndChangeCover }
 
 public enum UnstoppablePerk { Unavalible, Unstoppable }
+
+public enum GrenadePerk { Unavalible, CanThrowGrenade }
+
 public class Enemy_Range : Enemy
 {
     [Header("敵人 perk")]
     public CoverPerk coverPerk;
     public UnstoppablePerk unstoppablePerk;
+    public GrenadePerk grenadePerk;
+
+    [Header("Grenade(手榴彈) perk")]
+    public float grenadeCooldown;
+    private float lastTimeGrenadeThrown = -10;
 
     [Header("前進 perk")]
     public float advanceSpeed;
@@ -50,6 +58,7 @@ public class Enemy_Range : Enemy
     public BattleState_Range battleState { get; private set; }
     public RunToCoverState_Range runToCoverState { get; private set; }
     public AdvancePlayerState_Range advancePlayerState { get; private set; }
+    public ThrowGrenadeState_Range throwGrenadeState { get; private set; }
     #endregion
 
     protected override void Awake()
@@ -61,7 +70,7 @@ public class Enemy_Range : Enemy
         battleState = new BattleState_Range(this, stateMachine, "Battle");
         runToCoverState = new RunToCoverState_Range(this, stateMachine, "Run");
         advancePlayerState = new AdvancePlayerState_Range(this, stateMachine, "Advance");
-
+        throwGrenadeState = new ThrowGrenadeState_Range(this, stateMachine, "ThrowGrenade");
     }
 
     protected override void Start()
@@ -97,6 +106,47 @@ public class Enemy_Range : Enemy
             advanceSpeed = 1;
             anim.SetFloat("AdvanceAnimIndex", 1); //1是慢速行走的動畫
         }
+    }
+
+    //是否可以丟手榴彈
+    public bool CanThrowGrenade()
+    {
+        if (grenadePerk == GrenadePerk.Unavalible)
+        {
+            return false;
+        }
+
+        if (Vector3.Distance(player.transform.position, transform.position) < safeDistance)
+        {
+            return false;
+        }
+
+        if (Time.time > grenadeCooldown + lastTimeGrenadeThrown)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    //丟手榴彈
+    public void ThrowGrenade()
+    {
+        lastTimeGrenadeThrown = Time.time;
+        Debug.Log("Throw Grenade");
+    }
+
+    public override void EnterBattleMode()
+    {
+        if (inBattleMode) return;
+
+        base.EnterBattleMode();
+
+        if (CanGetCover())
+            stateMachine.ChangeState(runToCoverState);
+        else
+            stateMachine.ChangeState(battleState);
+
     }
 
     #region  Cover System
@@ -201,19 +251,6 @@ public class Enemy_Range : Enemy
 
         rbNewBullet.mass = 20 / weaponData.bulletSpeed;
         rbNewBullet.velocity = bulletDirectionWithSpread * weaponData.bulletSpeed;
-    }
-
-    public override void EnterBattleMode()
-    {
-        if (inBattleMode) return;
-
-        base.EnterBattleMode();
-
-        if (CanGetCover())
-            stateMachine.ChangeState(runToCoverState);
-        else
-            stateMachine.ChangeState(battleState);
-
     }
 
     //取得要用哪個weaponData
