@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c7a8f072870d1694cabdfffa6e1cdb2c
+guid: d2784ffac03a0264399090cd05e0a367
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Run with weapon
+      name: Slow walk rifle
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 20
+      lastFrame: 39
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

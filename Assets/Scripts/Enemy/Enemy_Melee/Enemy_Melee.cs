@@ -121,7 +121,8 @@ public class Enemy_Melee : Enemy
         }
     }
 
-    private void InitializePerk()
+    //初始化Perk
+    protected override void InitializePerk()
     {
         //如果是斧子丟擲類型則,顯示模組那邊設為thorw的類型
         if (meleeType == EnemyMelee_Type.AxeThrow)

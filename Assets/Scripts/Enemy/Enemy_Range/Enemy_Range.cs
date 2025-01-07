@@ -6,15 +6,17 @@ using UnityEngine;
 
 public enum CoverPerk { Unavalible, CanTakeCover, CanTakeAndChangeCover }
 
+public enum UnstoppablePerk { Unavalible, Unstoppable }
 public class Enemy_Range : Enemy
 {
     [Header("敵人 perk")]
     public CoverPerk coverPerk;
+    public UnstoppablePerk unstoppablePerk;
 
     [Header("前進 perk")]
     public float advanceSpeed;
     public float advanceStoppingDistance;
-    public float advanceTime = 2.5f;
+    public float advanceDuration = 2.5f;
 
     [Header("掩護系統")]
     public float minSCoverTime;
@@ -23,6 +25,7 @@ public class Enemy_Range : Enemy
     public CoverPoint lastCover { get; private set; }
 
     [Header("武器細節")]
+    public float attackDelay;
     public Enemy_RangeWeaponType weaponType;
     public Enemy_RangeWeaponData weaponData;
 
@@ -68,6 +71,8 @@ public class Enemy_Range : Enemy
         playersBody = player.GetComponent<Player>().playerBody;
         aim.parent = null;
 
+        InitializePerk();
+
         stateMachine.Initialize(idleState);
         visuals.SetupLook();
 
@@ -81,6 +86,17 @@ public class Enemy_Range : Enemy
         base.Update();
 
         stateMachine.CurrentState.Update();
+    }
+
+    //初始化 perk
+    protected override void InitializePerk()
+    {
+        //如果是Unstoppable
+        if (IsUnstoppable())
+        {
+            advanceSpeed = 1;
+            anim.SetFloat("AdvanceAnimIndex", 1); //1是慢速行走的動畫
+        }
     }
 
     #region  Cover System
@@ -266,4 +282,8 @@ public class Enemy_Range : Enemy
     }
 
     #endregion
+
+    //取得是否為Unstoppable
+    public bool IsUnstoppable() => unstoppablePerk == UnstoppablePerk.Unstoppable;
+
 }

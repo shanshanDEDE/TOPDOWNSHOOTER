@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -86,6 +87,12 @@ public class Enemy : MonoBehaviour
         //透過update所有狀態機的父類的update來持續進行不同狀態的行為
         //-----------(這邊可以針對不同敵人在他們那邊宣告(目前這個類的子類那邊))-----------
     }
+
+    protected virtual void InitializePerk()
+    {
+
+    }
+
 
     //判斷是否進入戰鬥模式
     protected bool ShouldEnterBattleMode()

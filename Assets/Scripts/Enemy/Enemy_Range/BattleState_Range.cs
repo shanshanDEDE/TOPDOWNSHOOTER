@@ -14,6 +14,7 @@ public class BattleState_Range : EnemyState
     private float weaponCooldown;
 
     private float coverCheckTimer;
+    private bool firstTimeAttack = true;
 
     public BattleState_Range(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
     {
@@ -24,23 +25,17 @@ public class BattleState_Range : EnemyState
     {
         base.Enter();
 
+        SetupValueFirstAttack();    //初始設定值
+
         //針對Enemy_Range這個敵人防止他因前一個狀態的移動而飄移
         enemy.agent.isStopped = true;
         enemy.agent.velocity = Vector3.zero;
 
-        //取得資料(使用的取得方法內未在ˋ一個範圍內隨機抽數)
-        bulletsPerAttack = enemy.weaponData.GetBulletsPerAttack();
-        weaponCooldown = enemy.weaponData.GetWeaponCooldown();
+
 
         enemy.visuals.EnableIK(true, true);
-    }
 
-
-    public override void Exit()
-    {
-        base.Exit();
-
-        enemy.visuals.EnableIK(false, false);
+        stateTimer = enemy.attackDelay; //延遲射擊時間
     }
 
     public override void Update()
@@ -53,18 +48,31 @@ public class BattleState_Range : EnemyState
             enemy.FaceTarget(enemy.aim.position);
         }
 
-        //檢查玩家是否還在攻擊範圍內,如果不再就切會成追擊模式
-        if (enemy.IsPlayerInAgrresionRange() == false && ReadyToLeaveCover())
+        //是否應該追擊玩家
+        if (MustAdvancePlayer())
         {
             stateMachine.ChangeState(enemy.advancePlayerState);
         }
 
-        ChangeCoverIfShot();
+        ChangeCoverIfShould();  //是否應該切換去找新的掩護點
 
+        if (stateTimer > 0)
+        {
+            return;
+        }
 
         //如果進冷卻前該發射的子彈射完了,就結束
         if (WeaponOutOfBullets())
         {
+            //如果為Unstoppable並且準備好繼續走
+            if (enemy.IsUnstoppable() && UnStoppableWalkRead())
+            {
+                //設定追擊時間
+                enemy.advanceDuration = weaponCooldown;
+                //進入追擊
+                stateMachine.ChangeState(enemy.advancePlayerState);
+            }
+
             //如果武器冷卻結束
             if (WeaponOnCoolDown())
             {
@@ -81,6 +89,28 @@ public class BattleState_Range : EnemyState
         }
     }
 
+    //是否應該追擊敵人
+    private bool MustAdvancePlayer()
+    {
+        if (enemy.IsUnstoppable())
+            return false;
+
+        //是否玩家是在攻擊範圍內
+        return enemy.IsPlayerInAgrresionRange() == false && ReadyToLeaveCover();
+    }
+
+    //是否可以繼續走
+    private bool UnStoppableWalkRead()
+    {
+        //距離玩家距離
+        float distanceToPlayer = Vector3.Distance(enemy.transform.position, enemy.player.position);
+        bool outOfStoppingDistance = distanceToPlayer > enemy.advanceStoppingDistance;               //距離玩家大於追擊距離
+        bool unstoppableWalkOnCooldown =
+            Time.time < enemy.weaponData.minWeaponCooldown + enemy.advancePlayerState.lastTimeAdvanced;
+
+        return outOfStoppingDistance && unstoppableWalkOnCooldown == false;
+    }
+
     #region 掩護系統region
 
     //是否準備好離開掩體
@@ -89,7 +119,7 @@ public class BattleState_Range : EnemyState
         return Time.time > enemy.minSCoverTime + enemy.runToCoverState.lastTimeTookCover;
     }
 
-    private void ChangeCoverIfShot()
+    private void ChangeCoverIfShould()
     {
         if (enemy.coverPerk != CoverPerk.CanTakeAndChangeCover) return;
 
@@ -117,10 +147,10 @@ public class BattleState_Range : EnemyState
     {
         //如果玩家在敵人視線內沒有遮掩物或者玩家離太近
         bool inDanger = IsPlayerInClearSight() || IsPlayerClose();
-        //如果時間大於上次在advancePlayerState+敵人的advanceTime的話
-        bool advanceTimeIsOver = Time.time > enemy.advancePlayerState.lastTimeAdvanced + enemy.advanceTime;
+        //如果時間大於上次在advancePlayerState+敵人的advanceDuration的話
+        bool advanceDurationIsOver = Time.time > enemy.advancePlayerState.lastTimeAdvanced + enemy.advanceDuration;
 
-        return inDanger && advanceTimeIsOver;
+        return inDanger && advanceDurationIsOver;
     }
     //是否玩家離太近
     private bool IsPlayerClose()
@@ -178,6 +208,19 @@ public class BattleState_Range : EnemyState
         lastTimeShot = Time.time;
 
         bulletsShot++;
+    }
+
+    //初始設定值
+    private void SetupValueFirstAttack()
+    {
+        if (firstTimeAttack)
+        {
+            firstTimeAttack = false;
+
+            //取得資料(使用的取得方法內未在一個範圍內隨機抽數)
+            bulletsPerAttack = enemy.weaponData.GetBulletsPerAttack();
+            weaponCooldown = enemy.weaponData.GetWeaponCooldown();
+        }
     }
 
     #endregion
