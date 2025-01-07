@@ -6,8 +6,8 @@ public class Enemy_Range : Enemy
 {
     [Header("掩護系統")]
     public bool canUseCovers = true;
-    public CoverPoint lastCover;
-    public List<Cover> allCovers = new List<Cover>();
+    public CoverPoint currentCover { get; private set; }
+    public CoverPoint lastCover { get; private set; }
 
     [Header("武器細節")]
     public Enemy_RangeWeaponType weaponType;
@@ -20,10 +20,12 @@ public class Enemy_Range : Enemy
 
     [SerializeField] List<Enemy_RangeWeaponData> avalibleWeaponData;
 
+    #region 狀態
     public IdleState_Range idleState { get; private set; }
     public MoveState_Range moveState { get; private set; }
     public BattleState_Range battleState { get; private set; }
     public RunToCoverState_Range runToCoverState { get; private set; }
+    #endregion
 
     protected override void Awake()
     {
@@ -45,9 +47,6 @@ public class Enemy_Range : Enemy
 
         //取得要用哪個weaponData
         SetupWeapon();
-
-        //收集附近的Covers加到allCovers
-        allCovers.AddRange(CollectNearByCovers());
     }
 
 
@@ -60,13 +59,32 @@ public class Enemy_Range : Enemy
 
     #region  Cover System
 
-    public Transform AttemptToFindCover()
+    public bool CanGetCover()
+    {
+        if (canUseCovers == false)
+        {
+            return false;
+        }
+
+        currentCover = AttemptToFindCover()?.GetComponent<CoverPoint>();
+
+        if (lastCover != currentCover && currentCover != null)
+        {
+            return true;
+        }
+
+        Debug.Log("找不到Cover");
+        return false;
+
+    }
+
+    private Transform AttemptToFindCover()
     {
         List<CoverPoint> collectedCoverPoints = new List<CoverPoint>();
 
-        foreach (Cover cover in allCovers)
+        foreach (Cover cover in CollectNearByCovers())
         {
-            collectedCoverPoints.AddRange(cover.GetCoverPoints());
+            collectedCoverPoints.AddRange(cover.GetValidCoverPoints(transform));
         }
 
         CoverPoint closestCoverPoint = null;
@@ -86,10 +104,18 @@ public class Enemy_Range : Enemy
 
         if (closestCoverPoint != null)
         {
-            lastCover = closestCoverPoint;
+            //將上一個Cover的occupied設為false
+            lastCover?.SetOccupied(false);
+            lastCover = currentCover;
+
+            currentCover = closestCoverPoint;
+            //將這個Cover的occupied設為true
+            currentCover.SetOccupied(true);
+
+            return currentCover.transform;
         }
 
-        return lastCover.transform;
+        return null;
     }
 
     //收集附近的Covers
@@ -141,7 +167,7 @@ public class Enemy_Range : Enemy
 
         base.EnterBattleMode();
 
-        if (canUseCovers)
+        if (CanGetCover())
             stateMachine.ChangeState(runToCoverState);
         else
             stateMachine.ChangeState(battleState);

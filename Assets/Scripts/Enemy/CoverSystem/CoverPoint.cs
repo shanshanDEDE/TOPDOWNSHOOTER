@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class CoverPoint : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public bool occupied; //occupied翻譯為佔領的意思
 
-    // Update is called once per frame
-    void Update()
+    public void SetOccupied(bool occupied)
     {
-        
+        this.occupied = occupied;
     }
 }
