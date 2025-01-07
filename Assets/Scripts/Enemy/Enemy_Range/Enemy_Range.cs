@@ -6,7 +6,8 @@ public class Enemy_Range : Enemy
 {
     [Header("掩護系統")]
     public bool canUseCovers = true;
-    public Transform lastCover;
+    public CoverPoint lastCover;
+    public List<Cover> allCovers = new List<Cover>();
 
     [Header("武器細節")]
     public Enemy_RangeWeaponType weaponType;
@@ -44,6 +45,9 @@ public class Enemy_Range : Enemy
 
         //取得要用哪個weaponData
         SetupWeapon();
+
+        //收集附近的Covers加到allCovers
+        allCovers.AddRange(CollectNearByCovers());
     }
 
 
@@ -53,6 +57,63 @@ public class Enemy_Range : Enemy
 
         stateMachine.CurrentState.Update();
     }
+
+    #region  Cover System
+
+    public Transform AttemptToFindCover()
+    {
+        List<CoverPoint> collectedCoverPoints = new List<CoverPoint>();
+
+        foreach (Cover cover in allCovers)
+        {
+            collectedCoverPoints.AddRange(cover.GetCoverPoints());
+        }
+
+        CoverPoint closestCoverPoint = null;
+        float shortestDistance = float.MaxValue;
+
+        //找到距離最近的Cover
+        foreach (CoverPoint coverPoint in collectedCoverPoints)
+        {
+            float currentDistance = Vector3.Distance(transform.position, coverPoint.transform.position);
+
+            if (currentDistance < shortestDistance)
+            {
+                closestCoverPoint = coverPoint;
+                shortestDistance = currentDistance;
+            }
+        }
+
+        if (closestCoverPoint != null)
+        {
+            lastCover = closestCoverPoint;
+        }
+
+        return lastCover.transform;
+    }
+
+    //收集附近的Covers
+    private List<Cover> CollectNearByCovers()
+    {
+        float coverRadiusCheck = 30;
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, coverRadiusCheck);
+        List<Cover> collecterCovers = new List<Cover>();
+
+        foreach (Collider collider in hitColliders)
+        {
+            Cover cover = collider.GetComponent<Cover>();
+
+            //因為有些物件我們設置collider時有兩個以上的collider所以這邊要多一個檢查是否已經包含這個cover物件了
+            if (cover != null && collecterCovers.Contains(cover) == false)
+            {
+                collecterCovers.Add(cover);
+            }
+        }
+
+        return collecterCovers;
+    }
+
+    #endregion
 
     public void FirtSingleBattle()
     {

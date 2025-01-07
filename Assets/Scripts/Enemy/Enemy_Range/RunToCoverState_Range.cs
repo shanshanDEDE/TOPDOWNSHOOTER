@@ -21,7 +21,7 @@ public class RunToCoverState_Range : EnemyState
 
         enemy.agent.speed = enemy.runSpeed;      //設定速度
 
-        destination = enemy.lastCover.position;
+        destination = enemy.AttemptToFindCover().position;
         enemy.agent.SetDestination(destination);
     }
 
@@ -36,7 +36,8 @@ public class RunToCoverState_Range : EnemyState
 
         enemy.FaceTarget(GetNextPathPoint());
 
-        if (Vector3.Distance(enemy.transform.position, destination) < 0.5f)
+        //老師原本設<0.5f 我改成1f
+        if (Vector3.Distance(enemy.transform.position, destination) < 1f)
         {
             Debug.Log("進入戰鬥狀態");
             stateMachine.ChangeState(enemy.battleState);
