@@ -23,6 +23,10 @@ public class BattleState_Range : EnemyState
     {
         base.Enter();
 
+        //針對Enemy_Range這個敵人防止他因前一個狀態的移動而飄移
+        enemy.agent.isStopped = true;
+        enemy.agent.velocity = Vector3.zero;
+
         //取得資料(使用的取得方法內未在ˋ一個範圍內隨機抽數)
         bulletsPerAttack = enemy.weaponData.GetBulletsPerAttack();
         weaponCooldown = enemy.weaponData.GetWeaponCooldown();
@@ -41,6 +45,13 @@ public class BattleState_Range : EnemyState
     public override void Update()
     {
         base.Update();
+
+        //檢查玩家是否還在攻擊範圍內,如果不再就切會成追擊模式
+        if (enemy.IsPlayerInAgrresionRange() == false)
+        {
+            stateMachine.ChangeState(enemy.advancePlayerState);
+        }
+
         ChangeCoverIfShot();
 
         enemy.FaceTarget(enemy.player.position);

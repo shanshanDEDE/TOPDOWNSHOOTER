@@ -90,10 +90,9 @@ public class Enemy : MonoBehaviour
     //判斷是否進入戰鬥模式
     protected bool ShouldEnterBattleMode()
     {
-        //判斷玩家是否在發現範圍內
-        bool inAggresionRange = Vector3.Distance(transform.position, player.position) < aggresionRange;
 
-        if (inAggresionRange && !inBattleMode)
+        //玩家是否在巡邏範圍內和是否在戰鬥模式
+        if (IsPlayerInAgrresionRange() && !inBattleMode)
         {
             EnterBattleMode();
             return true;
@@ -193,6 +192,8 @@ public class Enemy : MonoBehaviour
 
     #endregion
 
+    //玩家是否在巡邏範圍內
+    public bool IsPlayerInAgrresionRange() => Vector3.Distance(transform.position, player.position) < aggresionRange;
 
     protected virtual void OnDrawGizmos()
     {
