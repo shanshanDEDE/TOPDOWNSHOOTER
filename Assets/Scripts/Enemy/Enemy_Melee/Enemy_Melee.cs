@@ -107,7 +107,7 @@ public class Enemy_Melee : Enemy
         base.AbilityTrigger();
 
         walkSpeed = walkSpeed * .6f;
-        EnableWeaponModel(false);
+        visuals.EnableWeaponModel(false);
     }
 
     public void UpdateAttackData()
@@ -151,12 +151,6 @@ public class Enemy_Melee : Enemy
 
         if (healthPoints <= 0)
             stateMachine.ChangeState(deadState);
-    }
-
-    //拿出武器
-    public void EnableWeaponModel(bool active)
-    {
-        visuals.currentWeaponModel.gameObject.SetActive(active);
     }
 
     //啟用閃躲

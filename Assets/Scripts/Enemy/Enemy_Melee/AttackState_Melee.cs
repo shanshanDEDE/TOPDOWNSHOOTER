@@ -19,7 +19,7 @@ public class AttackState_Melee : EnemyState
     {
         base.Enter();
         enemy.UpdateAttackData();
-        enemy.EnableWeaponModel(true); //拿出武器
+        enemy.visuals.EnableWeaponModel(true); //拿出武器
         enemy.visuals.EnableWeaponTrail(true);      //啟用武器Trail
 
         attackMoveSpeed = enemy.attackData.walkSpeed;

@@ -25,6 +25,28 @@ public class Enemy_Visuals : MonoBehaviour
     [SerializeField] private TwoBoneIKConstraint leftHandIKConstraint;
     [SerializeField] private MultiAimConstraint weaponAimConstraint;
 
+    private float leftHandTargetWeight;
+    private float weaponAimTargetWeight;
+    private float rigChangeRate;
+
+    private void Update()
+    {
+        leftHandIKConstraint.weight = AdjustIKWeight(leftHandIKConstraint.weight, leftHandTargetWeight);
+        weaponAimConstraint.weight = AdjustIKWeight(weaponAimConstraint.weight, weaponAimTargetWeight);
+    }
+
+    //拿出武器
+    public void EnableWeaponModel(bool active)
+    {
+        currentWeaponModel?.gameObject.SetActive(active);
+    }
+
+    //找到第二個武器模組(右手)並決定是否啟用
+    public void EnableSceonderyWeaponModel(bool active)
+    {
+        FindSeconderyWeaponModel()?.SetActive(active);
+    }
+
     //啟用或關閉武器Trail
     public void EnableWeaponTrail(bool enable)
     {
@@ -139,6 +161,24 @@ public class Enemy_Visuals : MonoBehaviour
         return corruptionCrystals;
     }
 
+    //找到第二個武器模組(右手)
+    private GameObject FindSeconderyWeaponModel()
+    {
+        Enemy_SecondRangeWeaponModel[] weaponModels = GetComponentsInChildren<Enemy_SecondRangeWeaponModel>(true);
+
+        Enemy_RangeWeaponType weaponType = GetComponentInParent<Enemy_Range>().weaponType;
+
+        foreach (var weaponModel in weaponModels)
+        {
+            if (weaponModel.weaponType == weaponType)
+            {
+                return weaponModel.gameObject;
+            }
+        }
+
+        return null;
+    }
+
     //找出符合條件的武器(近戰)(有random邏輯去隨機取一個)
     private GameObject FindMeleeWeaponModel()
     {
@@ -186,12 +226,13 @@ public class Enemy_Visuals : MonoBehaviour
     }
 
     //啟用或關閉IK
-    public void EnableIK(bool enableLeftHand, bool enableAim)
+    public void EnableIK(bool enableLeftHand, bool enableAim, float chageRate = 10)
     {
         //rig.weight = enable ? 1 : 0;
+        rigChangeRate = chageRate;
 
-        leftHandIKConstraint.weight = enableLeftHand ? 1 : 0;
-        weaponAimConstraint.weight = enableAim ? 1 : 0;
+        leftHandTargetWeight = enableLeftHand ? 1 : 0;
+        weaponAimTargetWeight = enableAim ? 1 : 0;
     }
 
     private void SetupLeftHandIK(Transform leftHandTarget, Transform leftElbowTarget)
@@ -202,5 +243,15 @@ public class Enemy_Visuals : MonoBehaviour
         leftElbowIK.localPosition = leftElbowTarget.localPosition;
         leftElbowIK.localRotation = leftElbowTarget.localRotation;
     }
+
+    //調整IK權重
+    private float AdjustIKWeight(float currentWeight, float targetWeight)
+    {
+        if (Mathf.Abs(currentWeight - targetWeight) > 0.05f)
+            return Mathf.Lerp(currentWeight, targetWeight, rigChangeRate * Time.deltaTime);
+        else
+            return targetWeight;
+    }
+
 
 }
