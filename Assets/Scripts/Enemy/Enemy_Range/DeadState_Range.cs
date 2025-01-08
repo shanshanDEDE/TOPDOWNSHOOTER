@@ -2,20 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeadState_Melee : EnemyState
+public class DeadState_Range : EnemyState
 {
-    private Enemy_Melee enemy;
+    private Enemy_Range enemy;
+    private bool intereactionDisabled = false;
 
-    private bool intereactionDisabled;
-
-    public DeadState_Melee(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
+    public DeadState_Range(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
     {
-        enemy = enemyBase as Enemy_Melee;
+        enemy = enemyBase as Enemy_Range;
     }
 
     public override void Enter()
     {
         base.Enter();
+
+        if (enemy.throwGrenadeState.finishedThrowimgGrenade == false)
+            enemy.ThrowGrenade();
 
         intereactionDisabled = false;
 
@@ -36,6 +38,7 @@ public class DeadState_Melee : EnemyState
     public override void Update()
     {
         base.Update();
+
         //DisableInteractionIfShould();
     }
 
@@ -50,4 +53,5 @@ public class DeadState_Melee : EnemyState
             enemy.ragdoll.ColliderActive(false);
         }
     }
+
 }

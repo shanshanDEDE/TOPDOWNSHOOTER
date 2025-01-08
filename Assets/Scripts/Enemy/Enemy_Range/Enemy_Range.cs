@@ -64,6 +64,7 @@ public class Enemy_Range : Enemy
     public RunToCoverState_Range runToCoverState { get; private set; }
     public AdvancePlayerState_Range advancePlayerState { get; private set; }
     public ThrowGrenadeState_Range throwGrenadeState { get; private set; }
+    public DeadState_Range deadState { get; private set; }
     #endregion
 
     protected override void Awake()
@@ -76,6 +77,7 @@ public class Enemy_Range : Enemy
         runToCoverState = new RunToCoverState_Range(this, stateMachine, "Run");
         advancePlayerState = new AdvancePlayerState_Range(this, stateMachine, "Advance");
         throwGrenadeState = new ThrowGrenadeState_Range(this, stateMachine, "ThrowGrenade");
+        deadState = new DeadState_Range(this, stateMachine, "Idle");        //idle只是個站位符號,死亡我們用ragdoll
     }
 
     protected override void Start()
@@ -100,6 +102,16 @@ public class Enemy_Range : Enemy
         base.Update();
 
         stateMachine.CurrentState.Update();
+    }
+
+    public override void GetHit()
+    {
+        base.GetHit();
+
+        if (healthPoints <= 0 && stateMachine.CurrentState != deadState)
+        {
+            stateMachine.ChangeState(deadState);
+        }
     }
 
     //初始化 perk
@@ -138,11 +150,19 @@ public class Enemy_Range : Enemy
     public void ThrowGrenade()
     {
         lastTimeGrenadeThrown = Time.time;
+        visuals.EnableGrenadeModel(false);
 
         GameObject newGrenade = ObjectPool.instance.GetObject(grenadePrefab, grenadeStartPoint.position);
         // newGrenade.transform.position = grenadeStartPoint.position;
 
         Enemy_Grenade newGrenadeScript = newGrenade.GetComponent<Enemy_Grenade>();
+
+        if (stateMachine.CurrentState == deadState)
+        {
+            newGrenadeScript.SetupGrenade(transform.position, 1, explosionTimer, impactPower);
+            return;
+        }
+
         newGrenadeScript.SetupGrenade(player.transform.position, timeToTarget, explosionTimer, impactPower);
     }
 

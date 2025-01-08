@@ -5,6 +5,7 @@ using UnityEngine;
 public class ThrowGrenadeState_Range : EnemyState
 {
     private Enemy_Range enemy;
+    public bool finishedThrowimgGrenade { get; private set; }
 
     public ThrowGrenadeState_Range(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
     {
@@ -15,9 +16,12 @@ public class ThrowGrenadeState_Range : EnemyState
     {
         base.Enter();
 
+        finishedThrowimgGrenade = false;
+
         enemy.visuals.EnableWeaponModel(false);
         enemy.visuals.EnableIK(false, false);
         enemy.visuals.EnableSceonderyWeaponModel(true);     //啟用右手武器
+        enemy.visuals.EnableGrenadeModel(true);
     }
 
     public override void Exit()
@@ -62,7 +66,7 @@ public class ThrowGrenadeState_Range : EnemyState
     public override void AbilityTrigger()
     {
         base.AbilityTrigger();
-
+        finishedThrowimgGrenade = true;
         enemy.ThrowGrenade();   // 丟手榴彈
     }
 

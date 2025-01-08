@@ -10,6 +10,7 @@ public enum Enemy_RangeWeaponType { Pistol, Revolver, Shotgun, AutoRifle, Rifle 
 public class Enemy_Visuals : MonoBehaviour
 {
     public GameObject currentWeaponModel { get; private set; }
+    public GameObject grenadeModel;
 
     [Header("Corruption visuls(腐敗水晶相關視覺)")]
     [SerializeField] private GameObject[] corruptionCrystals;   //所有腐敗水晶
@@ -33,6 +34,11 @@ public class Enemy_Visuals : MonoBehaviour
     {
         leftHandIKConstraint.weight = AdjustIKWeight(leftHandIKConstraint.weight, leftHandTargetWeight);
         weaponAimConstraint.weight = AdjustIKWeight(weaponAimConstraint.weight, weaponAimTargetWeight);
+    }
+
+    public void EnableGrenadeModel(bool active)
+    {
+        grenadeModel?.SetActive(active);
     }
 
     //拿出武器
