@@ -18,8 +18,13 @@ public class Enemy_Range : Enemy
     public GrenadePerk grenadePerk;
 
     [Header("Grenade(手榴彈) perk")]
+    public GameObject grenadePrefab;
+    public float impactPower;
+    public float explosionTimer = 0.75f;
+    public float timeToTarget = 1.2f;
     public float grenadeCooldown;
     private float lastTimeGrenadeThrown = -10;
+    [SerializeField] private Transform grenadeStartPoint;
 
     [Header("前進 perk")]
     public float advanceSpeed;
@@ -133,7 +138,12 @@ public class Enemy_Range : Enemy
     public void ThrowGrenade()
     {
         lastTimeGrenadeThrown = Time.time;
-        Debug.Log("Throw Grenade");
+
+        GameObject newGrenade = ObjectPool.instance.GetObject(grenadePrefab, grenadeStartPoint.position);
+        // newGrenade.transform.position = grenadeStartPoint.position;
+
+        Enemy_Grenade newGrenadeScript = newGrenade.GetComponent<Enemy_Grenade>();
+        newGrenadeScript.SetupGrenade(player.transform.position, timeToTarget, explosionTimer, impactPower);
     }
 
     public override void EnterBattleMode()
